@@ -21,7 +21,6 @@ use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
 use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
 class ServiceManagerTest extends TestCase
 {
@@ -46,7 +45,7 @@ class ServiceManagerTest extends TestCase
     {
         $items = [
             'factories' => [
-                'test' => DateTimeFactory::class
+                'test' => DateTimeFactory::class,
             ],
         ];
         $serviceManagerConfig = new ServiceManagerConfig($items);
@@ -62,7 +61,7 @@ class ServiceManagerTest extends TestCase
 
         $items = [
             'factories' => [
-                'test' => DateTimeFactory::class
+                'test' => DateTimeFactory::class,
             ],
         ];
         $serviceManagerConfig = new ServiceManagerConfig($items);
@@ -77,7 +76,7 @@ class ServiceManagerTest extends TestCase
 
         $items = [
             'factories' => [
-                'test' => DateTimeFactory::class
+                'test' => DateTimeFactory::class,
             ],
         ];
         $serviceManagerConfig = new ServiceManagerConfig($items);

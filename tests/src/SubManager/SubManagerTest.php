@@ -66,7 +66,7 @@ class SubManagerTest extends TestCase
     {
         $items = [
             'factories' => [
-                'test' => DateTimeFactory::class
+                'test' => DateTimeFactory::class,
             ],
         ];
         $serviceManagerConfig = new ServiceManagerConfig($items);
