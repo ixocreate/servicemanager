@@ -28,6 +28,14 @@ class SubManagerFactory implements SubManagerFactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): SubManagerInterface
     {
-        return new SubManager(new ServiceManagerConfig([]), \DateTimeInterface::class);
+        return new SubManager(
+            $container,
+            new ServiceManagerConfig([
+                'factories' => [
+                    'test1' => DateTimeFactory::class,
+                ]
+            ]),
+            \DateTimeInterface::class
+        );
     }
 }
