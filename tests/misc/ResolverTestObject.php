@@ -19,7 +19,7 @@ class ResolverTestObject
      * @param \DateTime $dateTime
      * @param \DateTimeInterface $test1
      */
-    public function __construct(\DateTime $dateTime, \DateTimeInterface $test1)
+    public function __construct(\DateTime $dateTime, \DateTimeInterface $test1, \DateTimeInterface $someThing)
     {
     }
 }

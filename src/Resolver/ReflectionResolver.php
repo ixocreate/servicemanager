@@ -1,10 +1,18 @@
 <?php
+/**
+ * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
+ *
+ * @package kiwi-suite/servicemanager
+ * @see https://github.com/kiwi-suite/servicemanager
+ * @copyright Copyright (c) 2010 - 2017 kiwi suite GmbH
+ * @license MIT License
+ */
+
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Resolver;
 
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\SubManager\SubManagerInterface;
 use Psr\Container\ContainerInterface;
 
 class ReflectionResolver
@@ -54,7 +62,7 @@ class ReflectionResolver
         foreach ($reflectionParameters as $parameter) {
             if (!$parameter->getClass()) {
                 throw new ServiceNotFoundException(
-                    sprintf("Service with the name '%s' can't be found", $parameter->getName()),
+                    \sprintf("Service with the name '%s' can't be found", $parameter->getName()),
                     200
                 );
             }
@@ -68,14 +76,7 @@ class ReflectionResolver
                 continue;
             }
 
-            foreach (array_keys($subManagers) as $subManager) {
-                /** @var SubManagerInterface $subManagerInstance */
-                $subManagerInstance = $serviceManager->get($subManager);
-
-                if ($subManagerInstance->getValidation() !== $parameter->getClass()->getName()) {
-                    continue;
-                }
-
+            foreach (\array_keys($subManagers) as $subManager) {
                 if ($serviceManager->get($subManager)->has($parameter->getName())) {
                     $dependencies[] = [
                         'serviceName' => $parameter->getName(),
@@ -86,7 +87,16 @@ class ReflectionResolver
                 }
             }
 
-            throw new ServiceNotFoundException(sprintf("Service with the name '%s' can't be found", $parameter->getName()), 300);
+            if ($serviceManager->has($parameter->getName())) {
+                $dependencies[] = [
+                    'serviceName' => $parameter->getName(),
+                    'subManager' => null,
+                ];
+
+                continue;
+            }
+
+            throw new ServiceNotFoundException(\sprintf("Service with the name '%s' can't be found", $parameter->getName()), 300);
         }
 
         return $dependencies;

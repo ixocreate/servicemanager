@@ -31,10 +31,11 @@ class ReflectionResolverTest extends TestCase
         $serviceManagerConfig = new ServiceManagerConfig([
             'factories' => [
                 \DateTime::class => DateTimeFactory::class,
+                'someThing' => DateTimeFactory::class,
             ],
             'subManagers' => [
-                'subManager1' => SubManagerFactory::class
-            ]
+                'subManager1' => SubManagerFactory::class,
+            ],
         ]);
 
         $serviceManger = new ServiceManager($serviceManagerConfig);
@@ -51,7 +52,11 @@ class ReflectionResolverTest extends TestCase
             [
                 'serviceName' => "test1",
                 'subManager' => "subManager1",
-            ]
+            ],
+            [
+                'serviceName' => "someThing",
+                'subManager' => null,
+            ],
         ], $resolution->getDependencies());
     }
 
@@ -107,8 +112,8 @@ class ReflectionResolverTest extends TestCase
                 \DateTime::class => DateTimeFactory::class,
             ],
             'subManagers' => [
-                'subManager1' => SubManagerFactory::class
-            ]
+                'subManager1' => SubManagerFactory::class,
+            ],
         ]);
 
         $serviceManger = new ServiceManager($serviceManagerConfig);
@@ -122,10 +127,11 @@ class ReflectionResolverTest extends TestCase
         $serviceManagerConfig = new ServiceManagerConfig([
             'factories' => [
                 \DateTime::class => DateTimeFactory::class,
+                'someThing' => DateTimeFactory::class,
             ],
             'subManagers' => [
-                'subManager1' => SubManagerFactory::class
-            ]
+                'subManager1' => SubManagerFactory::class,
+            ],
         ]);
 
         $serviceManger = new ServiceManager($serviceManagerConfig);
