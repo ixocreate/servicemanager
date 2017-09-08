@@ -45,6 +45,17 @@ class SubManagerTest extends TestCase
         $this->assertInstanceOf(\DateTimeInterface::class, $serviceManager->get("dateTime"));
     }
 
+    public function testGetValidation()
+    {
+        $serviceManager = new SubManager(
+            $this->getServiceManager(),
+            new ServiceManagerConfig([]),
+            \DateTimeInterface::class
+        );
+
+        $this->assertEquals(\DateTimeInterface::class, $serviceManager->getValidation());
+    }
+
     public function testBuild()
     {
         $items = [
