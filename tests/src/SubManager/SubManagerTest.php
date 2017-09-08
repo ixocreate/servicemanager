@@ -31,9 +31,6 @@ class SubManagerTest extends TestCase
     public function testGet()
     {
         $items = [
-            'services' => [
-                'test' => new \DateTime(),
-            ],
             'factories' => [
                 'dateTime' => DateTimeFactory::class,
             ],
@@ -45,7 +42,6 @@ class SubManagerTest extends TestCase
             $serviceManagerConfig,
             \DateTimeInterface::class
         );
-        $this->assertEquals($items['services']['test'], $serviceManager->get("test"));
         $this->assertInstanceOf(\DateTimeInterface::class, $serviceManager->get("dateTime"));
     }
 
@@ -69,8 +65,8 @@ class SubManagerTest extends TestCase
     public function testHas()
     {
         $items = [
-            'services' => [
-                'test' => new \DateTime(),
+            'factories' => [
+                'test' => DateTimeFactory::class
             ],
         ];
         $serviceManagerConfig = new ServiceManagerConfig($items);
@@ -88,12 +84,7 @@ class SubManagerTest extends TestCase
     {
         $this->expectException(ServiceNotFoundException::class);
 
-        $items = [
-            'services' => [
-                'test' => new \DateTime(),
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
+        $serviceManagerConfig = new ServiceManagerConfig([]);
         $serviceManager = new SubManager(
             $this->getServiceManager(),
             $serviceManagerConfig,
@@ -107,12 +98,7 @@ class SubManagerTest extends TestCase
     {
         $this->expectException(ServiceNotFoundException::class);
 
-        $items = [
-            'services' => [
-                'test' => new \DateTime(),
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
+        $serviceManagerConfig = new ServiceManagerConfig([]);
         $serviceManager = new SubManager(
             $this->getServiceManager(),
             $serviceManagerConfig,

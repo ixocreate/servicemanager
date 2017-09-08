@@ -51,23 +51,6 @@ final class ServiceManagerConfigurator
      */
     private $subManagers = [];
 
-    /**
-     * @param string $name
-     * @param $value
-     */
-    public function addService(string $name, $value): void
-    {
-        $this->services[$name] = $value;
-    }
-
-    /**
-     * @return array
-     */
-    public function getServices(): array
-    {
-        return $this->services;
-    }
-
     public function addFactory(string $name, string $factory = AutowireFactory::class): void
     {
         $this->factories[$name] = $factory;
@@ -159,7 +142,6 @@ final class ServiceManagerConfigurator
     public function getServiceManagerConfig(): ServiceManagerConfig
     {
         return new ServiceManagerConfig([
-            'services' => $this->getServices(),
             'factories' => $this->getFactories(),
             'initializers' => $this->getInitializers(),
             'delegators' => $this->getDelegators(),

@@ -13,6 +13,7 @@ namespace KiwiSuite\ServiceManager;
 
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
+use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 
 final class ServiceManager implements ServiceManagerInterface
 {
@@ -33,22 +34,18 @@ final class ServiceManager implements ServiceManagerInterface
     {
         $this->serviceManagerConfig = $serviceManagerConfig;
 
-        $services = $serviceManagerConfig->getServices();
+        $services = [];
         $services[ServiceManagerConfig::class] = $serviceManagerConfig;
         $services[ServiceManager::class] = $this;
 
+        $factories = $serviceManagerConfig->getFactories();
+        $factories[LazyLoadingValueHolderFactory::class] = \KiwiSuite\ServiceManager\Factory\LazyLoadingValueHolderFactory::class;
 
         $this->serviceManager = new \Zend\ServiceManager\ServiceManager([
             'services' => $services,
-            'factories' => $serviceManagerConfig->getFactories(),
+            'factories' => $factories,
             'delegators' => $serviceManagerConfig->getDelegators(),
             'shared' => \array_fill_keys($serviceManagerConfig->getDisabledSharing(), false),
-            'lazy_services' => [
-                'class_map' => $serviceManagerConfig->getLazyServices(),
-                'proxies_target_dir' => null,
-                'proxies_namespace' => null,
-                'write_proxy_files' => false,
-            ],
             'initializers' => $serviceManagerConfig->getInitializers(),
             'shared_by_default' => true,
         ]);

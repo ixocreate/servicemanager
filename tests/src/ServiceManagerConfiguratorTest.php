@@ -23,22 +23,6 @@ use PHPUnit\Framework\TestCase;
 
 class ServiceManagerConfiguratorTest extends TestCase
 {
-    public function testServices()
-    {
-        $services = [
-            'array' => [],
-            'dateTime' => new \DateTime(),
-        ];
-
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-
-        foreach ($services as $name => $value) {
-            $serviceManagerConfigurator->addService($name, $value);
-        }
-
-        $this->assertEquals($services, $serviceManagerConfigurator->getServices());
-    }
-
     public function testFactories()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
@@ -165,7 +149,6 @@ class ServiceManagerConfiguratorTest extends TestCase
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
         $serviceManagerConfigurator->addInitializer(Initializer::class);
-        $serviceManagerConfigurator->addService("dateTime", new \DateTime());
         $serviceManagerConfigurator->addSubManager("subManager", SubManagerFactory::class);
         $serviceManagerConfigurator->addLazyService(\DateTime::class);
         $serviceManagerConfigurator->addDelegator("test", [DelegatorFactory::class]);
@@ -176,7 +159,6 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertInstanceOf(ServiceManagerConfig::class, $serviceManagerConfig);
 
         $this->assertEquals($serviceManagerConfigurator->getInitializers(), $serviceManagerConfig->getInitializers());
-        $this->assertEquals($serviceManagerConfigurator->getServices(), $serviceManagerConfig->getServices());
         $this->assertEquals($serviceManagerConfigurator->getFactories(), $serviceManagerConfig->getFactories());
         $this->assertEquals($serviceManagerConfigurator->getSubManagers(), $serviceManagerConfig->getSubManagers());
         $this->assertEquals($serviceManagerConfigurator->getLazyServices(), $serviceManagerConfig->getLazyServices());

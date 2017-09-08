@@ -21,22 +21,6 @@ use PHPUnit\Framework\TestCase;
 
 class ServiceManagerConfigTest extends TestCase
 {
-    public function testGetServices()
-    {
-        $items = [];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-        $this->assertEquals($items, $serviceManagerConfig->getServices());
-
-        $items = [
-            'services' => [
-                'test' => new \DateTime(),
-                'test1' => [],
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-        $this->assertEquals($items['services'], $serviceManagerConfig->getServices());
-    }
-
     public function testGetFactories()
     {
         $items = [];

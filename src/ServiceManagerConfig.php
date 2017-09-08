@@ -38,24 +38,12 @@ final class ServiceManagerConfig implements \Serializable
     private function validate(array $config): void
     {
         foreach ($config as $key => $values) {
-            if (!\in_array($key, ['services', 'factories', 'disabledSharing', 'delegators', 'initializers', 'lazyServices', 'subManagers'])) {
+            if (!\in_array($key, ['factories', 'disabledSharing', 'delegators', 'initializers', 'lazyServices', 'subManagers'])) {
                 throw new InvalidArgumentException(\sprintf("'%s' is not a valid configuration key", $key));
             }
 
             $method = "validate" . \ucfirst($key);
             $this->{$method}($values);
-        }
-    }
-
-    /**
-     * @param array $config
-     */
-    private function validateServices(array $config): void
-    {
-        foreach ($config as $serviceName => $service) {
-            if (!\is_array($service) && !\is_object($service)) {
-                throw new InvalidArgumentException(\sprintf("'%s' is not a valid service (not an array or object)", $serviceName));
-            }
         }
     }
 
@@ -176,14 +164,6 @@ final class ServiceManagerConfig implements \Serializable
         }
 
         return $this->config[$key];
-    }
-
-    /**
-     * @return array
-     */
-    public function getServices(): array
-    {
-        return $this->getValue("services");
     }
 
     /**

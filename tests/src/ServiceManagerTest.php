@@ -15,30 +15,38 @@ use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
+use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
 use KiwiSuiteMisc\ServiceManager\CantCreateObjectFactory;
+use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
+use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
 use PHPUnit\Framework\TestCase;
+use ProxyManager\Factory\LazyLoadingValueHolderFactory;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 class ServiceManagerTest extends TestCase
 {
     public function testConfigServiceGetRegistered()
     {
-        $items = [
-            'services' => [
-                'test' => new \DateTime(),
-            ],
-        ];
+        $items = [];
         $serviceManagerConfig = new ServiceManagerConfig($items);
 
         $serviceManager = new ServiceManager($serviceManagerConfig);
         $this->assertEquals($serviceManagerConfig, $serviceManager->get(ServiceManagerConfig::class));
         $this->assertEquals($serviceManager, $serviceManager->get(ServiceManager::class));
+        $this->assertInstanceOf(LazyLoadingValueHolderFactory::class, $serviceManager->get(LazyLoadingValueHolderFactory::class));
+    }
+
+    public function testLazyLoading()
+    {
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addFactory(LazyLoadingObject::class);
     }
 
     public function testHas()
     {
         $items = [
-            'services' => [
-                'test' => new \DateTime(),
+            'factories' => [
+                'test' => DateTimeFactory::class
             ],
         ];
         $serviceManagerConfig = new ServiceManagerConfig($items);
@@ -53,8 +61,8 @@ class ServiceManagerTest extends TestCase
         $this->expectException(ServiceNotFoundException::class);
 
         $items = [
-            'services' => [
-                'test' => new \DateTime(),
+            'factories' => [
+                'test' => DateTimeFactory::class
             ],
         ];
         $serviceManagerConfig = new ServiceManagerConfig($items);
@@ -68,8 +76,8 @@ class ServiceManagerTest extends TestCase
         $this->expectException(ServiceNotFoundException::class);
 
         $items = [
-            'services' => [
-                'test' => new \DateTime(),
+            'factories' => [
+                'test' => DateTimeFactory::class
             ],
         ];
         $serviceManagerConfig = new ServiceManagerConfig($items);
