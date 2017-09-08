@@ -8,6 +8,7 @@
  * @license MIT License
  */
 
+declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
 use Psr\Container\ContainerInterface;

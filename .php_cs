@@ -55,6 +55,7 @@ return PhpCsFixer\Config::create()
         'short_scalar_cast'                 => true,
         'standardize_not_equals'            => true,
         'trailing_comma_in_multiline_array' => true,
+        'declare_strict_types'              => true,
 
     ])
     ->setFinder(
