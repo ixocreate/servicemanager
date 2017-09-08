@@ -41,7 +41,7 @@ final class ServiceManager implements ServiceManagerInterface
         $factories = $serviceManagerConfig->getFactories();
         $factories[LazyLoadingValueHolderFactory::class] = \KiwiSuite\ServiceManager\Factory\LazyLoadingValueHolderFactory::class;
 
-        $factories = array_merge($factories, $serviceManagerConfig->getSubManagers());
+        $factories = \array_merge($factories, $serviceManagerConfig->getSubManagers());
 
         $this->serviceManager = new OriginalServiceManager($this, [
             'services' => $services,

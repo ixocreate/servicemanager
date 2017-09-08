@@ -13,5 +13,4 @@ namespace KiwiSuiteMisc\ServiceManager;
 
 class ResolverTestObjectNoConstructor
 {
-
 }

@@ -11,7 +11,6 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
-
 final class OriginalServiceManager extends \Zend\ServiceManager\ServiceManager
 {
     /**
