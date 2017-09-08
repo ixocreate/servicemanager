@@ -18,7 +18,7 @@ use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 final class ServiceManager implements ServiceManagerInterface
 {
     /**
-     * @var \Zend\ServiceManager\ServiceManager
+     * @var OriginalServiceManager
      */
     private $serviceManager;
 
@@ -41,7 +41,9 @@ final class ServiceManager implements ServiceManagerInterface
         $factories = $serviceManagerConfig->getFactories();
         $factories[LazyLoadingValueHolderFactory::class] = \KiwiSuite\ServiceManager\Factory\LazyLoadingValueHolderFactory::class;
 
-        $this->serviceManager = new \Zend\ServiceManager\ServiceManager([
+        $factories = array_merge($factories, $serviceManagerConfig->getSubManagers());
+
+        $this->serviceManager = new OriginalServiceManager($this, [
             'services' => $services,
             'factories' => $factories,
             'delegators' => $serviceManagerConfig->getDelegators(),
