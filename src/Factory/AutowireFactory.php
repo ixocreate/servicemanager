@@ -11,10 +11,12 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Factory;
 
-use KiwiSuite\ServiceManager\FactoryInterface;
+use KiwiSuite\ServiceManager\AutowireFactoryInterface;
+use KiwiSuite\ServiceManager\Resolver\ReflectionResolver;
+use KiwiSuite\ServiceManager\Resolver\Resolution;
 use Psr\Container\ContainerInterface;
 
-final class AutowireFactory implements FactoryInterface
+final class AutowireFactory implements AutowireFactoryInterface
 {
 
     /**
@@ -25,5 +27,19 @@ final class AutowireFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
+        $resolver = new ReflectionResolver();
+        return $resolver->createInstance($container, $this->getResolution($container, $requestedName, $options));
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return mixed
+     */
+    public function getResolution(ContainerInterface $container, string $requestedName, array $options = null): Resolution
+    {
+        $resolver = new ReflectionResolver();
+        return $resolver->resolveService($container, $requestedName);
     }
 }
