@@ -15,4 +15,8 @@ use KiwiSuite\ServiceManager\ServiceManagerInterface;
 
 interface SubManagerInterface extends ServiceManagerInterface
 {
+    /**
+     * @return string
+     */
+    public function getValidation(): string;
 }

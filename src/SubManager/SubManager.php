@@ -118,4 +118,12 @@ final class SubManager implements SubManagerInterface
     {
         return $instance instanceof $this->validation;
     }
+
+    /**
+     * @return string
+     */
+    public function getValidation(): string
+    {
+        return $this->validation;
+    }
 }
