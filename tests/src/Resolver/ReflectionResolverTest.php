@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager;
+namespace KiwiSuiteTest\ServiceManager\Resolver;
 
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\Resolver\ReflectionResolver;
