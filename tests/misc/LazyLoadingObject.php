@@ -20,6 +20,5 @@ class LazyLoadingObject implements TestInterface
 
     public function doSomething()
     {
-
     }
 }

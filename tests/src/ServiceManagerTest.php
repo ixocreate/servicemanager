@@ -60,7 +60,7 @@ class ServiceManagerTest extends TestCase
         $result = $serviceManager->get(LazyLoadingObject::class);
 
         $this->assertInstanceOf(LazyLoadingObject::class, $result);
-        $this->assertTrue(in_array(TestInterface::class, class_implements($result)));
+        $this->assertTrue(\in_array(TestInterface::class, \class_implements($result)));
 
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(500);

@@ -37,7 +37,7 @@ final class LazyServiceDelegatorFactory implements DelegatorFactoryInterface
         $lazyServices = $serviceManagerConfig->getLazyServices();
 
         if (!isset($lazyServices[$name])) {
-            throw new ServiceNotFoundException(sprintf("LazyService with name '%s' not found", $name));
+            throw new ServiceNotFoundException(\sprintf("LazyService with name '%s' not found", $name));
         }
 
         return $proxyFactory->createProxy($lazyServices[$name], $initializer);
