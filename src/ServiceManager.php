@@ -14,6 +14,7 @@ namespace KiwiSuite\ServiceManager;
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
+use KiwiSuite\ServiceManager\Factory\LazyLoadingValueHolderFactory as KiwiLazyLoadingValueHolderFactory;
 
 final class ServiceManager implements ServiceManagerInterface
 {
@@ -39,7 +40,7 @@ final class ServiceManager implements ServiceManagerInterface
         $services[ServiceManager::class] = $this;
 
         $factories = $serviceManagerConfig->getFactories();
-        $factories[LazyLoadingValueHolderFactory::class] = \KiwiSuite\ServiceManager\Factory\LazyLoadingValueHolderFactory::class;
+        $factories[LazyLoadingValueHolderFactory::class] = KiwiLazyLoadingValueHolderFactory::class;
 
         $factories = \array_merge($factories, $serviceManagerConfig->getSubManagers());
 
