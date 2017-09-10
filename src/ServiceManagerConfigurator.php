@@ -19,11 +19,6 @@ final class ServiceManagerConfigurator
     /**
      * @var array
      */
-    private $services = [];
-
-    /**
-     * @var array
-     */
     private $factories = [];
 
     /**
@@ -51,6 +46,10 @@ final class ServiceManagerConfigurator
      */
     private $subManagers = [];
 
+    /**
+     * @param string $name
+     * @param string $factory
+     */
     public function addFactory(string $name, string $factory = AutowireFactory::class): void
     {
         $this->factories[$name] = $factory;
@@ -64,6 +63,10 @@ final class ServiceManagerConfigurator
         return $this->factories;
     }
 
+    /**
+     * @param string $name
+     * @param array $delegators
+     */
     public function addDelegator(string $name, array $delegators): void
     {
         if (!\array_key_exists($name, $this->delegators)) {
@@ -74,11 +77,18 @@ final class ServiceManagerConfigurator
         $this->delegators[$name] += $delegators;
     }
 
+    /**
+     * @return array
+     */
     public function getDelegators(): array
     {
         return $this->delegators;
     }
 
+    /**
+     * @param string $name
+     * @param string|null $className
+     */
     public function addLazyService(string $name, string $className = null): void
     {
         if ($className === null) {
@@ -97,6 +107,9 @@ final class ServiceManagerConfigurator
         return $this->lazyServices;
     }
 
+    /**
+     * @param string $name
+     */
     public function addInitializer(string $name): void
     {
         $this->initializers[] = $name;
@@ -110,6 +123,9 @@ final class ServiceManagerConfigurator
         return $this->initializers;
     }
 
+    /**
+     * @param string $name
+     */
     public function disableSharingFor(string $name): void
     {
         $this->disabledSharing[] = $name;
@@ -123,7 +139,11 @@ final class ServiceManagerConfigurator
         return $this->disabledSharing;
     }
 
-    public function addSubManager(string $manager, string $factory)
+    /**
+     * @param string $manager
+     * @param string $factory
+     */
+    public function addSubManager(string $manager, string $factory): void
     {
         $this->subManagers[$manager] = $factory;
     }
