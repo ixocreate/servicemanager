@@ -14,12 +14,12 @@ namespace KiwiSuite\ServiceManager\Factory;
 use KiwiSuite\ServiceManager\DelegatorFactoryInterface;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
+use KiwiSuite\ServiceManager\ServiceManagerInterface;
 use ProxyManager\Proxy\LazyLoadingInterface;
-use Psr\Container\ContainerInterface;
 
 final class LazyServiceDelegatorFactory implements DelegatorFactoryInterface
 {
-    public function __invoke(ContainerInterface $container, $name, callable $callback, array $options = null)
+    public function __invoke(ServiceManagerInterface $container, $name, callable $callback, array $options = null)
     {
         /** @var ServiceManagerConfig $serviceManagerConfig */
         $serviceManagerConfig = $container->getServiceManagerConfig();

@@ -12,11 +12,11 @@ declare(strict_types=1);
 namespace KiwiSuiteMisc\ServiceManager;
 
 use KiwiSuite\ServiceManager\DelegatorFactoryInterface;
-use Psr\Container\ContainerInterface;
+use KiwiSuite\ServiceManager\ServiceManagerInterface;
 
 class DelegatorFactory implements DelegatorFactoryInterface
 {
-    public function __invoke(ContainerInterface $container, $name, callable $callback, array $options = null)
+    public function __invoke(ServiceManagerInterface $container, $name, callable $callback, array $options = null)
     {
         return new \DateTime();
     }

@@ -11,21 +11,21 @@
 declare(strict_types=1);
 namespace KiwiSuiteMisc\ServiceManager;
 
-use KiwiSuite\ServiceManager\Exception\ContainerException;
 use KiwiSuite\ServiceManager\FactoryInterface;
-use Psr\Container\ContainerInterface;
+use KiwiSuite\ServiceManager\ServiceManagerInterface;
 
 class ContainerExceptionFactory implements FactoryInterface
 {
 
     /**
-     * @param ContainerInterface $container
+     * @param ServiceManagerInterface $container
      * @param $requestedName
      * @param array|null $options
      * @return mixed
+     * @throws \Exception
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null)
     {
-        throw new ContainerException("cant create");
+        throw new \Exception("cant create");
     }
 }

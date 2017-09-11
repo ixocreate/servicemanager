@@ -14,31 +14,37 @@ namespace KiwiSuite\ServiceManager\Factory;
 use KiwiSuite\ServiceManager\AutowireFactoryInterface;
 use KiwiSuite\ServiceManager\Resolver\ReflectionResolver;
 use KiwiSuite\ServiceManager\Resolver\Resolution;
-use Psr\Container\ContainerInterface;
+use KiwiSuite\ServiceManager\ServiceManager;
+use KiwiSuite\ServiceManager\ServiceManagerInterface;
 
 final class AutowireFactory implements AutowireFactoryInterface
 {
 
     /**
-     * @param ContainerInterface $container
+     * @param ServiceManagerInterface $container
      * @param $requestedName
      * @param array|null $options
      * @return mixed
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null)
     {
-        $resolver = new ReflectionResolver();
-        return $resolver->createInstance($container, $this->getResolution($container, $requestedName, $options));
+        return $this->getResolution($container, $requestedName, $options)->createInstance($container);
     }
 
     /**
-     * @param ContainerInterface $container
+     * @param ServiceManagerInterface $container
      * @param string $requestedName
      * @param array|null $options
      * @return mixed
      */
-    public function getResolution(ContainerInterface $container, string $requestedName, array $options = null): Resolution
+    public function getResolution(ServiceManagerInterface $container, string $requestedName, array $options = null): Resolution
     {
+        if (!($container instanceof ServiceManager)) {
+            //TODO Exception
+        }
+
+
+
         $resolver = new ReflectionResolver();
         return $resolver->resolveService($container, $requestedName);
     }

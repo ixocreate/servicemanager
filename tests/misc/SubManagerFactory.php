@@ -12,21 +12,21 @@ declare(strict_types=1);
 namespace KiwiSuiteMisc\ServiceManager;
 
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
+use KiwiSuite\ServiceManager\ServiceManagerInterface;
 use KiwiSuite\ServiceManager\SubManager\SubManager;
 use KiwiSuite\ServiceManager\SubManager\SubManagerFactoryInterface;
 use KiwiSuite\ServiceManager\SubManager\SubManagerInterface;
-use Psr\Container\ContainerInterface;
 
 class SubManagerFactory implements SubManagerFactoryInterface
 {
 
     /**
-     * @param ContainerInterface $container
+     * @param ServiceManagerInterface $container
      * @param $requestedName
      * @param array|null $options
      * @return SubManagerInterface
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null): SubManagerInterface
+    public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null): SubManagerInterface
     {
         return new SubManager(
             $container,

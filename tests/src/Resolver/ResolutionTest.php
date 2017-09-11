@@ -12,7 +12,14 @@ declare(strict_types=1);
 namespace KiwiSuiteTest\ServiceManager\Resolver;
 
 use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
+use KiwiSuite\ServiceManager\Resolver\ReflectionResolver;
 use KiwiSuite\ServiceManager\Resolver\Resolution;
+use KiwiSuite\ServiceManager\ServiceManager;
+use KiwiSuite\ServiceManager\ServiceManagerConfig;
+use KiwiSuite\ServiceManager\ServiceManagerSetup;
+use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
+use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
+use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 
 class ResolutionTest extends TestCase
@@ -36,6 +43,28 @@ class ResolutionTest extends TestCase
 
         $this->assertEquals("testResolution", $resolution->getServiceName());
         $this->assertEquals($dependencies, $resolution->getDependencies());
+    }
+
+    public function testCreateInstance()
+    {
+        $serviceManagerConfig = new ServiceManagerConfig([
+            'factories' => [
+                \DateTime::class => DateTimeFactory::class,
+                'someThing' => DateTimeFactory::class,
+            ],
+            'subManagers' => [
+                'subManager1' => SubManagerFactory::class,
+            ],
+        ]);
+
+        $serviceManger = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
+
+        $resolver = new ReflectionResolver();
+        $resolution = $resolver->resolveService($serviceManger, ResolverTestObject::class);
+
+        $result = $resolution->createInstance($serviceManger);
+
+        $this->assertInstanceOf(ResolverTestObject::class, $result);
     }
 
     public function testDependencyIsNotAnArray()

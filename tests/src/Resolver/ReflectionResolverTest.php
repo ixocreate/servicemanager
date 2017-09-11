@@ -122,26 +122,4 @@ class ReflectionResolverTest extends TestCase
         $resolver = new ReflectionResolver();
         $resolver->resolveService($serviceManger, ResolverTestObjectNoDep::class);
     }
-
-    public function testCreateInstance()
-    {
-        $serviceManagerConfig = new ServiceManagerConfig([
-            'factories' => [
-                \DateTime::class => DateTimeFactory::class,
-                'someThing' => DateTimeFactory::class,
-            ],
-            'subManagers' => [
-                'subManager1' => SubManagerFactory::class,
-            ],
-        ]);
-
-        $serviceManger = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
-
-        $resolver = new ReflectionResolver();
-        $resolution = $resolver->resolveService($serviceManger, ResolverTestObject::class);
-
-        $result = $resolver->createInstance($serviceManger, $resolution);
-
-        $this->assertInstanceOf(ResolverTestObject::class, $result);
-    }
 }

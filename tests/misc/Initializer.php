@@ -12,17 +12,17 @@ declare(strict_types=1);
 namespace KiwiSuiteMisc\ServiceManager;
 
 use KiwiSuite\ServiceManager\InitializerInterface;
-use Psr\Container\ContainerInterface;
+use KiwiSuite\ServiceManager\ServiceManagerInterface;
 
 class Initializer implements InitializerInterface
 {
 
     /**
-     * @param ContainerInterface $container
+     * @param ServiceManagerInterface $container
      * @param $instance
      * @return void
      */
-    public function __invoke(ContainerInterface $container, $instance): void
+    public function __invoke(ServiceManagerInterface $container, $instance): void
     {
     }
 }

@@ -11,12 +11,17 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\SubManager;
 
-use Psr\Container\ContainerInterface;
+use KiwiSuite\ServiceManager\ServiceManagerInterface;
 use Zend\ServiceManager\ServiceManager;
 
 final class PluginManager extends ServiceManager
 {
-    public function __construct(ContainerInterface $container, array $config = [])
+    /**
+     * PluginManager constructor.
+     * @param ServiceManagerInterface $container
+     * @param array $config
+     */
+    public function __construct(ServiceManagerInterface $container, array $config = [])
     {
         parent::__construct($config);
 

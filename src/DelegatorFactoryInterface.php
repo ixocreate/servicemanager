@@ -11,9 +11,14 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
-use Psr\Container\ContainerInterface;
-
 interface DelegatorFactoryInterface
 {
-    public function __invoke(ContainerInterface $container, $name, callable $callback, array $options = null);
+    /**
+     * @param ServiceManagerInterface $container
+     * @param $name
+     * @param callable $callback
+     * @param array|null $options
+     * @return mixed
+     */
+    public function __invoke(ServiceManagerInterface $container, $name, callable $callback, array $options = null);
 }

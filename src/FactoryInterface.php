@@ -11,15 +11,13 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
-use Psr\Container\ContainerInterface;
-
 interface FactoryInterface
 {
     /**
-     * @param ContainerInterface $container
+     * @param ServiceManagerInterface $container
      * @param $requestedName
      * @param array|null $options
      * @return mixed
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null);
+    public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null);
 }

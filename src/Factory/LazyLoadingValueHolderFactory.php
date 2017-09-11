@@ -12,20 +12,20 @@ declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Factory;
 
 use KiwiSuite\ServiceManager\FactoryInterface;
+use KiwiSuite\ServiceManager\ServiceManagerInterface;
 use ProxyManager\Configuration;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use Psr\Container\ContainerInterface;
 
 class LazyLoadingValueHolderFactory implements FactoryInterface
 {
 
     /**
-     * @param ContainerInterface $container
+     * @param ServiceManagerInterface $container
      * @param $requestedName
      * @param array|null $options
      * @return mixed
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null)
     {
         $proxyConfiguration = new Configuration();
         $proxyConfiguration->setGeneratorStrategy(new EvaluatingGeneratorStrategy());

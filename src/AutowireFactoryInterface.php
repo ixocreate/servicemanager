@@ -12,15 +12,14 @@ declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
 use KiwiSuite\ServiceManager\Resolver\Resolution;
-use Psr\Container\ContainerInterface;
 
 interface AutowireFactoryInterface extends FactoryInterface
 {
     /**
-     * @param ContainerInterface $container
+     * @param ServiceManagerInterface $container
      * @param string $requestedName
      * @param array|null $options
      * @return mixed
      */
-    public function getResolution(ContainerInterface $container, string $requestedName, array $options = null): Resolution;
+    public function getResolution(ServiceManagerInterface $container, string $requestedName, array $options = null): Resolution;
 }

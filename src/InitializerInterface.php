@@ -11,14 +11,13 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
-use Psr\Container\ContainerInterface;
 
 interface InitializerInterface
 {
     /**
-     * @param ContainerInterface $container
+     * @param ServiceManagerInterface $container
      * @param $instance
      * @return void
      */
-    public function __invoke(ContainerInterface $container, $instance): void;
+    public function __invoke(ServiceManagerInterface $container, $instance): void;
 }
