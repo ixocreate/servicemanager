@@ -13,7 +13,7 @@ namespace KiwiSuite\ServiceManager\Resolver;
 
 use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
 
-class Resolution
+class Resolution implements \Serializable
 {
     /**
      * @var string
@@ -74,5 +74,30 @@ class Resolution
     public function getDependencies(): array
     {
         return $this->dependencies;
+    }
+
+    /**
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize([
+            'serviceName' => $this->serviceName,
+            'dependencies' => $this->dependencies,
+        ]);
+    }
+
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        $array = unserialize($serialized, false);
+        if (!is_array($array) || !array_key_exists('serviceName', $array) || !array_key_exists('dependencies', $array)) {
+            //TODO exception
+        }
+
+        $this->serviceName = $array['serviceName'];
+        $this->dependencies = $array['dependencies'];
     }
 }
