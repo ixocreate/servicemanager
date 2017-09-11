@@ -16,6 +16,7 @@ use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
+use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuiteMisc\ServiceManager\CantCreateObjectFactory;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
 use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
@@ -25,39 +26,57 @@ use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 
 class ServiceManagerTest extends TestCase
 {
-    public function testConfigServiceGetRegistered()
-    {
-        $items = [];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
+    /**
+     * @var ServiceManager
+     */
+    private $validServiceManager;
 
-        $serviceManager = new ServiceManager($serviceManagerConfig);
-        $this->assertEquals($serviceManagerConfig, $serviceManager->get(ServiceManagerConfig::class));
-        $this->assertEquals($serviceManager, $serviceManager->get(ServiceManager::class));
-        $this->assertInstanceOf(LazyLoadingValueHolderFactory::class, $serviceManager->get(LazyLoadingValueHolderFactory::class));
+    /**
+     * @var ServiceManagerConfig
+     */
+    private $serviceManagerConfig;
+
+    /**
+     * @var ServiceManagerSetup
+     */
+    private $serviceManagerSetup;
+
+    public function setUp()
+    {
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addFactory(LazyLoadingObject::class);
+        $serviceManagerConfigurator->addFactory('dateTine', DateTimeFactory::class);
+        $serviceManagerConfigurator->addFactory('cantCreate', CantCreateObjectFactory::class);
+
+        $serviceManagerConfigurator->addLazyService(LazyLoadingObject::class);
+
+        $this->serviceManagerConfig = $serviceManagerConfigurator->getServiceManagerConfig();
+        $this->serviceManagerSetup = new ServiceManagerSetup();
+
+        $this->validServiceManager = new ServiceManager($this->serviceManagerConfig, $this->serviceManagerSetup);
+    }
+
+    public function testGetServiceManagerConfig()
+    {
+        $this->assertEquals($this->serviceManagerConfig, $this->validServiceManager->getServiceManagerConfig());
+    }
+
+    public function testGetServiceManagerSetup()
+    {
+        $this->assertEquals($this->serviceManagerSetup, $this->validServiceManager->getServiceManagerSetup());
     }
 
     public function testHas()
     {
-        $items = [
-            'factories' => [
-                'test' => DateTimeFactory::class,
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-        $serviceManager = new ServiceManager($serviceManagerConfig);
-
-        $this->assertTrue($serviceManager->has("test"));
-        $this->assertFalse($serviceManager->has("doesnt_exist"));
+        $this->assertTrue($this->validServiceManager->has("dateTine"));
+        $this->assertFalse($this->validServiceManager->has("doesnt_exist"));
     }
 
     public function testLazyLoading()
     {
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-        $serviceManagerConfigurator->addFactory(LazyLoadingObject::class);
-        $serviceManagerConfigurator->addLazyService(LazyLoadingObject::class);
+        $this->assertInstanceOf(LazyLoadingValueHolderFactory::class, $this->validServiceManager->get(LazyLoadingValueHolderFactory::class));
 
-        $serviceManager = new ServiceManager($serviceManagerConfigurator->getServiceManagerConfig());
-        $result = $serviceManager->get(LazyLoadingObject::class);
+        $result = $this->validServiceManager->get(LazyLoadingObject::class);
 
         $this->assertInstanceOf(LazyLoadingObject::class, $result);
         $this->assertTrue(\in_array(TestInterface::class, \class_implements($result)));
@@ -70,46 +89,21 @@ class ServiceManagerTest extends TestCase
     public function testServiceNotFoundExceptionGet()
     {
         $this->expectException(ServiceNotFoundException::class);
-
-        $items = [
-            'factories' => [
-                'test' => DateTimeFactory::class,
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-        $serviceManager = new ServiceManager($serviceManagerConfig);
-
-        $serviceManager->get("doesnt_exists");
+        $this->validServiceManager->get("doesnt_exists");
     }
 
     public function testServiceNotFoundExceptionBuild()
     {
         $this->expectException(ServiceNotFoundException::class);
 
-        $items = [
-            'factories' => [
-                'test' => DateTimeFactory::class,
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-        $serviceManager = new ServiceManager($serviceManagerConfig);
-
-        $serviceManager->build("doesnt_exists");
+        $this->validServiceManager->build("doesnt_exists");
     }
 
     public function testServiceNotCreatedExceptionGet()
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $items = [
-            'factories' => [
-                'test' => CantCreateObjectFactory::class,
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-        $serviceManager = new ServiceManager($serviceManagerConfig);
-
-        $serviceManager->get("test");
+        $this->validServiceManager->get("cantCreate");
     }
 
     public function testServiceNotCreatedExceptionBuild()
@@ -122,7 +116,7 @@ class ServiceManagerTest extends TestCase
             ],
         ];
         $serviceManagerConfig = new ServiceManagerConfig($items);
-        $serviceManager = new ServiceManager($serviceManagerConfig);
+        $serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $serviceManager->build("test");
     }

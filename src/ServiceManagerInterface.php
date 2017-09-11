@@ -25,4 +25,14 @@ interface ServiceManagerInterface extends ContainerInterface
      * @return mixed
      */
     public function build(string $id, array $options = null);
+
+    /**
+     * @return ServiceManagerConfig
+     */
+    public function getServiceManagerConfig(): ServiceManagerConfig;
+
+    /**
+     * @return ServiceManagerSetup
+     */
+    public function getServiceManagerSetup(): ServiceManagerSetup;
 }

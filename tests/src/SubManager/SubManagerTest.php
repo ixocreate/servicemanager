@@ -16,6 +16,7 @@ use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\FactoryInterface;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
+use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuite\ServiceManager\SubManager\SubManager;
 use KiwiSuiteMisc\ServiceManager\CantCreateObjectFactory;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
@@ -25,7 +26,7 @@ class SubManagerTest extends TestCase
 {
     private function getServiceManager()
     {
-        return new ServiceManager(new ServiceManagerConfig([]));
+        return new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
     }
 
     public function testGet()

@@ -15,6 +15,7 @@ use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
+use KiwiSuite\ServiceManager\ServiceManagerSetup;
 
 final class SubManager implements SubManagerInterface
 {
@@ -28,6 +29,16 @@ final class SubManager implements SubManagerInterface
      * @var string
      */
     private $validation;
+
+    /**
+     * @var ServiceManagerSetup
+     */
+    private $serviceManagerSetup;
+
+    /**
+     * @var ServiceManagerConfig
+     */
+    private $serviceManagerConfig;
 
     /**
      * @param ServiceManager $serviceManager
@@ -48,6 +59,8 @@ final class SubManager implements SubManagerInterface
         );
 
         $this->validation = $validation;
+        $this->serviceManagerSetup = $serviceManager->getServiceManagerSetup();
+        $this->serviceManagerConfig = $serviceManagerConfig;
     }
 
     /**
@@ -125,5 +138,21 @@ final class SubManager implements SubManagerInterface
     public function getValidation(): string
     {
         return $this->validation;
+    }
+
+    /**
+     * @return ServiceManagerSetup
+     */
+    public function getServiceManagerSetup(): ServiceManagerSetup
+    {
+        return $this->serviceManagerSetup;
+    }
+
+    /**
+     * @return ServiceManagerConfig
+     */
+    public function getServiceManagerConfig(): ServiceManagerConfig
+    {
+        return $this->serviceManagerConfig;
     }
 }

@@ -29,15 +29,17 @@ final class ServiceManager implements ServiceManagerInterface
     private $serviceManagerConfig;
 
     /**
-     * @param ServiceManagerConfig $serviceManagerConfig
+     * @var ServiceManagerSetup
      */
-    public function __construct(ServiceManagerConfig $serviceManagerConfig)
+    private $serviceManagerSetup;
+
+    /**
+     * @param ServiceManagerConfig $serviceManagerConfig
+     * @param ServiceManagerSetup $serviceManagerSetup
+     */
+    public function __construct(ServiceManagerConfig $serviceManagerConfig, ServiceManagerSetup $serviceManagerSetup)
     {
         $this->serviceManagerConfig = $serviceManagerConfig;
-
-        $services = [];
-        $services[ServiceManagerConfig::class] = $serviceManagerConfig;
-        $services[ServiceManager::class] = $this;
 
         $factories = $serviceManagerConfig->getFactories();
         $factories[LazyLoadingValueHolderFactory::class] = KiwiLazyLoadingValueHolderFactory::class;
@@ -45,13 +47,14 @@ final class ServiceManager implements ServiceManagerInterface
         $factories = \array_merge($factories, $serviceManagerConfig->getSubManagers());
 
         $this->serviceManager = new OriginalServiceManager($this, [
-            'services' => $services,
             'factories' => $factories,
             'delegators' => $serviceManagerConfig->getDelegators(),
             'shared' => \array_fill_keys($serviceManagerConfig->getDisabledSharing(), false),
             'initializers' => $serviceManagerConfig->getInitializers(),
             'shared_by_default' => true,
         ]);
+
+        $this->serviceManagerSetup = $serviceManagerSetup;
     }
 
     /**
@@ -96,5 +99,21 @@ final class ServiceManager implements ServiceManagerInterface
         } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exception) {
             throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception);
         }
+    }
+
+    /**
+     * @return ServiceManagerConfig
+     */
+    public function getServiceManagerConfig(): ServiceManagerConfig
+    {
+        return $this->serviceManagerConfig;
+    }
+
+    /**
+     * @return ServiceManagerSetup
+     */
+    public function getServiceManagerSetup(): ServiceManagerSetup
+    {
+        return $this->serviceManagerSetup;
     }
 }
