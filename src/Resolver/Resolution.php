@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Resolver;
 
 use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
+use KiwiSuite\ServiceManager\ServiceManagerInterface;
 
 class Resolution implements \Serializable
 {
@@ -99,5 +100,26 @@ class Resolution implements \Serializable
 
         $this->serviceName = $array['serviceName'];
         $this->dependencies = $array['dependencies'];
+    }
+
+    /**
+     * @param ServiceManagerInterface $serviceManager
+     * @return mixed
+     */
+    public function createInstance(ServiceManagerInterface $serviceManager)
+    {
+        $instanceName = $this->getServiceName();
+        $instanceParameters = [];
+
+        foreach ($this->getDependencies() as $dependency) {
+            $container = $serviceManager;
+            if ($dependency['subManager'] !== null) {
+                $container = $serviceManager->get($dependency['subManager']);
+            }
+
+            $instanceParameters[] = $container->get($dependency['serviceName']);
+        }
+
+        return new $instanceName(...$instanceParameters);
     }
 }

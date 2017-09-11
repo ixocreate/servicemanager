@@ -12,17 +12,17 @@ declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Resolver;
 
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use Psr\Container\ContainerInterface;
+use KiwiSuite\ServiceManager\ServiceManager;
+use KiwiSuite\ServiceManager\ServiceManagerInterface;
 
 class ReflectionResolver
 {
     /**
-     * @param ContainerInterface $serviceManager
+     * @param ServiceManagerInterface $serviceManager
      * @param string $serviceName
      * @return Resolution
      */
-    public function resolveService(ContainerInterface $serviceManager, string $serviceName): Resolution
+    public function resolveService(ServiceManagerInterface $serviceManager, string $serviceName): Resolution
     {
         if (!\class_exists($serviceName)) {
             throw new ServiceNotFoundException(\sprintf(
@@ -35,11 +35,11 @@ class ReflectionResolver
     }
 
     /**
-     * @param ContainerInterface $serviceManager
+     * @param ServiceManagerInterface $serviceManager
      * @param string $serviceName
      * @return array
      */
-    private function getDependencies(ContainerInterface $serviceManager, string $serviceName): array
+    private function getDependencies(ServiceManagerInterface $serviceManager, string $serviceName): array
     {
         $reflectionClass = new \ReflectionClass($serviceName);
 
@@ -100,27 +100,5 @@ class ReflectionResolver
         }
 
         return $dependencies;
-    }
-
-    /**
-     * @param ContainerInterface $serviceManager
-     * @param Resolution $resolution
-     * @return mixed
-     */
-    public function createInstance(ContainerInterface $serviceManager, Resolution $resolution)
-    {
-        $instanceName = $resolution->getServiceName();
-        $instanceParameters = [];
-
-        foreach ($resolution->getDependencies() as $dependency) {
-            $container = $serviceManager;
-            if ($dependency['subManager'] !== null) {
-                $container = $serviceManager->get($dependency['subManager']);
-            }
-
-            $instanceParameters[] = $container->get($dependency['serviceName']);
-        }
-
-        return new $instanceName(...$instanceParameters);
     }
 }
