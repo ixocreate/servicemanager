@@ -55,7 +55,7 @@ class ReflectionResolver
 
         //TODO Check if ServiceManagerConfig is available
 
-        $subManagers = $serviceManager->get(ServiceManagerConfig::class)->getSubManagers();
+        $subManagers = $serviceManager->getServiceManagerConfig()->getSubManagers();
 
         $dependencies = [];
 

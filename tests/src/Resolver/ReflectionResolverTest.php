@@ -15,6 +15,7 @@ use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\Resolver\ReflectionResolver;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
+use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
 use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
 use KiwiSuiteMisc\ServiceManager\ResolverTestObjectEmptyConstructor;
@@ -38,7 +39,7 @@ class ReflectionResolverTest extends TestCase
             ],
         ]);
 
-        $serviceManger = new ServiceManager($serviceManagerConfig);
+        $serviceManger = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $resolver = new ReflectionResolver();
         $resolution = $resolver->resolveService($serviceManger, ResolverTestObject::class);
@@ -62,7 +63,7 @@ class ReflectionResolverTest extends TestCase
 
     public function testResolveNoConstructor()
     {
-        $serviceManger = new ServiceManager(new ServiceManagerConfig([]));
+        $serviceManger = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
 
         $resolver = new ReflectionResolver();
         $resolution = $resolver->resolveService($serviceManger, ResolverTestObjectNoConstructor::class);
@@ -73,7 +74,7 @@ class ReflectionResolverTest extends TestCase
 
     public function testResolveEmptyConstructor()
     {
-        $serviceManger = new ServiceManager(new ServiceManagerConfig([]));
+        $serviceManger = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
 
         $resolver = new ReflectionResolver();
         $resolution = $resolver->resolveService($serviceManger, ResolverTestObjectEmptyConstructor::class);
@@ -86,7 +87,7 @@ class ReflectionResolverTest extends TestCase
     {
         $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionCode(100);
-        $serviceManger = new ServiceManager(new ServiceManagerConfig([]));
+        $serviceManger = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
 
         $resolver = new ReflectionResolver();
         $resolver->resolveService($serviceManger, "test");
@@ -96,7 +97,7 @@ class ReflectionResolverTest extends TestCase
     {
         $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionCode(200);
-        $serviceManger = new ServiceManager(new ServiceManagerConfig([]));
+        $serviceManger = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
 
         $resolver = new ReflectionResolver();
         $resolver->resolveService($serviceManger, ResolverTestObjectScalar::class);
@@ -116,7 +117,7 @@ class ReflectionResolverTest extends TestCase
             ],
         ]);
 
-        $serviceManger = new ServiceManager($serviceManagerConfig);
+        $serviceManger = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $resolver = new ReflectionResolver();
         $resolver->resolveService($serviceManger, ResolverTestObjectNoDep::class);
@@ -134,7 +135,7 @@ class ReflectionResolverTest extends TestCase
             ],
         ]);
 
-        $serviceManger = new ServiceManager($serviceManagerConfig);
+        $serviceManger = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $resolver = new ReflectionResolver();
         $resolution = $resolver->resolveService($serviceManger, ResolverTestObject::class);

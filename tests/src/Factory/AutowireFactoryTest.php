@@ -14,6 +14,7 @@ namespace KiwiSuiteTest\ServiceManager\Factory;
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
+use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
 use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
@@ -33,7 +34,7 @@ class AutowireFactoryTest extends TestCase
             ],
         ]);
 
-        $serviceManger = new ServiceManager($serviceManagerConfig);
+        $serviceManger = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $autoWireFactory = new AutowireFactory();
         $result = $autoWireFactory($serviceManger, ResolverTestObject::class);
@@ -53,7 +54,7 @@ class AutowireFactoryTest extends TestCase
             ],
         ]);
 
-        $serviceManger = new ServiceManager($serviceManagerConfig);
+        $serviceManger = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $autoWireFactory = new AutowireFactory();
         $resolution = $autoWireFactory->getResolution($serviceManger, ResolverTestObject::class);
