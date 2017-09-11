@@ -22,7 +22,7 @@ final class LazyServiceDelegatorFactory implements DelegatorFactoryInterface
     public function __invoke(ContainerInterface $container, $name, callable $callback, array $options = null)
     {
         /** @var ServiceManagerConfig $serviceManagerConfig */
-        $serviceManagerConfig = $container->get(ServiceManagerConfig::class);
+        $serviceManagerConfig = $container->getServiceManagerConfig();
 
         /** @var \ProxyManager\Factory\LazyLoadingValueHolderFactory $proxyFactory */
         $proxyFactory = $container->get(\ProxyManager\Factory\LazyLoadingValueHolderFactory::class);
