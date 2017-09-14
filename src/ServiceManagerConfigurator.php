@@ -47,6 +47,11 @@ final class ServiceManagerConfigurator
     private $subManagers = [];
 
     /**
+     * @var array
+     */
+    private $configProviders = [];
+
+    /**
      * @param string $name
      * @param string $factory
      */
@@ -157,6 +162,22 @@ final class ServiceManagerConfigurator
     }
 
     /**
+     * @param string $configProvider
+     */
+    public function addConfigProvider(string $configProvider): void
+    {
+        $this->configProviders[] = $configProvider;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfigProviders(): array
+    {
+        return $this->configProviders;
+    }
+
+    /**
      * @return ServiceManagerConfig
      */
     public function getServiceManagerConfig(): ServiceManagerConfig
@@ -168,6 +189,7 @@ final class ServiceManagerConfigurator
             'subManagers' => $this->getSubManagers(),
             'lazyServices' => $this->getLazyServices(),
             'disabledSharing' => $this->getDisableSharing(),
+            'configProviders' => $this->getConfigProviders(),
         ]);
     }
 }

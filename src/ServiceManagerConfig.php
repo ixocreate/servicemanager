@@ -21,13 +21,24 @@ final class ServiceManagerConfig implements \Serializable
      */
     private $config;
 
+    private $types = ['configProviders', 'factories', 'disabledSharing', 'delegators', 'initializers', 'lazyServices', 'subManagers'];
+
     /**
      * ServiceManagerConfig constructor.
      * @param array $config
      */
     public function __construct(array $config)
     {
+        foreach ($this->types as $type) {
+            if (!\array_key_exists($type, $config)) {
+                $config[$type] = [];
+                continue;
+            }
+        }
+
         $this->validate($config);
+
+        $config = $this->handleConfigProviders($config);
 
         $this->config = $config;
     }
@@ -38,7 +49,7 @@ final class ServiceManagerConfig implements \Serializable
     private function validate(array $config): void
     {
         foreach ($config as $key => $values) {
-            if (!\in_array($key, ['factories', 'disabledSharing', 'delegators', 'initializers', 'lazyServices', 'subManagers'])) {
+            if (!\in_array($key, $this->types)) {
                 throw new InvalidArgumentException(\sprintf("'%s' is not a valid configuration key", $key));
             }
 
@@ -154,15 +165,50 @@ final class ServiceManagerConfig implements \Serializable
     }
 
     /**
+     * @param array $config
+     */
+    private function validateConfigProviders(array $config): void
+    {
+        foreach ($config as $configProvider) {
+            if (!\is_string($configProvider)) {
+                throw new InvalidArgumentException(\sprintf("'%s' is not a valid config provider", \var_export($configProvider, true)));
+            }
+            $classImplements = @\class_implements($configProvider);
+            if (!\is_array($classImplements)) {
+                throw new InvalidArgumentException(\sprintf("ConfigProvider '%s' can't be loaded", $configProvider));
+            }
+            if (!\in_array(ConfigProviderInterface::class, $classImplements)) {
+                throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $configProvider, ConfigProviderInterface::class));
+            }
+        }
+    }
+
+    private function handleConfigProviders(array $config): array
+    {
+        if (!\array_key_exists("configProviders", $config)) {
+            return $config;
+        }
+
+        foreach ($config['configProviders'] as $configProvider) {
+            $configProvider = new $configProvider();
+            $serviceManagerConfig = $configProvider->getServiceManagerConfig();
+            $config['factories'] = array_merge($serviceManagerConfig->getFactories(), $config['factories']);
+            $config['disabledSharing'] = array_merge($serviceManagerConfig->getDisabledSharing(), $config['disabledSharing']);
+            $config['delegators'] = array_merge($serviceManagerConfig->getDelegators(), $config['delegators']);
+            $config['initializers'] = array_merge($serviceManagerConfig->getInitializers(), $config['initializers']);
+            $config['lazyServices'] = array_merge($serviceManagerConfig->getLazyServices(), $config['lazyServices']);
+            $config['subManagers'] = array_merge($serviceManagerConfig->getSubManagers(), $config['subManagers']);
+        }
+
+        return $config;
+    }
+
+    /**
      * @param string $key
      * @return array
      */
     private function getValue(string $key): array
     {
-        if (!\array_key_exists($key, $this->config)) {
-            return [];
-        }
-
         return $this->config[$key];
     }
 
@@ -215,6 +261,14 @@ final class ServiceManagerConfig implements \Serializable
     }
 
     /**
+     * @return array
+     */
+    public function getConfigProviders(): array
+    {
+        return $this->getValue("configProviders");
+    }
+
+    /**
      * @return string
      */
     public function serialize()
@@ -226,5 +280,22 @@ final class ServiceManagerConfig implements \Serializable
     public function unserialize($serialized)
     {
         $this->config = \unserialize($serialized);
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfig(): array
+    {
+        $factories = $this->getFactories();
+        $factories = \array_merge($factories, $this->getSubManagers());
+
+        return [
+            'factories' => $factories,
+            'delegators' => $this->getDelegators(),
+            'shared' => \array_fill_keys($this->getDisabledSharing(), false),
+            'initializers' => $this->getInitializers(),
+            'shared_by_default' => true,
+        ];
     }
 }

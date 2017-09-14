@@ -55,13 +55,7 @@ final class SubManager implements SubManagerInterface
     {
         $this->serviceManager = new PluginManager(
             $serviceManager,
-            [
-                'factories' => $serviceManagerConfig->getFactories(),
-                'delegators' => $serviceManagerConfig->getDelegators(),
-                'shared' => \array_fill_keys($serviceManagerConfig->getDisabledSharing(), false),
-                'initializers' => $serviceManagerConfig->getInitializers(),
-                'shared_by_default' => true,
-            ]
+            $serviceManagerConfig->getConfig()
         );
 
         $this->validation = $validation;

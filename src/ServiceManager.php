@@ -47,19 +47,10 @@ final class ServiceManager implements ServiceManagerInterface
     {
         $this->serviceManagerConfig = $serviceManagerConfig;
 
-        $factories = $serviceManagerConfig->getFactories();
-        $factories[LazyLoadingValueHolderFactory::class] = KiwiLazyLoadingValueHolderFactory::class;
+        $config = $serviceManagerConfig->getConfig();
+        $config['factories'][LazyLoadingValueHolderFactory::class] = KiwiLazyLoadingValueHolderFactory::class;
 
-        $factories = \array_merge($factories, $serviceManagerConfig->getSubManagers());
-
-        $this->serviceManager = new OriginalServiceManager($this, [
-            'factories' => $factories,
-            'delegators' => $serviceManagerConfig->getDelegators(),
-            'shared' => \array_fill_keys($serviceManagerConfig->getDisabledSharing(), false),
-            'initializers' => $serviceManagerConfig->getInitializers(),
-            'shared_by_default' => true,
-        ]);
-
+        $this->serviceManager = new OriginalServiceManager($this, $config);
         $this->serviceManagerSetup = $serviceManagerSetup;
     }
 
