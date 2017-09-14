@@ -9,14 +9,16 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager;
+namespace KiwiSuite\ServiceManager\Resolver;
 
-interface InitializerInterface
+use KiwiSuite\ServiceManager\ServiceManagerInterface;
+
+interface ResolverInterface
 {
     /**
      * @param ServiceManagerInterface $container
-     * @param $instance
-     * @return void
+     * @param string $serviceName
+     * @return Resolution
      */
-    public function __invoke(ServiceManagerInterface $container, $instance): void;
+    public function resolveService(ServiceManagerInterface $container, string $serviceName): Resolution;
 }

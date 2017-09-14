@@ -13,6 +13,7 @@ namespace KiwiSuite\ServiceManager\SubManager;
 
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
+use KiwiSuite\ServiceManager\Resolver\ResolverInterface;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
@@ -41,6 +42,11 @@ final class SubManager implements SubManagerInterface
     private $serviceManagerConfig;
 
     /**
+     * @var ResolverInterface
+     */
+    private $resolver;
+
+    /**
      * @param ServiceManager $serviceManager
      * @param ServiceManagerConfig $serviceManagerConfig
      * @param string $validation
@@ -61,6 +67,7 @@ final class SubManager implements SubManagerInterface
         $this->validation = $validation;
         $this->serviceManagerSetup = $serviceManager->getServiceManagerSetup();
         $this->serviceManagerConfig = $serviceManagerConfig;
+        $this->resolver = $serviceManager->getResolver();
     }
 
     /**
@@ -154,5 +161,13 @@ final class SubManager implements SubManagerInterface
     public function getServiceManagerConfig(): ServiceManagerConfig
     {
         return $this->serviceManagerConfig;
+    }
+
+    /**
+     * @return ResolverInterface
+     */
+    public function getResolver(): ResolverInterface
+    {
+        return $this->resolver;
     }
 }

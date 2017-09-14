@@ -24,138 +24,102 @@ use PHPUnit\Framework\TestCase;
 
 class SubManagerTest extends TestCase
 {
-    private function getServiceManager()
+    /**
+     * @var ServiceManager
+     */
+    private $serviceManager;
+
+    /**
+     * @var SubManager
+     */
+    private $subManager;
+
+    /**
+     * @var ServiceManagerConfig
+     */
+    private $subManagerConfig;
+
+    public function setUp()
     {
-        return new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
+        $this->serviceManager = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
+
+        $items = [
+            'factories' => [
+                'dateTime' => DateTimeFactory::class,
+                'cantCreate' => CantCreateObjectFactory::class,
+            ],
+        ];
+        $this->subManagerConfig = new ServiceManagerConfig($items);
+
+        $this->subManager = new SubManager(
+            $this->serviceManager,
+            $this->subManagerConfig,
+            \DateTimeInterface::class
+        );
     }
 
     public function testGet()
     {
-        $items = [
-            'factories' => [
-                'dateTime' => DateTimeFactory::class,
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-
-        $serviceManager = new SubManager(
-            $this->getServiceManager(),
-            $serviceManagerConfig,
-            \DateTimeInterface::class
-        );
-        $this->assertInstanceOf(\DateTimeInterface::class, $serviceManager->get("dateTime"));
+        $this->assertInstanceOf(\DateTimeInterface::class, $this->subManager->get("dateTime"));
     }
 
     public function testGetValidation()
     {
-        $serviceManager = new SubManager(
-            $this->getServiceManager(),
-            new ServiceManagerConfig([]),
-            \DateTimeInterface::class
-        );
-
-        $this->assertEquals(\DateTimeInterface::class, $serviceManager->getValidation());
+        $this->assertEquals(\DateTimeInterface::class, $this->subManager->getValidation());
     }
 
     public function testBuild()
     {
-        $items = [
-            'factories' => [
-                'dateTime' => DateTimeFactory::class,
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-
-        $serviceManager = new SubManager(
-            $this->getServiceManager(),
-            $serviceManagerConfig,
-            \DateTimeInterface::class
-        );
-        $this->assertInstanceOf(\DateTimeInterface::class, $serviceManager->build("dateTime"));
+        $this->assertInstanceOf(\DateTimeInterface::class, $this->subManager->build("dateTime"));
     }
 
     public function testHas()
     {
-        $items = [
-            'factories' => [
-                'test' => DateTimeFactory::class,
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-        $serviceManager = new SubManager(
-            $this->getServiceManager(),
-            $serviceManagerConfig,
-            \DateTimeInterface::class
-        );
+        $this->assertTrue($this->subManager->has("dateTime"));
+        $this->assertFalse($this->subManager->has("doesnt_exist"));
+    }
 
-        $this->assertTrue($serviceManager->has("test"));
-        $this->assertFalse($serviceManager->has("doesnt_exist"));
+    public function testGetResolver()
+    {
+        $this->assertEquals($this->serviceManager->getResolver(), $this->subManager->getResolver());
+    }
+
+    public function testGetServiceManagerSetup()
+    {
+        $this->assertEquals($this->serviceManager->getServiceManagerSetup(), $this->subManager->getServiceManagerSetup());
+    }
+
+    public function testGetServiceManagerConfig()
+    {
+        $this->assertEquals($this->subManagerConfig, $this->subManager->getServiceManagerConfig());
     }
 
     public function testServiceNotFoundExceptionGet()
     {
         $this->expectException(ServiceNotFoundException::class);
 
-        $serviceManagerConfig = new ServiceManagerConfig([]);
-        $serviceManager = new SubManager(
-            $this->getServiceManager(),
-            $serviceManagerConfig,
-            \DateTimeInterface::class
-        );
-
-        $serviceManager->get("doesnt_exists");
+        $this->subManager->get("doesnt_exists");
     }
 
     public function testServiceNotFoundExceptionBuild()
     {
         $this->expectException(ServiceNotFoundException::class);
 
-        $serviceManagerConfig = new ServiceManagerConfig([]);
-        $serviceManager = new SubManager(
-            $this->getServiceManager(),
-            $serviceManagerConfig,
-            \DateTimeInterface::class
-        );
-
-        $serviceManager->build("doesnt_exists");
+        $this->subManager->build("doesnt_exists");
     }
 
     public function testServiceNotCreatedExceptionGet()
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $items = [
-            'factories' => [
-                'test' => CantCreateObjectFactory::class,
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-        $serviceManager = new SubManager(
-            $this->getServiceManager(),
-            $serviceManagerConfig,
-            \DateTimeInterface::class
-        );
-
-        $serviceManager->get("test");
+        $this->subManager->get("cantCreate");
     }
 
     public function testServiceNotCreatedExceptionBuild()
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $items = [
-            'factories' => [
-                'test' => CantCreateObjectFactory::class,
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-        $serviceManager = new SubManager(
-            $this->getServiceManager(),
-            $serviceManagerConfig,
-            \DateTimeInterface::class
-        );
-
-        $serviceManager->build("test");
+        $this->subManager->build("cantCreate");
     }
 
     public function testValidateBuild()
@@ -170,7 +134,7 @@ class SubManagerTest extends TestCase
         $serviceManagerConfig = new ServiceManagerConfig($items);
 
         $serviceManager = new SubManager(
-            $this->getServiceManager(),
+            $this->serviceManager,
             $serviceManagerConfig,
             FactoryInterface::class
         );
@@ -190,7 +154,7 @@ class SubManagerTest extends TestCase
         $serviceManagerConfig = new ServiceManagerConfig($items);
 
         $serviceManager = new SubManager(
-            $this->getServiceManager(),
+            $this->serviceManager,
             $serviceManagerConfig,
             FactoryInterface::class
         );

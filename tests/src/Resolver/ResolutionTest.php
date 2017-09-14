@@ -116,4 +116,29 @@ class ResolutionTest extends TestCase
             [['serviceName' => 'test', 'subManager' => []]]
         );
     }
+
+    public function testSerialize()
+    {
+        $resolution = new Resolution("name", [['serviceName' => 'test', 'subManager' => null]]);
+
+        $this->assertEquals(\serialize(['serviceName' => $resolution->getServiceName(), 'dependencies' => $resolution->getDependencies()]), $resolution->serialize());
+    }
+
+    public function testUnserialize()
+    {
+        $serialized = \serialize(['serviceName' => "name", 'dependencies' => [['serviceName' => 'test', 'subManager' => null]]]);
+
+        $resolution = new Resolution("r", []);
+        $resolution->unserialize($serialized);
+
+        $this->assertEquals("name", $resolution->getServiceName());
+        $this->assertEquals([['serviceName' => 'test', 'subManager' => null]], $resolution->getDependencies());
+    }
+
+    public function testUnserializeException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $resolution = new Resolution("r", []);
+        $resolution->unserialize("invalid");
+    }
 }

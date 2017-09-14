@@ -9,25 +9,22 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Factory;
+namespace KiwiSuiteTest\ServiceManager\Resolver;
 
+use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
+use KiwiSuite\ServiceManager\Resolver\InMemoryResolver;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
+use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 
-class AutowireFactoryTest extends TestCase
+class InMemoryResolverTest extends TestCase
 {
-    /**
-     * @var ServiceManager
-     */
-    private $serviceManager;
-
-    public function setUp()
+    public function testResolve()
     {
         $serviceManagerConfig = new ServiceManagerConfig([
             'factories' => [
@@ -40,21 +37,11 @@ class AutowireFactoryTest extends TestCase
             ],
         ]);
 
-        $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
-    }
+        $serviceManger = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
-    public function testInvoke()
-    {
-        $autoWireFactory = new AutowireFactory();
-        $result = $autoWireFactory($this->serviceManager, ResolverTestObject::class);
+        $resolver = new InMemoryResolver();
+        $resolution = $resolver->resolveService($serviceManger, ResolverTestObject::class);
 
-        $this->assertInstanceOf(ResolverTestObject::class, $result);
-    }
-
-    public function testGetResolution()
-    {
-        $autoWireFactory = new AutowireFactory();
-        $resolution = $autoWireFactory->getResolution($this->serviceManager, ResolverTestObject::class);
         $this->assertEquals(ResolverTestObject::class, $resolution->getServiceName());
         $this->assertEquals([
             [
@@ -70,5 +57,14 @@ class AutowireFactoryTest extends TestCase
                 'subManager' => null,
             ],
         ], $resolution->getDependencies());
+    }
+
+    public function testServiceNotFoundException()
+    {
+        $this->expectException(ServiceNotFoundException::class);
+        $serviceManger = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
+
+        $resolver = new InMemoryResolver();
+        $resolver->resolveService($serviceManger, "test");
     }
 }

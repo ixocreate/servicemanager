@@ -14,7 +14,7 @@ namespace KiwiSuite\ServiceManager\Resolver;
 use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
 use KiwiSuite\ServiceManager\ServiceManagerInterface;
 
-class Resolution implements \Serializable
+final class Resolution implements \Serializable
 {
     /**
      * @var string
@@ -82,7 +82,7 @@ class Resolution implements \Serializable
      */
     public function serialize()
     {
-        return serialize([
+        return \serialize([
             'serviceName' => $this->serviceName,
             'dependencies' => $this->dependencies,
         ]);
@@ -93,9 +93,9 @@ class Resolution implements \Serializable
      */
     public function unserialize($serialized)
     {
-        $array = unserialize($serialized, false);
-        if (!is_array($array) || !array_key_exists('serviceName', $array) || !array_key_exists('dependencies', $array)) {
-            //TODO exception
+        $array = @\unserialize($serialized, []);
+        if (!\is_array($array) || !\array_key_exists('serviceName', $array) || !\array_key_exists('dependencies', $array)) {
+            throw new InvalidArgumentException("Unserialize failed");
         }
 
         $this->serviceName = $array['serviceName'];

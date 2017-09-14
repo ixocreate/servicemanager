@@ -12,17 +12,16 @@ declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Resolver;
 
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerInterface;
 
-class ReflectionResolver
+final class ReflectionResolver implements ResolverInterface
 {
     /**
-     * @param ServiceManagerInterface $serviceManager
+     * @param ServiceManagerInterface $container
      * @param string $serviceName
      * @return Resolution
      */
-    public function resolveService(ServiceManagerInterface $serviceManager, string $serviceName): Resolution
+    public function resolveService(ServiceManagerInterface $container, string $serviceName): Resolution
     {
         if (!\class_exists($serviceName)) {
             throw new ServiceNotFoundException(\sprintf(
@@ -31,15 +30,15 @@ class ReflectionResolver
             ), 100);
         }
 
-        return new Resolution($serviceName, $this->getDependencies($serviceManager, $serviceName));
+        return new Resolution($serviceName, $this->getDependencies($container, $serviceName));
     }
 
     /**
-     * @param ServiceManagerInterface $serviceManager
+     * @param ServiceManagerInterface $container
      * @param string $serviceName
      * @return array
      */
-    private function getDependencies(ServiceManagerInterface $serviceManager, string $serviceName): array
+    private function getDependencies(ServiceManagerInterface $container, string $serviceName): array
     {
         $reflectionClass = new \ReflectionClass($serviceName);
 
@@ -55,7 +54,7 @@ class ReflectionResolver
 
         //TODO Check if ServiceManagerConfig is available
 
-        $subManagers = $serviceManager->getServiceManagerConfig()->getSubManagers();
+        $subManagers = $container->getServiceManagerConfig()->getSubManagers();
 
         $dependencies = [];
 
@@ -67,7 +66,7 @@ class ReflectionResolver
                 );
             }
 
-            if ($serviceManager->has($parameter->getClass()->getName())) {
+            if ($container->has($parameter->getClass()->getName())) {
                 $dependencies[] = [
                     'serviceName' => $parameter->getClass()->getName(),
                     'subManager' => null,
@@ -77,7 +76,7 @@ class ReflectionResolver
             }
 
             foreach (\array_keys($subManagers) as $subManager) {
-                if ($serviceManager->get($subManager)->has($parameter->getName())) {
+                if ($container->get($subManager)->has($parameter->getName())) {
                     $dependencies[] = [
                         'serviceName' => $parameter->getName(),
                         'subManager' => $subManager,
@@ -87,7 +86,7 @@ class ReflectionResolver
                 }
             }
 
-            if ($serviceManager->has($parameter->getName())) {
+            if ($container->has($parameter->getName())) {
                 $dependencies[] = [
                     'serviceName' => $parameter->getName(),
                     'subManager' => null,

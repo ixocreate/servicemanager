@@ -11,12 +11,14 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
+use KiwiSuite\ServiceManager\Resolver\InMemoryResolver;
+
 final class ServiceManagerSetup
 {
     /**
-     * @var bool
+     * @var string
      */
-    private $persist = false;
+    private $autowireResolver = InMemoryResolver::class;
 
     /**
      * @var string
@@ -39,21 +41,13 @@ final class ServiceManagerSetup
      */
     public function __construct(array $config = [])
     {
-        if (\array_key_exists("persist", $config) && \is_bool($config['persist'])) {
-            $this->persist = $config['persist'];
+        if (\array_key_exists("autowireResolver", $config) && \is_string($config['autowireResolver'])) {
+            $this->autowireResolver = $config['autowireResolver'];
         }
 
         if (\array_key_exists('persistRoot', $config) && \is_string($config['persistRoot'])) {
             $this->persistRoot = \ltrim($config['persistRoot'], '/') . '/';
         }
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPersist(): bool
-    {
-        return $this->persist;
     }
 
     /**
@@ -67,20 +61,36 @@ final class ServiceManagerSetup
     /**
      * @return string
      */
+    public function getAutowireCacheFileLocation(): string
+    {
+        return $this->getAutowireLocation() . 'autowire.cache';
+    }
+
+    /**
+     * @return string
+     */
     public function getLazyLoadingLocation(): string
     {
         return $this->persistRoot . $this->persistLazyLoadingLocation;
     }
 
     /**
-     * @param bool $persist
+     * @return string
+     */
+    public function getAutowireResolver(): string
+    {
+        return $this->autowireResolver;
+    }
+
+    /**
+     * @param string $autowireResolver
      * @return ServiceManagerSetup
      */
-    public function withPersist(bool $persist): ServiceManagerSetup
+    public function withAutowireResolver(string $autowireResolver): ServiceManagerSetup
     {
         return new ServiceManagerSetup([
             'persistRoot' => $this->persistRoot,
-            'persist' => $persist,
+            'autowireResolver' => $autowireResolver,
         ]);
     }
 
@@ -92,7 +102,7 @@ final class ServiceManagerSetup
     {
         return new ServiceManagerSetup([
             'persistRoot' => $persistRoot,
-            'persist' => $this->persist,
+            'autowireResolver' => $this->autowireResolver,
         ]);
     }
 }

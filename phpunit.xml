@@ -1,17 +1,23 @@
 <phpunit bootstrap="./vendor/autoload.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
-         verbose="true"
+         stopOnError="false"
          stopOnFailure="false"
-         processIsolation="false"
-         backupGlobals="false"
-         syntaxCheck="true"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         timeoutForSmallTests="1"
+         timeoutForMediumTests="10"
+         timeoutForLargeTests="60"
+         strict="true"
+         verbose="false"
         >
     <testsuites>
         <testsuite name="kiwi test suite">
-            <directory>./tests</directory>
+            <directory>./tests/src</directory>
         </testsuite>
     </testsuites>
     <filter>

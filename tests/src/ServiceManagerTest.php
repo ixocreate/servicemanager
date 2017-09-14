@@ -13,6 +13,7 @@ namespace KiwiSuiteTest\ServiceManager;
 
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
+use KiwiSuite\ServiceManager\Resolver\InMemoryResolver;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
@@ -22,7 +23,6 @@ use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
 use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
 use KiwiSuiteMisc\ServiceManager\TestInterface;
 use PHPUnit\Framework\TestCase;
-use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 
 class ServiceManagerTest extends TestCase
 {
@@ -66,6 +66,11 @@ class ServiceManagerTest extends TestCase
         $this->assertEquals($this->serviceManagerSetup, $this->validServiceManager->getServiceManagerSetup());
     }
 
+    public function testGetResolver()
+    {
+        $this->assertInstanceOf(InMemoryResolver::class, $this->validServiceManager->getResolver());
+    }
+
     public function testHas()
     {
         $this->assertTrue($this->validServiceManager->has("dateTine"));
@@ -74,13 +79,10 @@ class ServiceManagerTest extends TestCase
 
     public function testLazyLoading()
     {
-        $this->assertInstanceOf(LazyLoadingValueHolderFactory::class, $this->validServiceManager->get(LazyLoadingValueHolderFactory::class));
-
         $result = $this->validServiceManager->get(LazyLoadingObject::class);
 
         $this->assertInstanceOf(LazyLoadingObject::class, $result);
         $this->assertTrue(\in_array(TestInterface::class, \class_implements($result)));
-
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(500);
         $result->doSomething();

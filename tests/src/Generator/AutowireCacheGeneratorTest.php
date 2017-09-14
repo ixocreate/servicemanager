@@ -9,18 +9,19 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Factory;
+namespace KiwiSuiteTest\ServiceManager\Generator;
 
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
+use KiwiSuite\ServiceManager\Generator\AutowireCacheGenerator;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
+use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 
-class AutowireFactoryTest extends TestCase
+class AutowireCacheGeneratorTest extends TestCase
 {
     /**
      * @var ServiceManager
@@ -43,32 +44,9 @@ class AutowireFactoryTest extends TestCase
         $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
     }
 
-    public function testInvoke()
+    public function testGenerate()
     {
-        $autoWireFactory = new AutowireFactory();
-        $result = $autoWireFactory($this->serviceManager, ResolverTestObject::class);
-
-        $this->assertInstanceOf(ResolverTestObject::class, $result);
-    }
-
-    public function testGetResolution()
-    {
-        $autoWireFactory = new AutowireFactory();
-        $resolution = $autoWireFactory->getResolution($this->serviceManager, ResolverTestObject::class);
-        $this->assertEquals(ResolverTestObject::class, $resolution->getServiceName());
-        $this->assertEquals([
-            [
-                'serviceName' => \DateTime::class,
-                'subManager' => null,
-            ],
-            [
-                'serviceName' => "test1",
-                'subManager' => "subManager1",
-            ],
-            [
-                'serviceName' => "someThing",
-                'subManager' => null,
-            ],
-        ], $resolution->getDependencies());
+        $autowireGenerator = new AutowireCacheGenerator();
+        $autowireGenerator->generate($this->serviceManager);
     }
 }

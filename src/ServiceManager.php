@@ -13,6 +13,7 @@ namespace KiwiSuite\ServiceManager;
 
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
+use KiwiSuite\ServiceManager\Resolver\ResolverInterface;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use KiwiSuite\ServiceManager\Factory\LazyLoadingValueHolderFactory as KiwiLazyLoadingValueHolderFactory;
 
@@ -32,6 +33,11 @@ final class ServiceManager implements ServiceManagerInterface
      * @var ServiceManagerSetup
      */
     private $serviceManagerSetup;
+
+    /**
+     * @var ResolverInterface
+     */
+    private $resolver;
 
     /**
      * @param ServiceManagerConfig $serviceManagerConfig
@@ -115,5 +121,19 @@ final class ServiceManager implements ServiceManagerInterface
     public function getServiceManagerSetup(): ServiceManagerSetup
     {
         return $this->serviceManagerSetup;
+    }
+
+    /**
+     * @return ResolverInterface
+     */
+    public function getResolver(): ResolverInterface
+    {
+        if ($this->resolver === null) {
+            $resolverName = $this->getServiceManagerSetup()->getAutowireResolver();
+
+            $this->resolver = new $resolverName();
+        }
+
+        return $this->resolver;
     }
 }
