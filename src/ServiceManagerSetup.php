@@ -46,7 +46,7 @@ final class ServiceManagerSetup
         }
 
         if (\array_key_exists('persistRoot', $config) && \is_string($config['persistRoot'])) {
-            $this->persistRoot = \ltrim($config['persistRoot'], '/') . '/';
+            $this->persistRoot = \rtrim($config['persistRoot'], '/') . '/';
         }
     }
 

@@ -30,7 +30,6 @@ final class CacheResolver implements ResolverInterface
     public function resolveService(ServiceManagerInterface $container, string $serviceName): Resolution
     {
         if ($this->resolutions === null) {
-            $this->enforceDirectory($container->getServiceManagerSetup());
             $this->fillCache($container->getServiceManagerSetup());
         }
 
@@ -41,23 +40,18 @@ final class CacheResolver implements ResolverInterface
         return $this->resolutions[$serviceName];
     }
 
-    private function enforceDirectory(ServiceManagerSetup $serviceManagerSetup): void
-    {
-        if (!\file_exists($serviceManagerSetup->getAutowireLocation())) {
-            \mkdir($serviceManagerSetup->getAutowireLocation(), 0777, true);
-        }
-    }
-
     private function fillCache(ServiceManagerSetup $serviceManagerSetup): void
     {
         if (!\file_exists($serviceManagerSetup->getAutowireCacheFileLocation())) {
+            $this->resolutions = [];
             return;
         }
 
         $serialized = \file_get_contents($serviceManagerSetup->getAutowireCacheFileLocation());
 
-        $unserialized = \unserialize($serialized);
+        $unserialized = @\unserialize($serialized);
         if ($unserialized === false || !\is_array($unserialized)) {
+            $this->resolutions = [];
             return;
         }
 

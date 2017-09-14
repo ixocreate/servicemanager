@@ -30,6 +30,10 @@ class AutowireCacheGenerator
 
     public function write(ServiceManagerInterface $serviceManager, array $resolutions): void
     {
+        if (!\file_exists($serviceManager->getServiceManagerSetup()->getAutowireLocation())) {
+            \mkdir($serviceManager->getServiceManagerSetup()->getAutowireLocation(), 0777, true);
+        }
+
         \file_put_contents($serviceManager->getServiceManagerSetup()->getAutowireCacheFileLocation(), \serialize($resolutions));
     }
 

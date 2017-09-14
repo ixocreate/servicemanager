@@ -9,11 +9,13 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Generator;
+namespace KiwiSuiteTest\ServiceManager\Resolver;
 
+use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
 use KiwiSuite\ServiceManager\Generator\AutowireCacheGenerator;
-use KiwiSuite\ServiceManager\Resolver\Resolution;
+use KiwiSuite\ServiceManager\Resolver\CacheResolver;
+use KiwiSuite\ServiceManager\Resolver\InMemoryResolver;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
@@ -22,7 +24,7 @@ use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
 use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 
-class AutowireCacheGeneratorTest extends TestCase
+class CacheResolverTest extends TestCase
 {
     /**
      * @var ServiceManager
@@ -42,10 +44,15 @@ class AutowireCacheGeneratorTest extends TestCase
             ],
         ]);
 
-        $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
+        $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup([
+            'autowireResolver' => CacheResolver::class,
+        ]));
+
+        $autowireCacheGenerator = new AutowireCacheGenerator();
+        $autowireCacheGenerator->write($this->serviceManager, $autowireCacheGenerator->generate($this->serviceManager));
     }
 
-    public static function tearDownAfterClass()
+    public function tearDown()
     {
         if (!file_exists("resources")) {
             return;
@@ -64,15 +71,11 @@ class AutowireCacheGeneratorTest extends TestCase
         rmdir("resources");
     }
 
-    public function testGenerate()
+    public function testResolve()
     {
-        $autowireGenerator = new AutowireCacheGenerator();
-        $resolutions = $autowireGenerator->generate($this->serviceManager);
+        $resolver = new CacheResolver();
+        $resolution = $resolver->resolveService($this->serviceManager, ResolverTestObject::class);
 
-        $this->assertArrayHasKey(ResolverTestObject::class, $resolutions);
-
-        /** @var Resolution $resolution */
-        $resolution = $resolutions[ResolverTestObject::class];
         $this->assertEquals(ResolverTestObject::class, $resolution->getServiceName());
         $this->assertEquals([
             [
@@ -90,14 +93,28 @@ class AutowireCacheGeneratorTest extends TestCase
         ], $resolution->getDependencies());
     }
 
-    public function testWrite()
+    public function testServiceNotFoundException()
     {
-        $autowireGenerator = new AutowireCacheGenerator();
-        $resolutions = $autowireGenerator->generate($this->serviceManager);
+        $this->expectException(ServiceNotFoundException::class);
+        $resolver = new CacheResolver();
+        $resolver->resolveService($this->serviceManager, "test");
+    }
 
-        $autowireGenerator->write($this->serviceManager, $resolutions);
+    public function testFileDoesntExists()
+    {
+        $this->tearDown();
+        $this->expectException(ServiceNotFoundException::class);
+        $resolver = new CacheResolver();
+        $resolver->resolveService($this->serviceManager, ResolverTestObject::class);
+    }
 
-        $this->assertFileExists($this->serviceManager->getServiceManagerSetup()->getAutowireCacheFileLocation());
-        $this->assertStringEqualsFile($this->serviceManager->getServiceManagerSetup()->getAutowireCacheFileLocation(), serialize($resolutions));
+    public function testInvalidSerialization()
+    {
+        file_put_contents($this->serviceManager->getServiceManagerSetup()->getAutowireCacheFileLocation(), "invalid");
+
+
+        $this->expectException(ServiceNotFoundException::class);
+        $resolver = new CacheResolver();
+        $resolver->resolveService($this->serviceManager, ResolverTestObject::class);
     }
 }
