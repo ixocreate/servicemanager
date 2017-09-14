@@ -11,16 +11,10 @@
 declare(strict_types=1);
 namespace KiwiSuiteTest\ServiceManager;
 
-use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
 use KiwiSuite\ServiceManager\Resolver\CacheResolver;
 use KiwiSuite\ServiceManager\Resolver\InMemoryResolver;
 use KiwiSuite\ServiceManager\Resolver\ReflectionResolver;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\DelegatorFactory;
-use KiwiSuiteMisc\ServiceManager\Initializer;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 
 class ServiceManagerSetupTest extends TestCase
@@ -29,14 +23,14 @@ class ServiceManagerSetupTest extends TestCase
     {
         $serviceManagerSetup = new ServiceManagerSetup();
         $this->assertEquals(InMemoryResolver::class, $serviceManagerSetup->getAutowireResolver());
-        $this->assertEquals( 'resources/generated/servicemanger/autowire/', $serviceManagerSetup->getAutowireLocation());
+        $this->assertEquals('resources/generated/servicemanger/autowire/', $serviceManagerSetup->getAutowireLocation());
     }
 
     public function testValues()
     {
         $setup = [
             'autowireResolver' => ReflectionResolver::class,
-            'persistRoot' => 'resources/test'
+            'persistRoot' => 'resources/test',
         ];
         $serviceManagerSetup = new ServiceManagerSetup($setup);
         $this->assertEquals($setup['autowireResolver'], $serviceManagerSetup->getAutowireResolver());
@@ -49,7 +43,7 @@ class ServiceManagerSetupTest extends TestCase
     {
         $setup = [
             'autowireResolver' => ReflectionResolver::class,
-            'persistRoot' => 'resources/test'
+            'persistRoot' => 'resources/test',
         ];
         $serviceManagerSetup = new ServiceManagerSetup($setup);
         $serviceManagerSetup = $serviceManagerSetup->withAutowireResolver(CacheResolver::class);
@@ -62,7 +56,7 @@ class ServiceManagerSetupTest extends TestCase
     {
         $setup = [
             'autowireResolver' => ReflectionResolver::class,
-            'persistRoot' => 'resources/test'
+            'persistRoot' => 'resources/test',
         ];
         $serviceManagerSetup = new ServiceManagerSetup($setup);
         $serviceManagerSetup = $serviceManagerSetup->withPersistRoot('resources/test1');

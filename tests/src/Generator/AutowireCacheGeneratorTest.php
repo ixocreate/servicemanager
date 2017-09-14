@@ -47,7 +47,7 @@ class AutowireCacheGeneratorTest extends TestCase
 
     public static function tearDownAfterClass()
     {
-        if (!file_exists("resources")) {
+        if (!\file_exists("resources")) {
             return;
         }
 
@@ -61,7 +61,7 @@ class AutowireCacheGeneratorTest extends TestCase
             $todo($fileinfo->getRealPath());
         }
 
-        rmdir("resources");
+        \rmdir("resources");
     }
 
     public function testGenerate()
@@ -98,6 +98,6 @@ class AutowireCacheGeneratorTest extends TestCase
         $autowireGenerator->write($this->serviceManager, $resolutions);
 
         $this->assertFileExists($this->serviceManager->getServiceManagerSetup()->getAutowireCacheFileLocation());
-        $this->assertStringEqualsFile($this->serviceManager->getServiceManagerSetup()->getAutowireCacheFileLocation(), serialize($resolutions));
+        $this->assertStringEqualsFile($this->serviceManager->getServiceManagerSetup()->getAutowireCacheFileLocation(), \serialize($resolutions));
     }
 }

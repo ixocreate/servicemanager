@@ -15,7 +15,6 @@ use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
 use KiwiSuite\ServiceManager\Generator\AutowireCacheGenerator;
 use KiwiSuite\ServiceManager\Resolver\CacheResolver;
-use KiwiSuite\ServiceManager\Resolver\InMemoryResolver;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
@@ -54,7 +53,7 @@ class CacheResolverTest extends TestCase
 
     public function tearDown()
     {
-        if (!file_exists("resources")) {
+        if (!\file_exists("resources")) {
             return;
         }
 
@@ -68,7 +67,7 @@ class CacheResolverTest extends TestCase
             $todo($fileinfo->getRealPath());
         }
 
-        rmdir("resources");
+        \rmdir("resources");
     }
 
     public function testResolve()
@@ -110,7 +109,7 @@ class CacheResolverTest extends TestCase
 
     public function testInvalidSerialization()
     {
-        file_put_contents($this->serviceManager->getServiceManagerSetup()->getAutowireCacheFileLocation(), "invalid");
+        \file_put_contents($this->serviceManager->getServiceManagerSetup()->getAutowireCacheFileLocation(), "invalid");
 
 
         $this->expectException(ServiceNotFoundException::class);
