@@ -36,6 +36,11 @@ final class ServiceManagerSetup
     private $persistLazyLoadingLocation = 'lazyLoading/';
 
     /**
+     * @var bool
+     */
+    private $persistLazyLoading = false;
+
+    /**
      * ServiceManagerSetup constructor.
      * @param array $config
      */
@@ -47,6 +52,10 @@ final class ServiceManagerSetup
 
         if (\array_key_exists('persistRoot', $config) && \is_string($config['persistRoot'])) {
             $this->persistRoot = \rtrim($config['persistRoot'], '/') . '/';
+        }
+
+        if (\array_key_exists('persistLazyLoading', $config) && \is_bool($config['persistLazyLoading'])) {
+            $this->persistLazyLoading = $config['persistLazyLoading'];
         }
     }
 
@@ -83,6 +92,14 @@ final class ServiceManagerSetup
     }
 
     /**
+     * @return bool
+     */
+    public function isPersistLazyLoading(): bool
+    {
+        return $this->persistLazyLoading;
+    }
+
+    /**
      * @param string $autowireResolver
      * @return ServiceManagerSetup
      */
@@ -91,6 +108,7 @@ final class ServiceManagerSetup
         return new ServiceManagerSetup([
             'persistRoot' => $this->persistRoot,
             'autowireResolver' => $autowireResolver,
+            'persistLazyLoading' => $this->persistLazyLoading,
         ]);
     }
 
@@ -103,6 +121,16 @@ final class ServiceManagerSetup
         return new ServiceManagerSetup([
             'persistRoot' => $persistRoot,
             'autowireResolver' => $this->autowireResolver,
+            'persistLazyLoading' => $this->persistLazyLoading,
+        ]);
+    }
+
+    public function withPersistLazyLoading(bool $persistLazyLoading): ServiceManagerSetup
+    {
+        return new ServiceManagerSetup([
+            'persistRoot' => $this->persistRoot,
+            'autowireResolver' => $this->autowireResolver,
+            'persistLazyLoading' => $persistLazyLoading,
         ]);
     }
 }

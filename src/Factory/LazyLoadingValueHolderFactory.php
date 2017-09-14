@@ -14,7 +14,9 @@ namespace KiwiSuite\ServiceManager\Factory;
 use KiwiSuite\ServiceManager\FactoryInterface;
 use KiwiSuite\ServiceManager\ServiceManagerInterface;
 use ProxyManager\Configuration;
+use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
+use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 
 class LazyLoadingValueHolderFactory implements FactoryInterface
 {
@@ -28,7 +30,13 @@ class LazyLoadingValueHolderFactory implements FactoryInterface
     public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null)
     {
         $proxyConfiguration = new Configuration();
-        $proxyConfiguration->setGeneratorStrategy(new EvaluatingGeneratorStrategy());
+        if ($container->getServiceManagerSetup()->isPersistLazyLoading()) {
+            $proxyConfiguration->setGeneratorStrategy(new FileWriterGeneratorStrategy(
+                new FileLocator($container->getServiceManagerSetup()->getLazyLoadingLocation())
+            ));
+        } else {
+            $proxyConfiguration->setGeneratorStrategy(new EvaluatingGeneratorStrategy());
+        }
 
         \spl_autoload_register($proxyConfiguration->getProxyAutoloader());
 
