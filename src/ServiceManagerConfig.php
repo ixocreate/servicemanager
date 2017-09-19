@@ -192,12 +192,12 @@ final class ServiceManagerConfig implements \Serializable
         foreach ($config['configProviders'] as $configProvider) {
             $configProvider = new $configProvider();
             $serviceManagerConfig = $configProvider->getServiceManagerConfig();
-            $config['factories'] = array_merge($serviceManagerConfig->getFactories(), $config['factories']);
-            $config['disabledSharing'] = array_merge($serviceManagerConfig->getDisabledSharing(), $config['disabledSharing']);
-            $config['delegators'] = array_merge($serviceManagerConfig->getDelegators(), $config['delegators']);
-            $config['initializers'] = array_merge($serviceManagerConfig->getInitializers(), $config['initializers']);
-            $config['lazyServices'] = array_merge($serviceManagerConfig->getLazyServices(), $config['lazyServices']);
-            $config['subManagers'] = array_merge($serviceManagerConfig->getSubManagers(), $config['subManagers']);
+            $config['factories'] = \array_merge($serviceManagerConfig->getFactories(), $config['factories']);
+            $config['disabledSharing'] = \array_merge($serviceManagerConfig->getDisabledSharing(), $config['disabledSharing']);
+            $config['delegators'] = \array_merge($serviceManagerConfig->getDelegators(), $config['delegators']);
+            $config['initializers'] = \array_merge($serviceManagerConfig->getInitializers(), $config['initializers']);
+            $config['lazyServices'] = \array_merge($serviceManagerConfig->getLazyServices(), $config['lazyServices']);
+            $config['subManagers'] = \array_merge($serviceManagerConfig->getSubManagers(), $config['subManagers']);
         }
 
         return $config;

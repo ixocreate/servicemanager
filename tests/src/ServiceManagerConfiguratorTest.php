@@ -149,7 +149,7 @@ class ServiceManagerConfiguratorTest extends TestCase
     public function testConfigProviders()
     {
         $configProviders = [
-            ConfigProvider::class
+            ConfigProvider::class,
         ];
 
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
@@ -176,7 +176,7 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertInstanceOf(ServiceManagerConfig::class, $serviceManagerConfig);
 
         $this->assertEquals($serviceManagerConfigurator->getInitializers(), $serviceManagerConfig->getInitializers());
-        $this->assertEquals(array_merge(
+        $this->assertEquals(\array_merge(
             ['dateTimeFromConfigProvider' => DateTimeFactory::class],
             $serviceManagerConfigurator->getFactories()
         ), $serviceManagerConfig->getFactories());

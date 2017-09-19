@@ -125,7 +125,7 @@ class ServiceManagerConfigTest extends TestCase
 
         $items = [
             'configProviders' => [
-                ConfigProvider::class
+                ConfigProvider::class,
             ],
         ];
         $serviceManagerConfig = new ServiceManagerConfig($items);
@@ -364,7 +364,7 @@ class ServiceManagerConfigTest extends TestCase
             'delegators' => [],
             'initializers' => [],
             'lazyServices' => [],
-            'subManagers' => []
+            'subManagers' => [],
         ]), $serviceManagerConfig->serialize());
     }
 
@@ -399,13 +399,11 @@ class ServiceManagerConfigTest extends TestCase
                 "cantCreate" => CantCreateObjectFactory::class,
             ],
             'delegators' => [
-                LazyLoadingObject::class => [LazyServiceDelegatorFactory::class]
+                LazyLoadingObject::class => [LazyServiceDelegatorFactory::class],
             ],
             'shared' => [],
             'initializers' => [],
-            'shared_by_default' => true
+            'shared_by_default' => true,
         ], $serviceManagerConfig->getConfig());
-
-
     }
 }
