@@ -31,6 +31,9 @@ class LazyLoadingValueHolderFactory implements FactoryInterface
     {
         $proxyConfiguration = new Configuration();
         if ($container->getServiceManagerSetup()->isPersistLazyLoading()) {
+            if (!\file_exists($container->getServiceManagerSetup()->getLazyLoadingLocation())) {
+                @\mkdir($container->getServiceManagerSetup()->getLazyLoadingLocation(), 0777, true);
+            }
             $proxyConfiguration->setGeneratorStrategy(new FileWriterGeneratorStrategy(
                 new FileLocator($container->getServiceManagerSetup()->getLazyLoadingLocation())
             ));
