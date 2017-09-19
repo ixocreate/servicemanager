@@ -15,10 +15,13 @@ use KiwiSuite\ServiceManager\Factory\LazyLoadingValueHolderFactory;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
+use KiwiSuiteTest\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 
 class LazyLoadingValueHolderFactoryTest extends TestCase
 {
+    use CleanUpTrait;
+
     /**
      * @var ServiceManager
      */
@@ -32,28 +35,11 @@ class LazyLoadingValueHolderFactoryTest extends TestCase
     public function setUp()
     {
         $this->serviceManagerDefault = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
-        $this->serviceManagerPersist = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup(['persistLazyLoading' => true]));
+
+        $this->serviceManagerPersist = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup(
+            ['persistLazyLoading' => true]
+        ));
     }
-
-    public static function tearDownAfterClass()
-    {
-        if (!\file_exists("resources")) {
-            return;
-        }
-
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator("resources", \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-
-        foreach ($files as $fileinfo) {
-            $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
-            $todo($fileinfo->getRealPath());
-        }
-
-        \rmdir("resources");
-    }
-
 
     public function testWithPersist()
     {

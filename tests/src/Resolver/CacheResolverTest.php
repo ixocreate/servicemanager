@@ -21,10 +21,12 @@ use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
 use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
 use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
+use KiwiSuiteTest\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 
 class CacheResolverTest extends TestCase
 {
+    use CleanUpTrait;
     /**
      * @var ServiceManager
      */
@@ -49,25 +51,6 @@ class CacheResolverTest extends TestCase
 
         $autowireCacheGenerator = new AutowireCacheGenerator();
         $autowireCacheGenerator->write($this->serviceManager, $autowireCacheGenerator->generate($this->serviceManager));
-    }
-
-    public function tearDown()
-    {
-        if (!\file_exists("resources")) {
-            return;
-        }
-
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator("resources", \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-
-        foreach ($files as $fileinfo) {
-            $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
-            $todo($fileinfo->getRealPath());
-        }
-
-        \rmdir("resources");
     }
 
     public function testResolve()
@@ -110,7 +93,6 @@ class CacheResolverTest extends TestCase
     public function testInvalidSerialization()
     {
         \file_put_contents($this->serviceManager->getServiceManagerSetup()->getAutowireCacheFileLocation(), "invalid");
-
 
         $this->expectException(ServiceNotFoundException::class);
         $resolver = new CacheResolver();

@@ -20,10 +20,13 @@ use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
 use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
 use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
+use KiwiSuiteTest\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 
 class AutowireCacheGeneratorTest extends TestCase
 {
+    use CleanUpTrait;
+
     /**
      * @var ServiceManager
      */
@@ -43,25 +46,6 @@ class AutowireCacheGeneratorTest extends TestCase
         ]);
 
         $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
-    }
-
-    public static function tearDownAfterClass()
-    {
-        if (!\file_exists("resources")) {
-            return;
-        }
-
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator("resources", \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-
-        foreach ($files as $fileinfo) {
-            $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
-            $todo($fileinfo->getRealPath());
-        }
-
-        \rmdir("resources");
     }
 
     public function testGenerate()

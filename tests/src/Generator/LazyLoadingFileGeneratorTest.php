@@ -16,6 +16,7 @@ use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
+use KiwiSuiteTest\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
@@ -23,6 +24,7 @@ use ProxyManager\Version;
 
 class LazyLoadingFileGeneratorTest extends TestCase
 {
+    use CleanUpTrait;
     /**
      * @var ServiceManager
      */
@@ -34,28 +36,15 @@ class LazyLoadingFileGeneratorTest extends TestCase
         $serviceManagerConfigurator->addFactory(LazyLoadingObject::class);
         $serviceManagerConfigurator->addLazyService(LazyLoadingObject::class);
 
-        $this->serviceManager = new ServiceManager($serviceManagerConfigurator->getServiceManagerConfig(), new ServiceManagerSetup());
-    }
-
-    public function tearDown()
-    {
-        if (!\file_exists("resources")) {
-            return;
-        }
-
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator("resources", \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
+        $this->serviceManager = new ServiceManager(
+            $serviceManagerConfigurator->getServiceManagerConfig(),
+            new ServiceManagerSetup()
         );
-
-        foreach ($files as $fileinfo) {
-            $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
-            $todo($fileinfo->getRealPath());
-        }
-
-        \rmdir("resources");
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testGenerate()
     {
         $lazyLoadingFileGenerator = new LazyLoadingFileGenerator();
@@ -70,6 +59,8 @@ class LazyLoadingFileGeneratorTest extends TestCase
         $proxyConfiguration = new Configuration();
         $filename = $proxyConfiguration->getClassNameInflector()->getProxyClassName(LazyLoadingObject::class, $proxyParameters);
         $filename = $this->serviceManager->getServiceManagerSetup()->getLazyLoadingLocation() . DIRECTORY_SEPARATOR . \str_replace('\\', '', $filename) . '.php';
+
+        $this->serviceManager->get(LazyLoadingObject::class);
 
         $this->assertFileExists($filename);
     }
