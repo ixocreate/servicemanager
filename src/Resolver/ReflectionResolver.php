@@ -52,8 +52,6 @@ final class ReflectionResolver implements ResolverInterface
             return [];
         }
 
-        //TODO Check if ServiceManagerConfig is available
-
         $subManagers = $container->getServiceManagerConfig()->getSubManagers();
 
         $dependencies = [];
