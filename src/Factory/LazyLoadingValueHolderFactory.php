@@ -37,6 +37,7 @@ class LazyLoadingValueHolderFactory implements FactoryInterface
             $proxyConfiguration->setGeneratorStrategy(new FileWriterGeneratorStrategy(
                 new FileLocator($container->getServiceManagerSetup()->getLazyLoadingLocation())
             ));
+            $proxyConfiguration->setProxiesTargetDir($container->getServiceManagerSetup()->getLazyLoadingLocation());
         } else {
             $proxyConfiguration->setGeneratorStrategy(new EvaluatingGeneratorStrategy());
         }
