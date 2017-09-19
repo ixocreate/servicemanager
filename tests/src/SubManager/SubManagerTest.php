@@ -1,0 +1,164 @@
+<?php
+/**
+ * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
+ *
+ * @package kiwi-suite/servicemanager
+ * @see https://github.com/kiwi-suite/servicemanager
+ * @copyright Copyright (c) 2010 - 2017 kiwi suite GmbH
+ * @license MIT License
+ */
+
+declare(strict_types=1);
+namespace KiwiSuiteTest\ServiceManager;
+
+use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
+use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
+use KiwiSuite\ServiceManager\FactoryInterface;
+use KiwiSuite\ServiceManager\ServiceManager;
+use KiwiSuite\ServiceManager\ServiceManagerConfig;
+use KiwiSuite\ServiceManager\ServiceManagerSetup;
+use KiwiSuite\ServiceManager\SubManager\SubManager;
+use KiwiSuiteMisc\ServiceManager\CantCreateObjectFactory;
+use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
+use PHPUnit\Framework\TestCase;
+
+class SubManagerTest extends TestCase
+{
+    /**
+     * @var ServiceManager
+     */
+    private $serviceManager;
+
+    /**
+     * @var SubManager
+     */
+    private $subManager;
+
+    /**
+     * @var ServiceManagerConfig
+     */
+    private $subManagerConfig;
+
+    public function setUp()
+    {
+        $this->serviceManager = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
+
+        $items = [
+            'factories' => [
+                'dateTime' => DateTimeFactory::class,
+                'cantCreate' => CantCreateObjectFactory::class,
+            ],
+        ];
+        $this->subManagerConfig = new ServiceManagerConfig($items);
+
+        $this->subManager = new SubManager(
+            $this->serviceManager,
+            $this->subManagerConfig,
+            \DateTimeInterface::class
+        );
+    }
+
+    public function testGet()
+    {
+        $this->assertInstanceOf(\DateTimeInterface::class, $this->subManager->get("dateTime"));
+    }
+
+    public function testGetValidation()
+    {
+        $this->assertEquals(\DateTimeInterface::class, $this->subManager->getValidation());
+    }
+
+    public function testBuild()
+    {
+        $this->assertInstanceOf(\DateTimeInterface::class, $this->subManager->build("dateTime"));
+    }
+
+    public function testHas()
+    {
+        $this->assertTrue($this->subManager->has("dateTime"));
+        $this->assertFalse($this->subManager->has("doesnt_exist"));
+    }
+
+    public function testGetResolver()
+    {
+        $this->assertEquals($this->serviceManager->getResolver(), $this->subManager->getResolver());
+    }
+
+    public function testGetServiceManagerSetup()
+    {
+        $this->assertEquals($this->serviceManager->getServiceManagerSetup(), $this->subManager->getServiceManagerSetup());
+    }
+
+    public function testGetServiceManagerConfig()
+    {
+        $this->assertEquals($this->subManagerConfig, $this->subManager->getServiceManagerConfig());
+    }
+
+    public function testServiceNotFoundExceptionGet()
+    {
+        $this->expectException(ServiceNotFoundException::class);
+
+        $this->subManager->get("doesnt_exists");
+    }
+
+    public function testServiceNotFoundExceptionBuild()
+    {
+        $this->expectException(ServiceNotFoundException::class);
+
+        $this->subManager->build("doesnt_exists");
+    }
+
+    public function testServiceNotCreatedExceptionGet()
+    {
+        $this->expectException(ServiceNotCreatedException::class);
+
+        $this->subManager->get("cantCreate");
+    }
+
+    public function testServiceNotCreatedExceptionBuild()
+    {
+        $this->expectException(ServiceNotCreatedException::class);
+
+        $this->subManager->build("cantCreate");
+    }
+
+    public function testValidateBuild()
+    {
+        $this->expectException(ServiceNotCreatedException::class);
+
+        $items = [
+            'factories' => [
+                'test' => DateTimeFactory::class,
+            ],
+        ];
+        $serviceManagerConfig = new ServiceManagerConfig($items);
+
+        $serviceManager = new SubManager(
+            $this->serviceManager,
+            $serviceManagerConfig,
+            FactoryInterface::class
+        );
+
+        $serviceManager->build("test");
+    }
+
+    public function testValidateGet()
+    {
+        $this->expectException(ServiceNotCreatedException::class);
+
+        $items = [
+            'factories' => [
+                'test' => DateTimeFactory::class,
+            ],
+        ];
+        $serviceManagerConfig = new ServiceManagerConfig($items);
+
+        $serviceManager = new SubManager(
+            $this->serviceManager,
+            $serviceManagerConfig,
+            FactoryInterface::class
+        );
+
+        $serviceManager->get("test");
+    }
+}
