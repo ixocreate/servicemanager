@@ -9,7 +9,7 @@ kiwi-suite/servicemanager is a psr-11 container library
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/a0f2c8b5-b9a6-4a58-b06f-00648fe90041/mini.png)](https://insight.sensiolabs.com/projects/a0f2c8b5-b9a6-4a58-b06f-00648fe90041)
 [![Packagist](https://img.shields.io/packagist/v/kiwi-suite/servicemanager.svg)](https://packagist.org/packages/kiwi-suite/servicemanager)
 [![Packagist Pre Release](https://img.shields.io/packagist/vpre/kiwi-suite/servicemanager.svg)](https://packagist.org/packages/kiwi-suite/servicemanager)
-[![Packagist](https://img.shields.io/packagist/l/kiwi-suite/servicemanager)](https://packagist.org/packages/kiwi-suite/servicemanager)
+[![Packagist](https://img.shields.io/packagist/l/kiwi-suite/servicemanager.svg)](https://packagist.org/packages/kiwi-suite/servicemanager)
 
 ## Installation
 
