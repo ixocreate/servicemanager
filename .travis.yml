@@ -6,7 +6,7 @@ cache:
   directories:
   - "$HOME/.composer/cache"
 before_script:
-- composer install --prefer-dist --no-interaction --dev
+- composer install --prefer-dist --no-interaction
 - composer require --dev satooshi/php-coveralls
 script:
 - mkdir -p build/logs
