@@ -185,10 +185,6 @@ final class ServiceManagerConfig implements \Serializable
 
     private function handleConfigProviders(array $config): array
     {
-        if (!\array_key_exists("configProviders", $config)) {
-            return $config;
-        }
-
         foreach ($config['configProviders'] as $configProvider) {
             $configProvider = new $configProvider();
             $serviceManagerConfig = $configProvider->getServiceManagerConfig();
