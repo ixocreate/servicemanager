@@ -16,6 +16,7 @@ use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
+use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use KiwiSuiteTest\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
@@ -35,6 +36,7 @@ class LazyLoadingFileGeneratorTest extends TestCase
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
         $serviceManagerConfigurator->addFactory(LazyLoadingObject::class);
         $serviceManagerConfigurator->addLazyService(LazyLoadingObject::class);
+        $serviceManagerConfigurator->addSubManager("sub1", SubManagerFactory::class);
 
         $this->serviceManager = new ServiceManager(
             $serviceManagerConfigurator->getServiceManagerConfig(),

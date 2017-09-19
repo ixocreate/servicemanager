@@ -28,10 +28,12 @@ final class LazyServiceDelegatorFactory implements DelegatorFactoryInterface
         $proxyFactory = $container->get(\ProxyManager\Factory\LazyLoadingValueHolderFactory::class);
 
         $initializer = function (&$wrappedInstance, LazyLoadingInterface $proxy) use ($callback) {
+            // @codeCoverageIgnoreStart
             $proxy->setProxyInitializer(null);
             $wrappedInstance = $callback();
 
             return true;
+            // @codeCoverageIgnoreEnd
         };
 
         $lazyServices = $serviceManagerConfig->getLazyServices();
