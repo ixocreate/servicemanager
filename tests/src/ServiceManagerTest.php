@@ -56,6 +56,16 @@ class ServiceManagerTest extends TestCase
         $this->validServiceManager = new ServiceManager($this->serviceManagerConfig, $this->serviceManagerSetup);
     }
 
+    public function testInitialServices()
+    {
+        $services = [
+            \DateTime::class => new \DateTime(),
+        ];
+        $serviceManager = new ServiceManager($this->serviceManagerConfig, $this->serviceManagerSetup, $services);
+
+        $this->assertSame($services[\DateTime::class], $serviceManager->get(\DateTime::class));
+    }
+
     public function testGetServiceManagerConfig()
     {
         $this->assertEquals($this->serviceManagerConfig, $this->validServiceManager->getServiceManagerConfig());

@@ -42,12 +42,17 @@ final class ServiceManager implements ServiceManagerInterface
     /**
      * @param ServiceManagerConfig $serviceManagerConfig
      * @param ServiceManagerSetup $serviceManagerSetup
+     * @param array $services
      */
-    public function __construct(ServiceManagerConfig $serviceManagerConfig, ServiceManagerSetup $serviceManagerSetup)
-    {
+    public function __construct(
+        ServiceManagerConfig $serviceManagerConfig,
+        ServiceManagerSetup $serviceManagerSetup,
+        array $services = []
+    ) {
         $this->serviceManagerConfig = $serviceManagerConfig;
 
         $config = $serviceManagerConfig->getConfig();
+        $config['services'] = $services;
         $config['factories'][LazyLoadingValueHolderFactory::class] = KiwiLazyLoadingValueHolderFactory::class;
 
         $this->serviceManager = new OriginalServiceManager($this, $config);
