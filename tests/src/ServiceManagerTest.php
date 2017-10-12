@@ -59,7 +59,7 @@ class ServiceManagerTest extends TestCase
     public function testInitialServices()
     {
         $services = [
-            \DateTime::class => new \DateTime()
+            \DateTime::class => new \DateTime(),
         ];
         $serviceManager = new ServiceManager($this->serviceManagerConfig, $this->serviceManagerSetup, $services);
 
