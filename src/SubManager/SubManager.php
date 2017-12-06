@@ -18,7 +18,7 @@ use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
 
-final class SubManager implements SubManagerInterface
+class SubManager implements SubManagerInterface
 {
 
     /**
@@ -51,7 +51,7 @@ final class SubManager implements SubManagerInterface
      * @param ServiceManagerConfig $serviceManagerConfig
      * @param string $validation
      */
-    public function __construct(ServiceManager $serviceManager, ServiceManagerConfig $serviceManagerConfig, string $validation)
+    final public function __construct(ServiceManager $serviceManager, ServiceManagerConfig $serviceManagerConfig, string $validation)
     {
         $this->serviceManager = new PluginManager(
             $serviceManager,
@@ -70,7 +70,7 @@ final class SubManager implements SubManagerInterface
      * @throws ServiceNotFoundException
      * @return mixed
      */
-    public function get($id)
+    final public function get($id)
     {
         try {
             $instance = $this->serviceManager->get($id);
@@ -93,7 +93,7 @@ final class SubManager implements SubManagerInterface
      * @param string $id
      * @return bool
      */
-    public function has($id): bool
+    final public function has($id): bool
     {
         return $this->serviceManager->has($id);
     }
@@ -105,7 +105,7 @@ final class SubManager implements SubManagerInterface
      * @throws ServiceNotFoundException
      * @return mixed
      */
-    public function build(string $id, array $options = null)
+    final public function build(string $id, array $options = null)
     {
         try {
             $instance = $this->serviceManager->build($id, $options);
@@ -136,7 +136,7 @@ final class SubManager implements SubManagerInterface
     /**
      * @return string
      */
-    public function getValidation(): string
+    final public function getValidation(): string
     {
         return $this->validation;
     }
@@ -144,7 +144,7 @@ final class SubManager implements SubManagerInterface
     /**
      * @return ServiceManagerSetup
      */
-    public function getServiceManagerSetup(): ServiceManagerSetup
+    final public function getServiceManagerSetup(): ServiceManagerSetup
     {
         return $this->serviceManagerSetup;
     }
@@ -152,7 +152,7 @@ final class SubManager implements SubManagerInterface
     /**
      * @return ServiceManagerConfig
      */
-    public function getServiceManagerConfig(): ServiceManagerConfig
+    final public function getServiceManagerConfig(): ServiceManagerConfig
     {
         return $this->serviceManagerConfig;
     }
@@ -160,7 +160,7 @@ final class SubManager implements SubManagerInterface
     /**
      * @return ResolverInterface
      */
-    public function getResolver(): ResolverInterface
+    final public function getResolver(): ResolverInterface
     {
         return $this->resolver;
     }
