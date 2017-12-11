@@ -11,9 +11,6 @@
 declare(strict_types=1);
 namespace KiwiSuiteTest\ServiceManager;
 
-use KiwiSuite\ServiceManager\Resolver\CacheResolver;
-use KiwiSuite\ServiceManager\Resolver\InMemoryResolver;
-use KiwiSuite\ServiceManager\Resolver\ReflectionResolver;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +19,6 @@ class ServiceManagerSetupTest extends TestCase
     public function testDefaults()
     {
         $serviceManagerSetup = new ServiceManagerSetup();
-        $this->assertEquals(InMemoryResolver::class, $serviceManagerSetup->getAutowireResolver());
         $this->assertEquals('resources/generated/servicemanger/autowire/', $serviceManagerSetup->getAutowireLocation());
         $this->assertFalse($serviceManagerSetup->isPersistLazyLoading());
     }
@@ -30,12 +26,10 @@ class ServiceManagerSetupTest extends TestCase
     public function testValues()
     {
         $setup = [
-            'autowireResolver' => ReflectionResolver::class,
             'persistRoot' => 'resources/test',
             'persistLazyLoading' => true,
         ];
-        $serviceManagerSetup = new ServiceManagerSetup($setup);
-        $this->assertEquals($setup['autowireResolver'], $serviceManagerSetup->getAutowireResolver());
+        $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot'], $setup['persistLazyLoading']);
         $this->assertEquals($setup['persistRoot'] . '/autowire/', $serviceManagerSetup->getAutowireLocation());
         $this->assertEquals($setup['persistRoot'] . '/lazyLoading/', $serviceManagerSetup->getLazyLoadingLocation());
         $this->assertEquals($setup['persistRoot'] . '/autowire/autowire.cache', $serviceManagerSetup->getAutowireCacheFileLocation());
@@ -45,14 +39,11 @@ class ServiceManagerSetupTest extends TestCase
     public function testWithAutowireResolver()
     {
         $setup = [
-            'autowireResolver' => ReflectionResolver::class,
             'persistRoot' => 'resources/test',
             'persistLazyLoading' => true,
         ];
-        $serviceManagerSetup = new ServiceManagerSetup($setup);
-        $serviceManagerSetup = $serviceManagerSetup->withAutowireResolver(CacheResolver::class);
+        $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot'], $setup['persistLazyLoading']);
 
-        $this->assertEquals(CacheResolver::class, $serviceManagerSetup->getAutowireResolver());
         $this->assertEquals($setup['persistRoot'] . '/autowire/', $serviceManagerSetup->getAutowireLocation());
         $this->assertTrue($serviceManagerSetup->isPersistLazyLoading());
     }
@@ -60,14 +51,12 @@ class ServiceManagerSetupTest extends TestCase
     public function testWithPersistRoot()
     {
         $setup = [
-            'autowireResolver' => ReflectionResolver::class,
             'persistRoot' => 'resources/test',
             'persistLazyLoading' => true,
         ];
-        $serviceManagerSetup = new ServiceManagerSetup($setup);
+        $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot'], $setup['persistLazyLoading']);
         $serviceManagerSetup = $serviceManagerSetup->withPersistRoot('resources/test1');
 
-        $this->assertEquals(ReflectionResolver::class, $serviceManagerSetup->getAutowireResolver());
         $this->assertEquals('resources/test1/autowire/', $serviceManagerSetup->getAutowireLocation());
         $this->assertTrue($serviceManagerSetup->isPersistLazyLoading());
     }
@@ -75,14 +64,24 @@ class ServiceManagerSetupTest extends TestCase
     public function testWithPersistLazyLoading()
     {
         $setup = [
-            'autowireResolver' => ReflectionResolver::class,
             'persistRoot' => 'resources/test',
         ];
-        $serviceManagerSetup = new ServiceManagerSetup($setup);
+        $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot']);
         $serviceManagerSetup = $serviceManagerSetup->withPersistLazyLoading(true);
 
-        $this->assertEquals(ReflectionResolver::class, $serviceManagerSetup->getAutowireResolver());
         $this->assertEquals($setup['persistRoot'] . '/autowire/', $serviceManagerSetup->getAutowireLocation());
         $this->assertTrue($serviceManagerSetup->isPersistLazyLoading());
+    }
+
+    public function testWithPersistAutowire()
+    {
+        $setup = [
+            'persistRoot' => 'resources/test',
+        ];
+        $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot']);
+        $serviceManagerSetup = $serviceManagerSetup->withPersistAutowire(true);
+
+        $this->assertEquals($setup['persistRoot'] . '/autowire/', $serviceManagerSetup->getAutowireLocation());
+        $this->assertTrue($serviceManagerSetup->isPersistAutowire());
     }
 }

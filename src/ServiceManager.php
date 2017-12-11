@@ -11,11 +11,16 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
+use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
+use KiwiSuite\ServiceManager\Autowire\FactoryCode;
+use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FactoryResolverInterface;
+use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
+use KiwiSuite\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\Resolver\ResolverInterface;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use KiwiSuite\ServiceManager\Factory\LazyLoadingValueHolderFactory as KiwiLazyLoadingValueHolderFactory;
+use Zend\Di\Definition\RuntimeDefinition;
 
 final class ServiceManager implements ServiceManagerInterface
 {
@@ -35,9 +40,9 @@ final class ServiceManager implements ServiceManagerInterface
     private $serviceManagerSetup;
 
     /**
-     * @var ResolverInterface
+     * @var FactoryResolverInterface;
      */
-    private $resolver;
+    private $factoryResolver;
 
     /**
      * @param ServiceManagerConfig $serviceManagerConfig
@@ -120,16 +125,21 @@ final class ServiceManager implements ServiceManagerInterface
     }
 
     /**
-     * @return ResolverInterface
+     * @return FactoryResolverInterface
      */
-    public function getResolver(): ResolverInterface
+    public function getFactoryResolver(): FactoryResolverInterface
     {
-        if ($this->resolver === null) {
-            $resolverName = $this->getServiceManagerSetup()->getAutowireResolver();
+        if ($this->factoryResolver === null) {
+            $factoryCode = new FactoryCode();
+            if ($this->getServiceManagerSetup()->isPersistAutowire()) {
+                $this->factoryResolver = new FileFactoryResolver($factoryCode);
+            } else {
+                $resolver = new DependencyResolver(new RuntimeDefinition());
+                $resolver->setContainer($this);
 
-            $this->resolver = new $resolverName();
+                $this->factoryResolver = new RuntimeFactoryResolver($resolver, $factoryCode);
+            }
         }
-
-        return $this->resolver;
+        return $this->factoryResolver;
     }
 }

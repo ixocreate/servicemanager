@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Factory;
 
 use KiwiSuite\ServiceManager\AutowireFactoryInterface;
-use KiwiSuite\ServiceManager\Resolver\Resolution;
 use KiwiSuite\ServiceManager\ServiceManagerInterface;
 
 final class AutowireFactory implements AutowireFactoryInterface
@@ -26,17 +25,6 @@ final class AutowireFactory implements AutowireFactoryInterface
      */
     public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null)
     {
-        return $this->getResolution($container, $requestedName, $options)->createInstance($container);
-    }
-
-    /**
-     * @param ServiceManagerInterface $container
-     * @param string $requestedName
-     * @param array|null $options
-     * @return mixed
-     */
-    public function getResolution(ServiceManagerInterface $container, string $requestedName, array $options = null): Resolution
-    {
-        return $container->getResolver()->resolveService($container, $requestedName);
+        return $container->getFactoryResolver()->getFactory($requestedName)($container, $requestedName, $options);
     }
 }

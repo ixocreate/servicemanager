@@ -50,25 +50,4 @@ class AutowireFactoryTest extends TestCase
 
         $this->assertInstanceOf(ResolverTestObject::class, $result);
     }
-
-    public function testGetResolution()
-    {
-        $autoWireFactory = new AutowireFactory();
-        $resolution = $autoWireFactory->getResolution($this->serviceManager, ResolverTestObject::class);
-        $this->assertEquals(ResolverTestObject::class, $resolution->getServiceName());
-        $this->assertEquals([
-            [
-                'serviceName' => \DateTime::class,
-                'subManager' => null,
-            ],
-            [
-                'serviceName' => "test1",
-                'subManager' => "subManager1",
-            ],
-            [
-                'serviceName' => "someThing",
-                'subManager' => null,
-            ],
-        ], $resolution->getDependencies());
-    }
 }

@@ -11,9 +11,10 @@
 declare(strict_types=1);
 namespace KiwiSuiteTest\ServiceManager;
 
+use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
+use KiwiSuite\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\Resolver\InMemoryResolver;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
@@ -76,11 +77,6 @@ class ServiceManagerTest extends TestCase
         $this->assertEquals($this->serviceManagerSetup, $this->validServiceManager->getServiceManagerSetup());
     }
 
-    public function testGetResolver()
-    {
-        $this->assertInstanceOf(InMemoryResolver::class, $this->validServiceManager->getResolver());
-    }
-
     public function testHas()
     {
         $this->assertTrue($this->validServiceManager->has("dateTine"));
@@ -131,5 +127,17 @@ class ServiceManagerTest extends TestCase
         $serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $serviceManager->build("test");
+    }
+
+    public function testGetFactoryResolverPersist()
+    {
+        $serviceManager = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup(null, null, true));
+        $this->assertInstanceOf(FileFactoryResolver::class, $serviceManager->getFactoryResolver());
+    }
+
+    public function testGetFactoryResolverRuntime()
+    {
+        $serviceManager = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
+        $this->assertInstanceOf(RuntimeFactoryResolver::class, $serviceManager->getFactoryResolver());
     }
 }

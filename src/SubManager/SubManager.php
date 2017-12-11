@@ -11,9 +11,9 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\SubManager;
 
+use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FactoryResolverInterface;
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\Resolver\ResolverInterface;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
@@ -42,9 +42,9 @@ class SubManager implements SubManagerInterface
     private $serviceManagerConfig;
 
     /**
-     * @var ResolverInterface
+     * @var FactoryResolverInterface
      */
-    private $resolver;
+    private $factoryResolver;
 
     /**
      * @param ServiceManager $serviceManager
@@ -61,7 +61,7 @@ class SubManager implements SubManagerInterface
         $this->validation = $validation;
         $this->serviceManagerSetup = $serviceManager->getServiceManagerSetup();
         $this->serviceManagerConfig = $serviceManagerConfig;
-        $this->resolver = $serviceManager->getResolver();
+        $this->factoryResolver = $serviceManager->getFactoryResolver();
     }
 
     /**
@@ -158,10 +158,10 @@ class SubManager implements SubManagerInterface
     }
 
     /**
-     * @return ResolverInterface
+     * @return FactoryResolverInterface
      */
-    final public function getResolver(): ResolverInterface
+    final public function getFactoryResolver(): FactoryResolverInterface
     {
-        return $this->resolver;
+        return $this->factoryResolver;
     }
 }

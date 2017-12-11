@@ -37,7 +37,8 @@ class LazyLoadingValueHolderFactoryTest extends TestCase
         $this->serviceManagerDefault = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
 
         $this->serviceManagerPersist = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup(
-            ['persistLazyLoading' => true]
+            null,
+            true
         ));
     }
 
