@@ -19,6 +19,12 @@ use KiwiSuiteMisc\ServiceManager\ConfigProvider;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
 use KiwiSuiteMisc\ServiceManager\DelegatorFactory;
 use KiwiSuiteMisc\ServiceManager\Initializer;
+use KiwiSuiteMisc\ServiceManager\Scan\AbstractClass;
+use KiwiSuiteMisc\ServiceManager\Scan\Class1;
+use KiwiSuiteMisc\ServiceManager\Scan\Class2;
+use KiwiSuiteMisc\ServiceManager\Scan\Class4;
+use KiwiSuiteMisc\ServiceManager\Scan\SubDir\Class3;
+use KiwiSuiteMisc\ServiceManager\Scan\TestInterface;
 use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -159,6 +165,34 @@ class ServiceManagerConfiguratorTest extends TestCase
         }
 
         $this->assertEquals($configProviders, $serviceManagerConfigurator->getConfigProviders());
+    }
+
+    public function testDirectoryScan()
+    {
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addDirectory(__DIR__ . '/../misc/Scan');
+        $serviceManagerConfigurator->addDirectory(__DIR__ . '/../misc/doesnt_exist');
+        $serviceManagerConfig = $serviceManagerConfigurator->getServiceManagerConfig();
+        $this->assertArrayHasKey(Class1::class, $serviceManagerConfig->getFactories());
+        $this->assertArrayHasKey(Class2::class, $serviceManagerConfig->getFactories());
+        $this->assertArrayHasKey(Class3::class, $serviceManagerConfig->getFactories());
+        $this->assertArrayNotHasKey(AbstractClass::class, $serviceManagerConfig->getFactories());
+        $this->assertArrayNotHasKey(TestInterface::class, $serviceManagerConfig->getFactories());
+
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addDirectory(__DIR__ . '/../misc/Scan', false);
+        $serviceManagerConfig = $serviceManagerConfigurator->getServiceManagerConfig();
+        $this->assertArrayHasKey(Class1::class, $serviceManagerConfig->getFactories());
+        $this->assertArrayHasKey(Class2::class, $serviceManagerConfig->getFactories());
+        $this->assertArrayNotHasKey(Class3::class, $serviceManagerConfig->getFactories());
+
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addDirectory(__DIR__ . '/../misc/Scan', true, [AbstractClass::class, TestInterface::class]);
+        $serviceManagerConfig = $serviceManagerConfigurator->getServiceManagerConfig();
+        $this->assertArrayNotHasKey(Class1::class, $serviceManagerConfig->getFactories());
+        $this->assertArrayHasKey(Class2::class, $serviceManagerConfig->getFactories());
+        $this->assertArrayHasKey(Class3::class, $serviceManagerConfig->getFactories());
+        $this->assertArrayHasKey(Class4::class, $serviceManagerConfig->getFactories());
     }
 
     public function testGetServiceManagerConfig()
