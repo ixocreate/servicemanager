@@ -52,11 +52,29 @@ final class ServiceManagerConfigurator
     private $configProviders = [];
 
     /**
+     * @var string;
+     */
+    private $defaultAutowireFactory;
+
+    /**
+     * ServiceManagerConfigurator constructor.
+     * @param string $defaultAutowireFactory
+     */
+    public function __construct(string $defaultAutowireFactory = AutowireFactory::class)
+    {
+        $this->defaultAutowireFactory = $defaultAutowireFactory;
+    }
+
+    /**
      * @param string $name
      * @param string $factory
      */
-    public function addFactory(string $name, string $factory = AutowireFactory::class): void
+    public function addFactory(string $name, ?string $factory = null): void
     {
+        if (empty($factory)) {
+            $factory = $this->defaultAutowireFactory;
+        }
+
         $this->factories[$name] = $factory;
     }
 
