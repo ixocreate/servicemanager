@@ -14,7 +14,7 @@ namespace KiwiSuite\ServiceManager;
 use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
 use KiwiSuite\ServiceManager\SubManager\SubManagerFactoryInterface;
 
-final class ServiceManagerConfig implements \Serializable
+class ServiceManagerConfig implements \Serializable
 {
     /**
      * @var array
@@ -27,7 +27,7 @@ final class ServiceManagerConfig implements \Serializable
      * ServiceManagerConfig constructor.
      * @param array $config
      */
-    public function __construct(array $config)
+    final public function __construct(array $config)
     {
         foreach ($this->types as $type) {
             if (!\array_key_exists($type, $config)) {
@@ -211,7 +211,7 @@ final class ServiceManagerConfig implements \Serializable
     /**
      * @return array
      */
-    public function getFactories(): array
+    final public function getFactories(): array
     {
         return $this->getValue("factories");
     }
@@ -219,7 +219,7 @@ final class ServiceManagerConfig implements \Serializable
     /**
      * @return array
      */
-    public function getDisabledSharing(): array
+    final public function getDisabledSharing(): array
     {
         return $this->getValue("disabledSharing");
     }
@@ -227,7 +227,7 @@ final class ServiceManagerConfig implements \Serializable
     /**
      * @return array
      */
-    public function getDelegators(): array
+    final public function getDelegators(): array
     {
         return $this->getValue("delegators");
     }
@@ -235,7 +235,7 @@ final class ServiceManagerConfig implements \Serializable
     /**
      * @return array
      */
-    public function getInitializers(): array
+    final public function getInitializers(): array
     {
         return $this->getValue("initializers");
     }
@@ -243,7 +243,7 @@ final class ServiceManagerConfig implements \Serializable
     /**
      * @return array
      */
-    public function getLazyServices(): array
+    final public function getLazyServices(): array
     {
         return $this->getValue("lazyServices");
     }
@@ -251,7 +251,7 @@ final class ServiceManagerConfig implements \Serializable
     /**
      * @return array
      */
-    public function getSubManagers(): array
+    final public function getSubManagers(): array
     {
         return $this->getValue("subManagers");
     }
@@ -259,7 +259,7 @@ final class ServiceManagerConfig implements \Serializable
     /**
      * @return array
      */
-    public function getConfigProviders(): array
+    final public function getConfigProviders(): array
     {
         return $this->getValue("configProviders");
     }
@@ -267,13 +267,13 @@ final class ServiceManagerConfig implements \Serializable
     /**
      * @return string
      */
-    public function serialize()
+    final public function serialize()
     {
         return \serialize($this->config);
     }
 
 
-    public function unserialize($serialized)
+    final public function unserialize($serialized)
     {
         $this->config = \unserialize($serialized);
     }
@@ -281,7 +281,7 @@ final class ServiceManagerConfig implements \Serializable
     /**
      * @return array
      */
-    public function getConfig(): array
+    final public function getConfig(): array
     {
         $factories = $this->getFactories();
         $factories = \array_merge($factories, $this->getSubManagers());

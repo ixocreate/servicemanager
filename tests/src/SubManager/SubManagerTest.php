@@ -79,11 +79,6 @@ class SubManagerTest extends TestCase
         $this->assertFalse($this->subManager->has("doesnt_exist"));
     }
 
-    public function testGetResolver()
-    {
-        $this->assertEquals($this->serviceManager->getResolver(), $this->subManager->getResolver());
-    }
-
     public function testGetServiceManagerSetup()
     {
         $this->assertEquals($this->serviceManager->getServiceManagerSetup(), $this->subManager->getServiceManagerSetup());
@@ -160,5 +155,10 @@ class SubManagerTest extends TestCase
         );
 
         $serviceManager->get("test");
+    }
+
+    public function testGetFactoryResolver()
+    {
+        $this->assertSame($this->serviceManager->getFactoryResolver(), $this->subManager->getFactoryResolver());
     }
 }

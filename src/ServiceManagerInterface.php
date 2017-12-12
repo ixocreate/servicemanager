@@ -11,9 +11,9 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
+use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FactoryResolverInterface;
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\Resolver\ResolverInterface;
 use Psr\Container\ContainerInterface;
 
 interface ServiceManagerInterface extends ContainerInterface
@@ -37,5 +37,8 @@ interface ServiceManagerInterface extends ContainerInterface
      */
     public function getServiceManagerSetup(): ServiceManagerSetup;
 
-    public function getResolver(): ResolverInterface;
+    /**
+     * @return FactoryResolverInterface
+     */
+    public function getFactoryResolver(): FactoryResolverInterface;
 }

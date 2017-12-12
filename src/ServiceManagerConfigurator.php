@@ -13,6 +13,7 @@ namespace KiwiSuite\ServiceManager;
 
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
 use KiwiSuite\ServiceManager\Factory\LazyServiceDelegatorFactory;
+use Zend\Code\Reflection\FileReflection;
 
 final class ServiceManagerConfigurator
 {
@@ -52,11 +53,48 @@ final class ServiceManagerConfigurator
     private $configProviders = [];
 
     /**
+     * @var string;
+     */
+    private $defaultAutowireFactory;
+
+    /**
+     * @var array
+     */
+    private $directories = [];
+
+    /**
+     * ServiceManagerConfigurator constructor.
+     * @param string $defaultAutowireFactory
+     */
+    public function __construct(string $defaultAutowireFactory = AutowireFactory::class)
+    {
+        $this->defaultAutowireFactory = $defaultAutowireFactory;
+    }
+
+    /**
+     * @param string $directory
+     * @param bool $recursive
+     * @param array $only
+     */
+    public function addDirectory(string $directory, bool $recursive = true, array $only = []) : void
+    {
+        $this->directories[] = [
+            'dir' => $directory,
+            'recursive' => $recursive,
+            'only' => $only,
+        ];
+    }
+
+    /**
      * @param string $name
      * @param string $factory
      */
-    public function addFactory(string $name, string $factory = AutowireFactory::class): void
+    public function addFactory(string $name, ?string $factory = null): void
     {
+        if (empty($factory)) {
+            $factory = $this->defaultAutowireFactory;
+        }
+
         $this->factories[$name] = $factory;
     }
 
@@ -182,6 +220,8 @@ final class ServiceManagerConfigurator
      */
     public function getServiceManagerConfig(): ServiceManagerConfig
     {
+        $this->processDirectories();
+
         return new ServiceManagerConfig([
             'factories' => $this->getFactories(),
             'initializers' => $this->getInitializers(),
@@ -191,5 +231,71 @@ final class ServiceManagerConfigurator
             'disabledSharing' => $this->getDisableSharing(),
             'configProviders' => $this->getConfigProviders(),
         ]);
+    }
+
+    /**
+     *
+     */
+    private function processDirectories(): void
+    {
+        foreach ($this->directories as $item) {
+            if (!\is_dir($item['dir'])) {
+                continue;
+            }
+
+            $this->scanDirectory($item['dir'], $item['recursive'], $item['only']);
+        }
+    }
+
+    /**
+     * @param string $directory
+     * @param bool $recursive
+     * @param array $only
+     */
+    private function scanDirectory(string $directory, bool $recursive, array $only): void
+    {
+        $entries = \scandir($directory);
+        foreach ($entries as $entry) {
+            if ($entry === "." || $entry === "..") {
+                continue;
+            }
+
+            if (\is_dir($directory . '/' . $entry)) {
+                if ($recursive === true) {
+                    $this->scanDirectory($directory . '/' . $entry, $recursive, $only);
+                }
+                continue;
+            }
+
+            $fileReflection = new FileReflection($directory . '/' . $entry, true);
+            foreach ($fileReflection->getClasses() as $class) {
+                if ($class->isAbstract()) {
+                    continue;
+                }
+                if ($class->isInterface()) {
+                    continue;
+                }
+
+                if (!empty($only)) {
+                    $check = false;
+
+                    foreach ($only as $instanceCheck) {
+                        if (\interface_exists($instanceCheck) && $class->implementsInterface($instanceCheck)) {
+                            $check = true;
+                            break;
+                        } elseif ($class->isSubclassOf($instanceCheck)) {
+                            $check = true;
+                            break;
+                        }
+                    }
+
+                    if ($check === false) {
+                        continue;
+                    }
+                }
+
+                $this->addFactory($class->getName());
+            }
+        }
     }
 }

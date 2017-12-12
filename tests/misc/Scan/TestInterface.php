@@ -9,8 +9,8 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager;
+namespace KiwiSuiteMisc\ServiceManager\Scan;
 
-interface AutowireFactoryInterface extends FactoryInterface
+interface TestInterface
 {
 }

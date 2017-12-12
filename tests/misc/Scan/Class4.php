@@ -9,8 +9,10 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager;
+namespace KiwiSuiteMisc\ServiceManager\Scan;
 
-interface AutowireFactoryInterface extends FactoryInterface
+use KiwiSuiteMisc\ServiceManager\Scan\SubDir\Class3;
+
+class Class4 extends Class3
 {
 }

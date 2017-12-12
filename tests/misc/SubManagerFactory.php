@@ -33,6 +33,9 @@ class SubManagerFactory implements SubManagerFactoryInterface
             new ServiceManagerConfig([
                 'factories' => [
                     'test1' => DateTimeFactory::class,
+                    'value3' => DateTimeFactory::class,
+                    OwnDateTime::class => DateTimeFactory::class,
+
                 ],
             ]),
             \DateTimeInterface::class

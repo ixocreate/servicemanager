@@ -9,19 +9,24 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Factory;
+namespace KiwiSuiteTest\ServiceManager\Generator;
 
+use KiwiSuite\ServiceManager\Autowire\FactoryCode;
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
+use KiwiSuite\ServiceManager\Generator\AutowireFactoryGenerator;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
+use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
+use KiwiSuiteTest\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 
-class AutowireFactoryTest extends TestCase
+class AutowireFactoryGeneratorTest extends TestCase
 {
+    use CleanUpTrait;
+
     /**
      * @var ServiceManager
      */
@@ -43,11 +48,12 @@ class AutowireFactoryTest extends TestCase
         $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
     }
 
-    public function testInvoke()
+    public function testGenerate()
     {
-        $autoWireFactory = new AutowireFactory();
-        $result = $autoWireFactory($this->serviceManager, ResolverTestObject::class);
+        $generator = new AutowireFactoryGenerator();
+        $generator->generate($this->serviceManager);
 
-        $this->assertInstanceOf(ResolverTestObject::class, $result);
+        $factoryCode = new FactoryCode();
+        $this->assertFileExists($this->serviceManager->getServiceManagerSetup()->getAutowireLocation() . $factoryCode->generateFactoryName(ResolverTestObject::class) . '.php');
     }
 }
