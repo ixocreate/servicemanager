@@ -32,7 +32,6 @@ class ServiceManagerSetupTest extends TestCase
         $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot'], $setup['persistLazyLoading']);
         $this->assertEquals($setup['persistRoot'] . '/autowire/', $serviceManagerSetup->getAutowireLocation());
         $this->assertEquals($setup['persistRoot'] . '/lazyLoading/', $serviceManagerSetup->getLazyLoadingLocation());
-        $this->assertEquals($setup['persistRoot'] . '/autowire/autowire.cache', $serviceManagerSetup->getAutowireCacheFileLocation());
         $this->assertEquals($setup['persistLazyLoading'], $serviceManagerSetup->isPersistLazyLoading());
     }
 

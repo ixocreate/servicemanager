@@ -71,14 +71,6 @@ final class ServiceManagerSetup
     /**
      * @return string
      */
-    public function getAutowireCacheFileLocation(): string
-    {
-        return $this->getAutowireLocation() . 'autowire.cache';
-    }
-
-    /**
-     * @return string
-     */
     public function getLazyLoadingLocation(): string
     {
         return $this->persistRoot . $this->persistLazyLoadingLocation;
