@@ -11,6 +11,7 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
+use KiwiSuite\ServiceManager\Autowire\Autoloader;
 use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
 use KiwiSuite\ServiceManager\Autowire\FactoryCode;
 use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FactoryResolverInterface;
@@ -132,6 +133,9 @@ final class ServiceManager implements ServiceManagerInterface
         if ($this->factoryResolver === null) {
             $factoryCode = new FactoryCode();
             if ($this->getServiceManagerSetup()->isPersistAutowire()) {
+                $autoloader = new Autoloader($this);
+                \spl_autoload_register($autoloader);
+
                 $this->factoryResolver = new FileFactoryResolver($factoryCode);
             } else {
                 $resolver = new DependencyResolver(new RuntimeDefinition());
