@@ -63,12 +63,21 @@ final class ServiceManagerConfigurator
     private $directories = [];
 
     /**
+     * @var string
+     */
+    private $serviceManagerConfigClass;
+
+    /**
      * ServiceManagerConfigurator constructor.
+     * @param string $serviceManagerConfigClass
      * @param string $defaultAutowireFactory
      */
-    public function __construct(string $defaultAutowireFactory = AutowireFactory::class)
-    {
+    public function __construct(
+        string $serviceManagerConfigClass = ServiceManagerConfig::class,
+        string $defaultAutowireFactory = AutowireFactory::class
+    ) {
         $this->defaultAutowireFactory = $defaultAutowireFactory;
+        $this->serviceManagerConfigClass = $serviceManagerConfigClass;
     }
 
     /**
@@ -222,7 +231,7 @@ final class ServiceManagerConfigurator
     {
         $this->processDirectories();
 
-        return new ServiceManagerConfig([
+        return new $this->serviceManagerConfigClass([
             'factories' => $this->getFactories(),
             'initializers' => $this->getInitializers(),
             'delegators' => $this->getDelegators(),
