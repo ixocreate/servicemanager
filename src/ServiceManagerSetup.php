@@ -24,6 +24,11 @@ final class ServiceManagerSetup
     private $persistLazyLoadingLocation = 'lazyLoading/';
 
     /**
+     * @var string
+     */
+    private $persistAutowireLocation = 'autowire/';
+
+    /**
      * @var bool
      */
     private $persistLazyLoading = false;
@@ -64,9 +69,17 @@ final class ServiceManagerSetup
     }
 
     /**
+     * @return string
+     */
+    public function getAutowireLocation() : string
+    {
+        return $this->persistRoot . $this->persistAutowireLocation;
+    }
+
+    /**
      * @return bool
      */
-    public function isPersistLazyLoading(): bool
+    public function isPersistLazyLoading() : bool
     {
         return $this->persistLazyLoading;
     }
@@ -74,7 +87,7 @@ final class ServiceManagerSetup
     /**
      * @return bool
      */
-    public function isPersistAutowire(): bool
+    public function isPersistAutowire() : bool
     {
         return $this->persistAutowire;
     }
@@ -83,7 +96,7 @@ final class ServiceManagerSetup
      * @param string $persistRoot
      * @return ServiceManagerSetup
      */
-    public function withPersistRoot(string $persistRoot): ServiceManagerSetup
+    public function withPersistRoot(string $persistRoot) : ServiceManagerSetup
     {
         return new ServiceManagerSetup(
             $persistRoot,
@@ -96,7 +109,7 @@ final class ServiceManagerSetup
      * @param bool $persistLazyLoading
      * @return ServiceManagerSetup
      */
-    public function withPersistLazyLoading(bool $persistLazyLoading): ServiceManagerSetup
+    public function withPersistLazyLoading(bool $persistLazyLoading) : ServiceManagerSetup
     {
         return new ServiceManagerSetup(
             $this->persistRoot,
@@ -110,7 +123,7 @@ final class ServiceManagerSetup
      * @return ServiceManagerSetup
      * @internal param bool $persistLazyLoading
      */
-    public function withPersistAutowire(bool $persistAutowire): ServiceManagerSetup
+    public function withPersistAutowire(bool $persistAutowire) : ServiceManagerSetup
     {
         return new ServiceManagerSetup(
             $this->persistRoot,
