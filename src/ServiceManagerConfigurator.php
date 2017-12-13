@@ -76,6 +76,7 @@ final class ServiceManagerConfigurator
         string $serviceManagerConfigClass = ServiceManagerConfig::class,
         string $defaultAutowireFactory = AutowireFactory::class
     ) {
+        //TODO check servicemanagerConfig class and defaultAutowireFactory
         $this->defaultAutowireFactory = $defaultAutowireFactory;
         $this->serviceManagerConfigClass = $serviceManagerConfigClass;
     }
