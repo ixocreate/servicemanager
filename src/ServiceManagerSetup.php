@@ -16,12 +16,7 @@ final class ServiceManagerSetup
     /**
      * @var string
      */
-    private $persistRoot = 'resources/generated/servicemanger/';
-
-    /**
-     * @var string
-     */
-    private $persistAutowireLocation = 'autowire/';
+    private $persistRoot = 'resources/generated/servicemanager/';
 
     /**
      * @var string
@@ -58,14 +53,6 @@ final class ServiceManagerSetup
         if ($persistAutowire !== null) {
             $this->persistAutowire = $persistAutowire;
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getAutowireLocation(): string
-    {
-        return $this->persistRoot . $this->persistAutowireLocation;
     }
 
     /**
