@@ -51,6 +51,17 @@ EOD;
                 continue;
             }
 
+            if ($injection instanceof DefaultValueInjection) {
+                $constructParams[] = \sprintf(
+                    '(\is_array($options) && \array_key_exists(\'%s\', $options)) ? $options[\'%s\'] : %s',
+                    $injection->getParameterName(),
+                    $injection->getParameterName(),
+                    $injection->export()
+                );
+
+                continue;
+            }
+
             if (!($injection instanceof ValueInjection)) {
                 //TODO Exception
             }

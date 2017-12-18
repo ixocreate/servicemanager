@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace KiwiSuiteTest\ServiceManager\Autowire;
 
 use KiwiSuite\ServiceManager\Autowire\ContainerInjection;
+use KiwiSuite\ServiceManager\Autowire\DefaultValueInjection;
 use KiwiSuite\ServiceManager\Autowire\FactoryCode;
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
 use KiwiSuite\ServiceManager\ServiceManager;
@@ -78,6 +79,8 @@ class FactoryCodeTest extends TestCase
             'dateTime'  => new ContainerInjection(\DateTime::class, null),
             'test'      => new ValueInjection("test"),
             'test1'     => new ContainerInjection('test1', 'subManager1'),
+            'default1'  => new DefaultValueInjection("default"),
+            'default2'  => new DefaultValueInjection(null),
         ];
         /** @var AbstractInjection $injection */
         foreach ($resolution as $key => $injection) {
@@ -106,6 +109,8 @@ class FactoryCodeTest extends TestCase
 
         $this->assertInstanceOf($requestedName, $object);
         $this->assertSame("somestring", $object->getTest());
+        $this->assertSame("default", $object->getDefault1());
+        $this->assertNull($object->getDefault2());
         $this->assertInstanceOf(\DateTime::class, $object->getDateTime());
         $this->assertInstanceOf(\DateTime::class, $object->getTest1());
     }
