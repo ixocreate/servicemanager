@@ -99,6 +99,11 @@ final class DependencyResolver implements DependencyResolverInterface
                 }
             }
 
+            if (!$paramInfo->isRequired()) {
+                $result[$name] = new DefaultValueInjection($paramInfo->getDefault());
+                continue;
+            }
+
             $result[$name] = new ValueInjection(null);
         }
 

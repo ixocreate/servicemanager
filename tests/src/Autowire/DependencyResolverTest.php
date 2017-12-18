@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace KiwiSuiteTest\ServiceManager\Autowire;
 
 use KiwiSuite\ServiceManager\Autowire\ContainerInjection;
+use KiwiSuite\ServiceManager\Autowire\DefaultValueInjection;
 use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
 use KiwiSuite\ServiceManager\ServiceManager;
@@ -19,6 +20,7 @@ use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;
 use KiwiSuiteMisc\ServiceManager\ComplexObject;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
+use KiwiSuiteMisc\ServiceManager\DefaultParamObject;
 use KiwiSuiteMisc\ServiceManager\OwnDateTime;
 use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
 use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
@@ -48,6 +50,7 @@ class DependencyResolverTest extends TestCase
                 'someThing' => DateTimeFactory::class,
                 ResolverTestObject::class => AutowireFactory::class,
                 'value2' => AutowireFactory::class,
+                DefaultParamObject::class => AutowireFactory::class,
             ],
             'subManagers' => [
                 'subManager1' => SubManagerFactory::class,
@@ -95,6 +98,18 @@ class DependencyResolverTest extends TestCase
         $this->assertSame("value3", $resolutions["value3"]->getType());
         $this->assertSame('subManager1', $resolutions["value3"]->getContainer());
         $this->assertSame("value3", $resolutions["value3"]->getParameterName());
+
+        $this->assertArrayHasKey("defaultParamObject", $resolutions);
+        $this->assertInstanceOf(ContainerInjection::class, $resolutions["defaultParamObject"]);
+        $this->assertSame(DefaultParamObject::class, $resolutions["defaultParamObject"]->getType());
+        $this->assertSame(null, $resolutions["defaultParamObject"]->getContainer());
+        $this->assertSame("defaultParamObject", $resolutions["defaultParamObject"]->getParameterName());
+
+        $resolutions = $this->dependencyResolver->resolveParameters(DefaultParamObject::class);
+        $this->assertArrayHasKey("name", $resolutions);
+        $this->assertInstanceOf(DefaultValueInjection::class, $resolutions["name"]);
+        $this->assertSame("name", $resolutions["name"]->getValue());
+        $this->assertSame("name", $resolutions["name"]->getParameterName());
     }
 
     public function testResolvePreference()

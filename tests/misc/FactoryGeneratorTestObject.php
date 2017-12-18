@@ -25,17 +25,30 @@ class FactoryGeneratorTestObject
      * @var \DateTimeInterface
      */
     private $test1;
+    /**
+     * @var string
+     */
+    private $default1;
+    /**
+     * @var null
+     */
+    private $default2;
 
     /**
      * ResolverTestObject constructor.
      * @param \DateTime $dateTime
+     * @param string $test
      * @param \DateTimeInterface $test1
+     * @param string $default1
+     * @param null $default2
      */
-    public function __construct(\DateTime $dateTime, string $test, \DateTimeInterface $test1)
+    public function __construct(\DateTime $dateTime, string $test, \DateTimeInterface $test1, $default1 = "default", $default2 = null)
     {
         $this->dateTime = $dateTime;
         $this->test = $test;
         $this->test1 = $test1;
+        $this->default1 = $default1;
+        $this->default2 = $default2;
     }
 
     /**
@@ -60,5 +73,21 @@ class FactoryGeneratorTestObject
     public function getTest1(): \DateTimeInterface
     {
         return $this->test1;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefault1(): string
+    {
+        return $this->default1;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDefault2()
+    {
+        return $this->default2;
     }
 }

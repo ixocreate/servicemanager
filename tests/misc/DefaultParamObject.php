@@ -11,16 +11,14 @@
 declare(strict_types=1);
 namespace KiwiSuiteMisc\ServiceManager;
 
-class ComplexObject
+class DefaultParamObject
 {
-    public function __construct(
-        string $value1,
-        ResolverTestObject $resolverTestObject,
-        ResolverTestObjectScalar $value2,
-        OwnDateTime $dateTime,
-        \DateTimeInterface $value3,
-        string $value4,
-        DefaultParamObject $defaultParamObject
-    ) {
+
+    /**
+     * DefaultParamObject constructor.
+     * @param string|null $name
+     */
+    public function __construct(string $name = "name")
+    {
     }
 }
