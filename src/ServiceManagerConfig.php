@@ -21,13 +21,13 @@ class ServiceManagerConfig implements \Serializable
      */
     private $config;
 
-    private $types = ['configProviders', 'factories', 'disabledSharing', 'delegators', 'initializers', 'lazyServices', 'subManagers'];
+    private $types = ['factories', 'disabledSharing', 'delegators', 'initializers', 'lazyServices', 'subManagers'];
 
     /**
      * ServiceManagerConfig constructor.
      * @param array $config
      */
-    final public function __construct(array $config)
+    public function __construct(array $config)
     {
         foreach ($this->types as $type) {
             if (!\array_key_exists($type, $config)) {
@@ -37,8 +37,6 @@ class ServiceManagerConfig implements \Serializable
         }
 
         $this->validate($config);
-
-        $config = $this->handleConfigProviders($config);
 
         $this->config = $config;
     }
@@ -165,41 +163,6 @@ class ServiceManagerConfig implements \Serializable
     }
 
     /**
-     * @param array $config
-     */
-    private function validateConfigProviders(array $config): void
-    {
-        foreach ($config as $configProvider) {
-            if (!\is_string($configProvider)) {
-                throw new InvalidArgumentException(\sprintf("'%s' is not a valid config provider", \var_export($configProvider, true)));
-            }
-            $classImplements = @\class_implements($configProvider);
-            if (!\is_array($classImplements)) {
-                throw new InvalidArgumentException(\sprintf("ConfigProvider '%s' can't be loaded", $configProvider));
-            }
-            if (!\in_array(ConfigProviderInterface::class, $classImplements)) {
-                throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $configProvider, ConfigProviderInterface::class));
-            }
-        }
-    }
-
-    private function handleConfigProviders(array $config): array
-    {
-        foreach ($config['configProviders'] as $configProvider) {
-            $configProvider = new $configProvider();
-            $serviceManagerConfig = $configProvider->getServiceManagerConfig();
-            $config['factories'] = \array_merge($serviceManagerConfig->getFactories(), $config['factories']);
-            $config['disabledSharing'] = \array_merge($serviceManagerConfig->getDisabledSharing(), $config['disabledSharing']);
-            $config['delegators'] = \array_merge($serviceManagerConfig->getDelegators(), $config['delegators']);
-            $config['initializers'] = \array_merge($serviceManagerConfig->getInitializers(), $config['initializers']);
-            $config['lazyServices'] = \array_merge($serviceManagerConfig->getLazyServices(), $config['lazyServices']);
-            $config['subManagers'] = \array_merge($serviceManagerConfig->getSubManagers(), $config['subManagers']);
-        }
-
-        return $config;
-    }
-
-    /**
      * @param string $key
      * @return array
      */
@@ -254,14 +217,6 @@ class ServiceManagerConfig implements \Serializable
     final public function getSubManagers(): array
     {
         return $this->getValue("subManagers");
-    }
-
-    /**
-     * @return array
-     */
-    final public function getConfigProviders(): array
-    {
-        return $this->getValue("configProviders");
     }
 
     /**

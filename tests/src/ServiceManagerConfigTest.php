@@ -17,7 +17,6 @@ use KiwiSuite\ServiceManager\Factory\LazyServiceDelegatorFactory;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
 use KiwiSuiteMisc\ServiceManager\CantCreateObjectFactory;
-use KiwiSuiteMisc\ServiceManager\ConfigProvider;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
 use KiwiSuiteMisc\ServiceManager\DelegatorFactory;
 use KiwiSuiteMisc\ServiceManager\Initializer;
@@ -115,21 +114,6 @@ class ServiceManagerConfigTest extends TestCase
         ];
         $serviceManagerConfig = new ServiceManagerConfig($items);
         $this->assertEquals($items['lazyServices'], $serviceManagerConfig->getLazyServices());
-    }
-
-    public function testGetConfigProviders()
-    {
-        $items = [];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-        $this->assertEquals($items, $serviceManagerConfig->getConfigProviders());
-
-        $items = [
-            'configProviders' => [
-                ConfigProvider::class,
-            ],
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
-        $this->assertEquals($items['configProviders'], $serviceManagerConfig->getConfigProviders());
     }
 
     public function testInvalidConfigKey()
@@ -308,45 +292,6 @@ class ServiceManagerConfigTest extends TestCase
         new ServiceManagerConfig($items);
     }
 
-    public function testInvalidConfigProvidersString()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'configProviders' => [
-                'test' => [],
-            ],
-        ];
-
-        new ServiceManagerConfig($items);
-    }
-
-    public function testInvalidConfigProvidersInvalid()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'configProviders' => [
-                "test",
-            ],
-        ];
-
-        new ServiceManagerConfig($items);
-    }
-
-    public function testInvalidConfigProvidersImplements()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'configProviders' => [
-                Initializer::class,
-            ],
-        ];
-
-        new ServiceManagerConfig($items);
-    }
-
     public function testSerialize()
     {
         $serviceManagerConfig = new ServiceManagerConfig([
@@ -359,7 +304,6 @@ class ServiceManagerConfigTest extends TestCase
             'factories' => [
                 'test' => DateTimeFactory::class,
             ],
-            'configProviders' => [],
             'disabledSharing' => [],
             'delegators' => [],
             'initializers' => [],

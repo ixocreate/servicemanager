@@ -15,7 +15,6 @@ use KiwiSuite\ServiceManager\Factory\AutowireFactory;
 use KiwiSuite\ServiceManager\Factory\LazyServiceDelegatorFactory;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
-use KiwiSuiteMisc\ServiceManager\ConfigProvider;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
 use KiwiSuiteMisc\ServiceManager\DelegatorFactory;
 use KiwiSuiteMisc\ServiceManager\Initializer;
@@ -152,21 +151,6 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertEquals($subManagers, $serviceManagerConfigurator->getSubManagers());
     }
 
-    public function testConfigProviders()
-    {
-        $configProviders = [
-            ConfigProvider::class,
-        ];
-
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-
-        foreach ($configProviders as $value) {
-            $serviceManagerConfigurator->addConfigProvider($value);
-        }
-
-        $this->assertEquals($configProviders, $serviceManagerConfigurator->getConfigProviders());
-    }
-
     public function testDirectoryScan()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
@@ -203,20 +187,15 @@ class ServiceManagerConfiguratorTest extends TestCase
         $serviceManagerConfigurator->addLazyService(\DateTime::class);
         $serviceManagerConfigurator->addDelegator("test", [DelegatorFactory::class]);
         $serviceManagerConfigurator->addFactory("factory", DateTimeFactory::class);
-        $serviceManagerConfigurator->addConfigProvider(ConfigProvider::class);
 
         $serviceManagerConfig = $serviceManagerConfigurator->getServiceManagerConfig();
 
         $this->assertInstanceOf(ServiceManagerConfig::class, $serviceManagerConfig);
 
         $this->assertEquals($serviceManagerConfigurator->getInitializers(), $serviceManagerConfig->getInitializers());
-        $this->assertEquals(\array_merge(
-            ['dateTimeFromConfigProvider' => DateTimeFactory::class],
-            $serviceManagerConfigurator->getFactories()
-        ), $serviceManagerConfig->getFactories());
+        $this->assertEquals($serviceManagerConfigurator->getFactories(), $serviceManagerConfig->getFactories());
         $this->assertEquals($serviceManagerConfigurator->getSubManagers(), $serviceManagerConfig->getSubManagers());
         $this->assertEquals($serviceManagerConfigurator->getLazyServices(), $serviceManagerConfig->getLazyServices());
         $this->assertEquals($serviceManagerConfigurator->getDelegators(), $serviceManagerConfig->getDelegators());
-        $this->assertEquals($serviceManagerConfigurator->getConfigProviders(), $serviceManagerConfig->getConfigProviders());
     }
 }
