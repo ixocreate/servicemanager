@@ -53,9 +53,26 @@ class SubManager implements SubManagerInterface
      */
     final public function __construct(ServiceManager $serviceManager, ServiceManagerConfig $serviceManagerConfig, string $validation)
     {
+        $config = $serviceManagerConfig->getConfig();
+        $config['lazy_services'] = [
+            'class_map' => $serviceManagerConfig->getLazyServices(),
+            'proxies_target_dir' => null,
+            'proxies_namespace' => null,
+            'write_proxy_files' => false,
+        ];
+
+        if ($serviceManager->getServiceManagerSetup()->isPersistLazyLoading()) {
+            if (!\file_exists($serviceManager->getServiceManagerSetup()->getLazyLoadingLocation())) {
+                @\mkdir($serviceManager->getServiceManagerSetup()->getLazyLoadingLocation(), 0777, true);
+            }
+
+            $config['lazy_services']['proxies_target_dir'] = $serviceManager->getServiceManagerSetup()->getLazyLoadingLocation();
+            $config['lazy_services']['write_proxy_files'] = true;
+        }
+
         $this->serviceManager = new PluginManager(
             $serviceManager,
-            $serviceManagerConfig->getConfig()
+            $config
         );
 
         $this->validation = $validation;

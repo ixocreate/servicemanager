@@ -13,6 +13,7 @@ namespace KiwiSuite\ServiceManager;
 
 use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
 use KiwiSuite\ServiceManager\SubManager\SubManagerFactoryInterface;
+use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
 class ServiceManagerConfig implements \Serializable
 {
@@ -101,6 +102,11 @@ class ServiceManagerConfig implements \Serializable
                 if (!\is_string($delegator)) {
                     throw new InvalidArgumentException(\sprintf("'%s' is not a valid delegator", \var_export($delegator, true)));
                 }
+
+                if ($delegator === LazyServiceFactory::class) {
+                    continue;
+                }
+
                 $classImplements = @\class_implements($delegator);
                 if (!\is_array($classImplements)) {
                     throw new InvalidArgumentException(\sprintf("Delegator '%s' can't be loaded", $delegator));

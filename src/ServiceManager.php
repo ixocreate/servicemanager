@@ -11,6 +11,7 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
+use Interop\Container\ContainerInterface;
 use KiwiSuite\ServiceManager\Autowire\Autoloader;
 use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
 use KiwiSuite\ServiceManager\Autowire\FactoryCode;
@@ -19,11 +20,9 @@ use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
 use KiwiSuite\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use ProxyManager\Factory\LazyLoadingValueHolderFactory;
-use KiwiSuite\ServiceManager\Factory\LazyLoadingValueHolderFactory as KiwiLazyLoadingValueHolderFactory;
 use Zend\Di\Definition\RuntimeDefinition;
 
-final class ServiceManager implements ServiceManagerInterface
+final class ServiceManager implements ServiceManagerInterface, ContainerInterface
 {
     /**
      * @var OriginalServiceManager
@@ -59,7 +58,21 @@ final class ServiceManager implements ServiceManagerInterface
 
         $config = $serviceManagerConfig->getConfig();
         $config['services'] = $services;
-        $config['factories'][LazyLoadingValueHolderFactory::class] = KiwiLazyLoadingValueHolderFactory::class;
+        $config['lazy_services'] = [
+            'class_map' => $serviceManagerConfig->getLazyServices(),
+            'proxies_target_dir' => null,
+            'proxies_namespace' => null,
+            'write_proxy_files' => false,
+        ];
+
+        if ($serviceManagerSetup->isPersistLazyLoading()) {
+            if (!\file_exists($serviceManagerSetup->getLazyLoadingLocation())) {
+                @\mkdir($serviceManagerSetup->getLazyLoadingLocation(), 0777, true);
+            }
+
+            $config['lazy_services']['proxies_target_dir'] = $serviceManagerSetup->getLazyLoadingLocation();
+            $config['lazy_services']['write_proxy_files'] = true;
+        }
 
         $this->serviceManager = new OriginalServiceManager($this, $config);
         $this->serviceManagerSetup = $serviceManagerSetup;

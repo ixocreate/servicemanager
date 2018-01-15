@@ -14,6 +14,7 @@ namespace KiwiSuite\ServiceManager;
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
 use KiwiSuite\ServiceManager\Factory\LazyServiceDelegatorFactory;
 use Zend\Code\Reflection\FileReflection;
+use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
 final class ServiceManagerConfigurator
 {
@@ -144,7 +145,7 @@ final class ServiceManagerConfigurator
         }
 
         $this->lazyServices[$name] = $className;
-        $this->addDelegator($name, [LazyServiceDelegatorFactory::class]);
+        $this->addDelegator($name, [LazyServiceFactory::class]);
     }
 
     /**
