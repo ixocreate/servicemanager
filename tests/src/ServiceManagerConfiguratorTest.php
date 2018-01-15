@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace KiwiSuiteTest\ServiceManager;
 
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\Factory\LazyServiceDelegatorFactory;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
 use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
@@ -26,6 +25,7 @@ use KiwiSuiteMisc\ServiceManager\Scan\SubDir\Class3;
 use KiwiSuiteMisc\ServiceManager\Scan\TestInterface;
 use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
+use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
 class ServiceManagerConfiguratorTest extends TestCase
 {
@@ -99,8 +99,8 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertEquals($lazyServices, $serviceManagerConfigurator->getLazyServices());
 
         $this->assertEquals([
-            'dateTime' => [LazyServiceDelegatorFactory::class],
-            'testFallBack' => [LazyServiceDelegatorFactory::class],
+            'dateTime' => [LazyServiceFactory::class],
+            'testFallBack' => [LazyServiceFactory::class],
         ], $serviceManagerConfigurator->getDelegators());
     }
 

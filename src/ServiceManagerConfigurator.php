@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\Factory\LazyServiceDelegatorFactory;
 use Zend\Code\Reflection\FileReflection;
 use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
@@ -293,9 +292,7 @@ final class ServiceManagerConfigurator
                     $this->addFactory($class->getName());
                 }
             } catch (\Exception $e) {
-
             }
-
         }
     }
 }

@@ -13,7 +13,6 @@ namespace KiwiSuiteTest\ServiceManager;
 
 use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\Factory\LazyServiceDelegatorFactory;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
 use KiwiSuiteMisc\ServiceManager\CantCreateObjectFactory;
@@ -23,6 +22,7 @@ use KiwiSuiteMisc\ServiceManager\Initializer;
 use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
 use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
+use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
 class ServiceManagerConfigTest extends TestCase
 {
@@ -343,7 +343,7 @@ class ServiceManagerConfigTest extends TestCase
                 "cantCreate" => CantCreateObjectFactory::class,
             ],
             'delegators' => [
-                LazyLoadingObject::class => [LazyServiceDelegatorFactory::class],
+                LazyLoadingObject::class => [LazyServiceFactory::class],
             ],
             'shared' => [],
             'initializers' => [],
