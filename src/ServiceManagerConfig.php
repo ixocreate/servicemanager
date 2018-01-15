@@ -27,7 +27,7 @@ class ServiceManagerConfig implements \Serializable
      * ServiceManagerConfig constructor.
      * @param array $config
      */
-    public function __construct(array $config)
+    final public function __construct(array $config)
     {
         foreach ($this->types as $type) {
             if (!\array_key_exists($type, $config)) {
