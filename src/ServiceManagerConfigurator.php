@@ -255,35 +255,46 @@ final class ServiceManagerConfigurator
                 continue;
             }
 
-            $fileReflection = new FileReflection($directory . '/' . $entry, true);
-            foreach ($fileReflection->getClasses() as $class) {
-                if ($class->isAbstract()) {
-                    continue;
-                }
-                if ($class->isInterface()) {
-                    continue;
-                }
+            $fileinfo = \pathinfo($directory . '/' . $entry);
 
-                if (!empty($only)) {
-                    $check = false;
+            if (empty($fileinfo['extension']) || $fileinfo['extension'] !== 'php') {
+                continue;
+            }
 
-                    foreach ($only as $instanceCheck) {
-                        if (\interface_exists($instanceCheck) && $class->implementsInterface($instanceCheck)) {
-                            $check = true;
-                            break;
-                        } elseif ($class->isSubclassOf($instanceCheck)) {
-                            $check = true;
-                            break;
+            try {
+                $fileReflection = new FileReflection($directory . '/' . $entry, true);
+                foreach ($fileReflection->getClasses() as $class) {
+                    if ($class->isAbstract()) {
+                        continue;
+                    }
+                    if ($class->isInterface()) {
+                        continue;
+                    }
+
+                    if (!empty($only)) {
+                        $check = false;
+
+                        foreach ($only as $instanceCheck) {
+                            if (\interface_exists($instanceCheck) && $class->implementsInterface($instanceCheck)) {
+                                $check = true;
+                                break;
+                            } elseif ($class->isSubclassOf($instanceCheck)) {
+                                $check = true;
+                                break;
+                            }
+                        }
+
+                        if ($check === false) {
+                            continue;
                         }
                     }
 
-                    if ($check === false) {
-                        continue;
-                    }
+                    $this->addFactory($class->getName());
                 }
+            } catch (\Exception $e) {
 
-                $this->addFactory($class->getName());
             }
+
         }
     }
 }
