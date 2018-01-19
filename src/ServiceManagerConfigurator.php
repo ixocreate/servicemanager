@@ -264,9 +264,10 @@ final class ServiceManagerConfigurator
             try {
                 $fileReflection = new FileReflection($directory . '/' . $entry, true);
                 foreach ($fileReflection->getClasses() as $class) {
-                    if (!\array_key_exists($class->getName(), $this->factories)) {
+                    if (\array_key_exists($class->getName(), $this->factories)) {
                         continue;
                     }
+
                     if ($class->isAbstract()) {
                         continue;
                     }
