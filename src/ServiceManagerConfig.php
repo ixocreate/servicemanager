@@ -9,6 +9,7 @@
  */
 
 declare(strict_types=1);
+
 namespace KiwiSuite\ServiceManager;
 
 use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
@@ -22,39 +23,42 @@ class ServiceManagerConfig implements \Serializable
      */
     private $config;
 
-    private $types = ['factories', 'disabledSharing', 'delegators', 'initializers', 'lazyServices', 'subManagers'];
-
     /**
      * ServiceManagerConfig constructor.
-     * @param array $config
+     * @param array $factories
+     * @param array $subManagers
+     * @param array $delegators
+     * @param array $lazyServices
+     * @param array $disabledSharing
+     * @param array $initializers
      */
-    final public function __construct(array $config)
-    {
-        foreach ($this->types as $type) {
-            if (!\array_key_exists($type, $config)) {
-                $config[$type] = [];
-                continue;
-            }
-        }
+    public function __construct(
+        array $factories = [],
+        array $subManagers = [],
+        array $delegators = [],
+        array $lazyServices = [],
+        array $disabledSharing = [],
+        array $initializers = []
+    ) {
+        $config['factories'] = $factories;
+        $this->validateFactories($factories);
 
-        $this->validate($config);
+        $config['subManagers'] = $subManagers;
+        $this->validateSubManagers($subManagers);
+
+        $config['delegators'] = $delegators;
+        $this->validateDelegators($delegators);
+
+        $config['lazyServices'] = $lazyServices;
+        $this->validateLazyServices($lazyServices);
+
+        $config['disabledSharing'] = $disabledSharing;
+        $this->validateDisabledSharing($disabledSharing);
+
+        $config['initializers'] = $initializers;
+        $this->validateInitializers($initializers);
 
         $this->config = $config;
-    }
-
-    /**
-     * @param array $config
-     */
-    private function validate(array $config): void
-    {
-        foreach ($config as $key => $values) {
-            if (!\in_array($key, $this->types)) {
-                throw new InvalidArgumentException(\sprintf("'%s' is not a valid configuration key", $key));
-            }
-
-            $method = "validate" . \ucfirst($key);
-            $this->{$method}($values);
-        }
     }
 
     /**
@@ -169,12 +173,17 @@ class ServiceManagerConfig implements \Serializable
     }
 
     /**
-     * @param string $key
+     * @param array $config
+     */
+    final protected function setInternalConfig(array $config): void {
+        $this->config = $config;
+    }
+
+    /**
      * @return array
      */
-    private function getValue(string $key): array
-    {
-        return $this->config[$key];
+    final protected function getInternalConfig(): array {
+        return $this->config;
     }
 
     /**
@@ -182,7 +191,7 @@ class ServiceManagerConfig implements \Serializable
      */
     final public function getFactories(): array
     {
-        return $this->getValue("factories");
+        return $this->config['factories'];
     }
 
     /**
@@ -190,7 +199,7 @@ class ServiceManagerConfig implements \Serializable
      */
     final public function getDisabledSharing(): array
     {
-        return $this->getValue("disabledSharing");
+        return $this->config['disabledSharing'];
     }
 
     /**
@@ -198,7 +207,7 @@ class ServiceManagerConfig implements \Serializable
      */
     final public function getDelegators(): array
     {
-        return $this->getValue("delegators");
+        return $this->config['delegators'];
     }
 
     /**
@@ -206,7 +215,7 @@ class ServiceManagerConfig implements \Serializable
      */
     final public function getInitializers(): array
     {
-        return $this->getValue("initializers");
+        return $this->config['initializers'];
     }
 
     /**
@@ -214,7 +223,7 @@ class ServiceManagerConfig implements \Serializable
      */
     final public function getLazyServices(): array
     {
-        return $this->getValue("lazyServices");
+        return $this->config['lazyServices'];
     }
 
     /**
@@ -222,19 +231,21 @@ class ServiceManagerConfig implements \Serializable
      */
     final public function getSubManagers(): array
     {
-        return $this->getValue("subManagers");
+        return $this->config['subManagers'];
     }
 
     /**
      * @return string
      */
-    final public function serialize()
+    public function serialize()
     {
         return \serialize($this->config);
     }
 
-
-    final public function unserialize($serialized)
+    /**
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
     {
         $this->config = \unserialize($serialized);
     }
@@ -244,8 +255,7 @@ class ServiceManagerConfig implements \Serializable
      */
     final public function getConfig(): array
     {
-        $factories = $this->getFactories();
-        $factories = \array_merge($factories, $this->getSubManagers());
+        $factories = \array_merge($this->config['factories'], $this->config['subManagers']);
 
         return [
             'factories' => $factories,

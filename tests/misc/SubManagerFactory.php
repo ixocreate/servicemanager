@@ -31,12 +31,9 @@ class SubManagerFactory implements SubManagerFactoryInterface
         return new SubManager(
             $container,
             new ServiceManagerConfig([
-                'factories' => [
-                    'test1' => DateTimeFactory::class,
-                    'value3' => DateTimeFactory::class,
-                    OwnDateTime::class => DateTimeFactory::class,
-
-                ],
+                'test1' => DateTimeFactory::class,
+                'value3' => DateTimeFactory::class,
+                OwnDateTime::class => DateTimeFactory::class,
             ]),
             \DateTimeInterface::class
         );

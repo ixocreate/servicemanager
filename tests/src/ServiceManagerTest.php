@@ -118,12 +118,10 @@ class ServiceManagerTest extends TestCase
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $items = [
-            'factories' => [
-                'test' => CantCreateObjectFactory::class,
-            ],
+        $factories = [
+            'test' => CantCreateObjectFactory::class,
         ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
+        $serviceManagerConfig = new ServiceManagerConfig($factories);
         $serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $serviceManager->build("test");

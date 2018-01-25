@@ -36,16 +36,16 @@ class AutoloaderTest extends TestCase
 
     public function setUp()
     {
-        $serviceManagerConfig = new ServiceManagerConfig([
-            'factories' => [
+        $serviceManagerConfig = new ServiceManagerConfig(
+            [
                 \DateTime::class => DateTimeFactory::class,
                 'someThing' => DateTimeFactory::class,
                 ResolverTestObject::class => AutowireFactory::class,
             ],
-            'subManagers' => [
+            [
                 'subManager1' => SubManagerFactory::class,
-            ],
-        ]);
+            ]
+        );
 
         $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup('resources/generated_autoload/servicemanger/', null, true));
     }

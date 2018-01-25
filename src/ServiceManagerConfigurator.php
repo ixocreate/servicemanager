@@ -211,14 +211,14 @@ final class ServiceManagerConfigurator
     {
         $this->processDirectories();
 
-        return new $this->serviceManagerConfigClass([
-            'factories' => $this->getFactories(),
-            'initializers' => $this->getInitializers(),
-            'delegators' => $this->getDelegators(),
-            'subManagers' => $this->getSubManagers(),
-            'lazyServices' => $this->getLazyServices(),
-            'disabledSharing' => $this->getDisableSharing(),
-        ]);
+        return new $this->serviceManagerConfigClass(
+            $this->getFactories(),
+            $this->getSubManagers(),
+            $this->getDelegators(),
+            $this->getLazyServices(),
+            $this->getDisableSharing(),
+            $this->getInitializers()
+        );
     }
 
     /**

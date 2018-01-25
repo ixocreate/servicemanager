@@ -44,18 +44,18 @@ class DependencyResolverTest extends TestCase
     {
         $this->dependencyResolver = new DependencyResolver(new RuntimeDefinition());
 
-        $serviceManagerConfig = new ServiceManagerConfig([
-            'factories' => [
+        $serviceManagerConfig = new ServiceManagerConfig(
+            [
                 \DateTime::class => DateTimeFactory::class,
                 'someThing' => DateTimeFactory::class,
                 ResolverTestObject::class => AutowireFactory::class,
                 'value2' => AutowireFactory::class,
                 DefaultParamObject::class => AutowireFactory::class,
             ],
-            'subManagers' => [
+            [
                 'subManager1' => SubManagerFactory::class,
-            ],
-        ]);
+            ]
+        );
 
         $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
         $this->dependencyResolver->setContainer($this->serviceManager);
