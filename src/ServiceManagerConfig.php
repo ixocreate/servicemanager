@@ -175,14 +175,16 @@ class ServiceManagerConfig implements \Serializable
     /**
      * @param array $config
      */
-    final protected function setInternalConfig(array $config): void {
+    final protected function setInternalConfig(array $config): void
+    {
         $this->config = $config;
     }
 
     /**
      * @return array
      */
-    final protected function getInternalConfig(): array {
+    final protected function getInternalConfig(): array
+    {
         return $this->config;
     }
 
