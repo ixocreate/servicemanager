@@ -11,7 +11,6 @@
 declare(strict_types=1);
 namespace KiwiSuiteMisc\ServiceManager;
 
-
 use KiwiSuite\Contract\ServiceManager\FactoryInterface;
 use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
 

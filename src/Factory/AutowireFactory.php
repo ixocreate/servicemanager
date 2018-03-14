@@ -11,7 +11,6 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Factory;
 
-
 use KiwiSuite\Contract\ServiceManager\AutowireFactoryInterface;
 use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
 
