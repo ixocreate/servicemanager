@@ -11,7 +11,7 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Autowire;
 
-use KiwiSuite\ServiceManager\ServiceManagerInterface;
+use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
 
 final class Autoloader
 {

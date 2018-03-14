@@ -11,10 +11,10 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Generator;
 
+use KiwiSuite\Contract\ServiceManager\AutowireFactoryInterface;
+use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
 use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
 use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\AutowireFactoryInterface;
-use KiwiSuite\ServiceManager\ServiceManagerInterface;
 use Zend\Di\Definition\RuntimeDefinition;
 
 final class AutowireFactoryGenerator

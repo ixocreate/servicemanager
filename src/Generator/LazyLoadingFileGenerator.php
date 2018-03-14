@@ -11,8 +11,8 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Generator;
 
+use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
 use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerInterface;
 
 class LazyLoadingFileGenerator
 {

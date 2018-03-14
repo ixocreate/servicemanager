@@ -11,9 +11,9 @@
 declare(strict_types=1);
 namespace KiwiSuiteTest\ServiceManager;
 
+use KiwiSuite\Contract\ServiceManager\FactoryInterface;
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\FactoryInterface;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;
 use KiwiSuite\ServiceManager\ServiceManagerSetup;

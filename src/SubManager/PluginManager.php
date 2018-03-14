@@ -11,7 +11,7 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\SubManager;
 
-use KiwiSuite\ServiceManager\ServiceManagerInterface;
+use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
 use Zend\ServiceManager\ServiceManager;
 
 final class PluginManager extends ServiceManager

@@ -12,11 +12,15 @@ declare(strict_types=1);
 
 namespace KiwiSuite\ServiceManager;
 
+use KiwiSuite\Contract\ServiceManager\DelegatorFactoryInterface;
+use KiwiSuite\Contract\ServiceManager\FactoryInterface;
+use KiwiSuite\Contract\ServiceManager\InitializerInterface;
+use KiwiSuite\Contract\ServiceManager\ServiceManagerConfigInterface;
+use KiwiSuite\Contract\ServiceManager\SubManager\SubManagerFactoryInterface;
 use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
-use KiwiSuite\ServiceManager\SubManager\SubManagerFactoryInterface;
 use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
-class ServiceManagerConfig implements \Serializable
+class ServiceManagerConfig implements ServiceManagerConfigInterface
 {
     /**
      * @var array
@@ -262,7 +266,6 @@ class ServiceManagerConfig implements \Serializable
         return [
             'factories' => $factories,
             'delegators' => $this->getDelegators(),
-            'shared' => \array_fill_keys($this->getDisabledSharing(), false),
             'initializers' => $this->getInitializers(),
             'shared_by_default' => true,
         ];

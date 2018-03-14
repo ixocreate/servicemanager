@@ -11,9 +11,10 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Autowire\FactoryResolver;
 
+use KiwiSuite\Contract\ServiceManager\Autowire\FactoryResolverInterface;
+use KiwiSuite\Contract\ServiceManager\FactoryInterface;
 use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
 use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\FactoryInterface;
 
 final class RuntimeFactoryResolver implements FactoryResolverInterface
 {

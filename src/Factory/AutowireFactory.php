@@ -11,8 +11,9 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\Factory;
 
-use KiwiSuite\ServiceManager\AutowireFactoryInterface;
-use KiwiSuite\ServiceManager\ServiceManagerInterface;
+
+use KiwiSuite\Contract\ServiceManager\AutowireFactoryInterface;
+use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
 
 final class AutowireFactory implements AutowireFactoryInterface
 {

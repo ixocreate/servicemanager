@@ -11,10 +11,10 @@
 declare(strict_types=1);
 namespace KiwiSuiteTest\ServiceManager\Autowire;
 
+use KiwiSuite\Contract\ServiceManager\FactoryInterface;
 use KiwiSuite\ServiceManager\Autowire\Autoloader;
 use KiwiSuite\ServiceManager\Autowire\FactoryCode;
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\FactoryInterface;
 use KiwiSuite\ServiceManager\Generator\AutowireFactoryGenerator;
 use KiwiSuite\ServiceManager\ServiceManager;
 use KiwiSuite\ServiceManager\ServiceManagerConfig;

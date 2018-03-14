@@ -10,6 +10,7 @@
     ],
     "require": {
         "php": "^7.1",
+        "kiwi-suite/contract": "dev-develop",
         "zendframework/zend-servicemanager": "^3.3",
         "ocramius/proxy-manager": "^2.1",
         "zendframework/zend-di": "^3.0",

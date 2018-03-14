@@ -11,7 +11,8 @@
 declare(strict_types=1);
 namespace KiwiSuiteMisc\ServiceManager;
 
-use KiwiSuite\ServiceManager\FactoryInterface;
+
+use KiwiSuite\Contract\ServiceManager\FactoryInterface;
 
 class ResolverTestObjectNoDep
 {

@@ -11,7 +11,10 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\SubManager;
 
-use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FactoryResolverInterface;
+use KiwiSuite\Contract\ServiceManager\Autowire\FactoryResolverInterface;
+use KiwiSuite\Contract\ServiceManager\ServiceManagerConfigInterface;
+use KiwiSuite\Contract\ServiceManager\ServiceManagerSetupInterface;
+use KiwiSuite\Contract\ServiceManager\SubManager\SubManagerInterface;
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
 use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
 use KiwiSuite\ServiceManager\ServiceManager;
@@ -159,17 +162,17 @@ class SubManager implements SubManagerInterface
     }
 
     /**
-     * @return ServiceManagerSetup
+     * @return ServiceManagerSetupInterface
      */
-    final public function getServiceManagerSetup(): ServiceManagerSetup
+    final public function getServiceManagerSetup(): ServiceManagerSetupInterface
     {
         return $this->serviceManagerSetup;
     }
 
     /**
-     * @return ServiceManagerConfig
+     * @return ServiceManagerConfigInterface
      */
-    final public function getServiceManagerConfig(): ServiceManagerConfig
+    final public function getServiceManagerConfig(): ServiceManagerConfigInterface
     {
         return $this->serviceManagerConfig;
     }

@@ -11,7 +11,9 @@
 declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
-final class ServiceManagerSetup
+use KiwiSuite\Contract\ServiceManager\ServiceManagerSetupInterface;
+
+final class ServiceManagerSetup implements ServiceManagerSetupInterface
 {
     /**
      * @var string
@@ -94,9 +96,9 @@ final class ServiceManagerSetup
 
     /**
      * @param string $persistRoot
-     * @return ServiceManagerSetup
+     * @return ServiceManagerSetupInterface
      */
-    public function withPersistRoot(string $persistRoot) : ServiceManagerSetup
+    public function withPersistRoot(string $persistRoot) : ServiceManagerSetupInterface
     {
         return new ServiceManagerSetup(
             $persistRoot,
@@ -107,9 +109,9 @@ final class ServiceManagerSetup
 
     /**
      * @param bool $persistLazyLoading
-     * @return ServiceManagerSetup
+     * @return ServiceManagerSetupInterface
      */
-    public function withPersistLazyLoading(bool $persistLazyLoading) : ServiceManagerSetup
+    public function withPersistLazyLoading(bool $persistLazyLoading) : ServiceManagerSetupInterface
     {
         return new ServiceManagerSetup(
             $this->persistRoot,
@@ -123,7 +125,7 @@ final class ServiceManagerSetup
      * @return ServiceManagerSetup
      * @internal param bool $persistLazyLoading
      */
-    public function withPersistAutowire(bool $persistAutowire) : ServiceManagerSetup
+    public function withPersistAutowire(bool $persistAutowire) : ServiceManagerSetupInterface
     {
         return new ServiceManagerSetup(
             $this->persistRoot,

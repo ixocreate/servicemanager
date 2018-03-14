@@ -12,10 +12,13 @@ declare(strict_types=1);
 namespace KiwiSuite\ServiceManager;
 
 use Interop\Container\ContainerInterface;
+use KiwiSuite\Contract\ServiceManager\Autowire\FactoryResolverInterface;
+use KiwiSuite\Contract\ServiceManager\ServiceManagerConfigInterface;
+use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
+use KiwiSuite\Contract\ServiceManager\ServiceManagerSetupInterface;
 use KiwiSuite\ServiceManager\Autowire\Autoloader;
 use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
 use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FactoryResolverInterface;
 use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
 use KiwiSuite\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
 use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
@@ -123,17 +126,17 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     }
 
     /**
-     * @return ServiceManagerConfig
+     * @return ServiceManagerConfigInterface
      */
-    public function getServiceManagerConfig(): ServiceManagerConfig
+    public function getServiceManagerConfig(): ServiceManagerConfigInterface
     {
         return $this->serviceManagerConfig;
     }
 
     /**
-     * @return ServiceManagerSetup
+     * @return ServiceManagerSetupInterface
      */
-    public function getServiceManagerSetup(): ServiceManagerSetup
+    public function getServiceManagerSetup(): ServiceManagerSetupInterface
     {
         return $this->serviceManagerSetup;
     }
