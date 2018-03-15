@@ -18,9 +18,10 @@ use KiwiSuite\Contract\ServiceManager\InitializerInterface;
 use KiwiSuite\Contract\ServiceManager\ServiceManagerConfigInterface;
 use KiwiSuite\Contract\ServiceManager\SubManager\SubManagerFactoryInterface;
 use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
+use KiwiSuite\ServiceManager\SubManager\SubManagerConfigurator;
 use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
-class ServiceManagerConfig implements ServiceManagerConfigInterface
+final class ServiceManagerConfig implements ServiceManagerConfigInterface
 {
     /**
      * @var array
@@ -29,173 +30,22 @@ class ServiceManagerConfig implements ServiceManagerConfigInterface
 
     /**
      * ServiceManagerConfig constructor.
-     * @param array $factories
-     * @param array $subManagers
-     * @param array $delegators
-     * @param array $lazyServices
-     * @param array $disabledSharing
-     * @param array $initializers
+     * @param ServiceManagerConfiguratorInterface $serviceManagerConfigurator
      */
-    public function __construct(
-        array $factories = [],
-        array $subManagers = [],
-        array $delegators = [],
-        array $lazyServices = [],
-        array $disabledSharing = [],
-        array $initializers = []
-    ) {
-        $config['factories'] = $factories;
-        $this->validateFactories($factories);
+    public function __construct(ServiceManagerConfiguratorInterface $serviceManagerConfigurator) {
 
-        $config['subManagers'] = $subManagers;
-        $this->validateSubManagers($subManagers);
-
-        $config['delegators'] = $delegators;
-        $this->validateDelegators($delegators);
-
-        $config['lazyServices'] = $lazyServices;
-        $this->validateLazyServices($lazyServices);
-
-        $config['disabledSharing'] = $disabledSharing;
-        $this->validateDisabledSharing($disabledSharing);
-
-        $config['initializers'] = $initializers;
-        $this->validateInitializers($initializers);
-
-        $this->config = $config;
-    }
-
-    /**
-     * @param array $config
-     */
-    private function validateFactories(array $config): void
-    {
-        foreach ($config as $factoryName => $factory) {
-            if (!\is_string($factory)) {
-                throw new InvalidArgumentException(\sprintf("'%s' is not a valid factory", \var_export($factoryName, true)));
-            }
-            $classImplements = @\class_implements($factory);
-            if (!\is_array($classImplements)) {
-                throw new InvalidArgumentException(\sprintf("Factory '%s' can't be loaded", $factory));
-            }
-            if (!\in_array(FactoryInterface::class, $classImplements)) {
-                throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $factoryName, FactoryInterface::class));
-            }
-        }
-    }
-
-    /**
-     * @param array $config
-     */
-    private function validateDisabledSharing(array $config): void
-    {
-        foreach ($config as $service) {
-            if (!\is_string($service)) {
-                throw new InvalidArgumentException(\sprintf("'%s' is not a valid factory", \var_export($service, true)));
-            }
-        }
-    }
-
-    /**
-     * @param array $config
-     */
-    private function validateDelegators(array $config): void
-    {
-        foreach ($config as $name => $delegators) {
-            if (!\is_array($delegators)) {
-                throw new InvalidArgumentException(\sprintf("'%s' is not a valid delegator definition", $name));
-            }
-
-            foreach ($delegators as $delegator) {
-                if (!\is_string($delegator)) {
-                    throw new InvalidArgumentException(\sprintf("'%s' is not a valid delegator", \var_export($delegator, true)));
-                }
-
-                if ($delegator === LazyServiceFactory::class) {
-                    continue;
-                }
-
-                $classImplements = @\class_implements($delegator);
-                if (!\is_array($classImplements)) {
-                    throw new InvalidArgumentException(\sprintf("Delegator '%s' can't be loaded", $delegator));
-                }
-                if (!\in_array(DelegatorFactoryInterface::class, $classImplements)) {
-                    throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $delegator, DelegatorFactoryInterface::class));
-                }
-            }
-        }
-    }
-
-    /**
-     * @param array $config
-     */
-    private function validateInitializers(array $config): void
-    {
-        foreach ($config as $initializers) {
-            if (!\is_string($initializers)) {
-                throw new InvalidArgumentException(\sprintf("'%s' is not a valid factory", \var_export($initializers, true)));
-            }
-            $classImplements = @\class_implements($initializers);
-            if (!\is_array($classImplements)) {
-                throw new InvalidArgumentException(\sprintf("Factory '%s' can't be loaded", $initializers));
-            }
-            if (!\in_array(InitializerInterface::class, $classImplements)) {
-                throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $initializers, InitializerInterface::class));
-            }
-        }
-    }
-
-    /**
-     * @param array $config
-     */
-    private function validateLazyServices(array $config): void
-    {
-        foreach ($config as $lazyName => $lazyClass) {
-            if (!\class_exists($lazyClass)) {
-                throw new InvalidArgumentException(\sprintf("'%s' is not a valid class", $lazyClass));
-            }
-        }
-    }
-
-    /**
-     * @param array $config
-     */
-    private function validateSubManagers(array $config): void
-    {
-        foreach ($config as $factoryName => $factory) {
-            if (!\is_string($factory)) {
-                throw new InvalidArgumentException(\sprintf("'%s' is not a valid factory", \var_export($factory, true)));
-            }
-            $classImplements = @\class_implements($factory);
-            if (!\is_array($classImplements)) {
-                throw new InvalidArgumentException(\sprintf("Factory '%s' can't be loaded", $factory));
-            }
-            if (!\in_array(SubManagerFactoryInterface::class, $classImplements)) {
-                throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $factoryName, SubManagerFactoryInterface::class));
-            }
-        }
-    }
-
-    /**
-     * @param array $config
-     */
-    final protected function setInternalConfig(array $config): void
-    {
-        $this->config = $config;
+        $this->config['factories'] = $serviceManagerConfigurator->getFactories();
+        $this->config['delegators'] = $serviceManagerConfigurator->getDelegators();
+        $this->config['lazyServices'] = $serviceManagerConfigurator->getLazyServices();
+        $this->config['initializers'] = $serviceManagerConfigurator->getInitializers();
+        $this->config['subManagers'] = $serviceManagerConfigurator->getSubManagers();
+        $this->config['metadata'] = $serviceManagerConfigurator->getMetadata();
     }
 
     /**
      * @return array
      */
-    final protected function getInternalConfig(): array
-    {
-        return $this->config;
-    }
-
-    /**
-     * @return array
-     */
-    final public function getFactories(): array
+    public function getFactories(): array
     {
         return $this->config['factories'];
     }
@@ -203,7 +53,7 @@ class ServiceManagerConfig implements ServiceManagerConfigInterface
     /**
      * @return array
      */
-    final public function getDisabledSharing(): array
+    public function getDisabledSharing(): array
     {
         return $this->config['disabledSharing'];
     }
@@ -211,7 +61,7 @@ class ServiceManagerConfig implements ServiceManagerConfigInterface
     /**
      * @return array
      */
-    final public function getDelegators(): array
+    public function getDelegators(): array
     {
         return $this->config['delegators'];
     }
@@ -219,7 +69,7 @@ class ServiceManagerConfig implements ServiceManagerConfigInterface
     /**
      * @return array
      */
-    final public function getInitializers(): array
+    public function getInitializers(): array
     {
         return $this->config['initializers'];
     }
@@ -227,7 +77,7 @@ class ServiceManagerConfig implements ServiceManagerConfigInterface
     /**
      * @return array
      */
-    final public function getLazyServices(): array
+    public function getLazyServices(): array
     {
         return $this->config['lazyServices'];
     }
@@ -235,9 +85,27 @@ class ServiceManagerConfig implements ServiceManagerConfigInterface
     /**
      * @return array
      */
-    final public function getSubManagers(): array
+    public function getSubManagers(): array
     {
         return $this->config['subManagers'];
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $default
+     * @return array
+     */
+    public function getMetadata(string $name = null, $default = null)
+    {
+        if ($name !== null) {
+            if (!\array_key_exists($name, $this->config['metadata'])) {
+                return $default;
+            }
+
+            return $this->config['metadata'][$name];
+        }
+
+        return $this->config['metadata'];
     }
 
     /**
@@ -259,7 +127,7 @@ class ServiceManagerConfig implements ServiceManagerConfigInterface
     /**
      * @return array
      */
-    final public function getConfig(): array
+    public function getConfig(): array
     {
         $factories = \array_merge($this->config['factories'], $this->config['subManagers']);
 
