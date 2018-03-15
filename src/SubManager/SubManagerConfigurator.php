@@ -14,7 +14,6 @@ namespace KiwiSuite\ServiceManager\SubManager;
 use KiwiSuite\Contract\Application\ServiceRegistryInterface;
 use KiwiSuite\ServiceManager\AbstractServiceManagerConfigurator;
 use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
 
 final class SubManagerConfigurator extends AbstractServiceManagerConfigurator
 {
@@ -44,7 +43,7 @@ final class SubManagerConfigurator extends AbstractServiceManagerConfigurator
     public function addDirectory(string $directory, bool $recursive = true, array $only = []) : void
     {
         $only[] = $this->metadata['validation'];
-        parent::addDirectory($directory, $recursive, array_unique($only));
+        parent::addDirectory($directory, $recursive, \array_unique($only));
     }
 
     public function getMetadata(): array

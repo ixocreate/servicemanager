@@ -1,4 +1,14 @@
 <?php
+/**
+ * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
+ *
+ * @package kiwi-suite/servicemanager
+ * @see https://github.com/kiwi-suite/servicemanager
+ * @copyright Copyright (c) 2010 - 2018 kiwi suite GmbH
+ * @license MIT License
+ */
+
+declare(strict_types=1);
 namespace KiwiSuite\ServiceManager\SubManager;
 
 use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
@@ -13,9 +23,9 @@ final class SubManagerFactory implements SubManagerFactoryInterface
      * @param ServiceManagerInterface $container
      * @param $requestedName
      * @param array|null $options
-     * @return SubManagerInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     * @return SubManagerInterface
      */
     public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null): SubManagerInterface
     {

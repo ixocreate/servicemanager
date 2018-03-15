@@ -12,14 +12,7 @@ declare(strict_types=1);
 
 namespace KiwiSuite\ServiceManager;
 
-use KiwiSuite\Contract\ServiceManager\DelegatorFactoryInterface;
-use KiwiSuite\Contract\ServiceManager\FactoryInterface;
-use KiwiSuite\Contract\ServiceManager\InitializerInterface;
 use KiwiSuite\Contract\ServiceManager\ServiceManagerConfigInterface;
-use KiwiSuite\Contract\ServiceManager\SubManager\SubManagerFactoryInterface;
-use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
-use KiwiSuite\ServiceManager\SubManager\SubManagerConfigurator;
-use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
 final class ServiceManagerConfig implements ServiceManagerConfigInterface
 {
@@ -32,8 +25,8 @@ final class ServiceManagerConfig implements ServiceManagerConfigInterface
      * ServiceManagerConfig constructor.
      * @param ServiceManagerConfiguratorInterface $serviceManagerConfigurator
      */
-    public function __construct(ServiceManagerConfiguratorInterface $serviceManagerConfigurator) {
-
+    public function __construct(ServiceManagerConfiguratorInterface $serviceManagerConfigurator)
+    {
         $this->config['factories'] = $serviceManagerConfigurator->getFactories();
         $this->config['delegators'] = $serviceManagerConfigurator->getDelegators();
         $this->config['lazyServices'] = $serviceManagerConfigurator->getLazyServices();
