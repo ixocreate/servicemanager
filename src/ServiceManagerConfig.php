@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace KiwiSuite\ServiceManager;
 
+use KiwiSuite\Contract\ServiceManager\NamedServiceInterface;
 use KiwiSuite\Contract\ServiceManager\ServiceManagerConfigInterface;
 
 final class ServiceManagerConfig implements ServiceManagerConfigInterface
@@ -33,6 +34,15 @@ final class ServiceManagerConfig implements ServiceManagerConfigInterface
         $this->config['initializers'] = $serviceManagerConfigurator->getInitializers();
         $this->config['subManagers'] = $serviceManagerConfigurator->getSubManagers();
         $this->config['metadata'] = $serviceManagerConfigurator->getMetadata();
+
+        $this->config['namedServices'] = [];
+
+        foreach (\array_keys($this->config['factories']) as $service) {
+            if (!\is_subclass_of($service, NamedServiceInterface::class, true)) {
+                continue;
+            }
+            $this->config['namedServices'][\forward_static_call([$service, 'serviceName'])] = $service;
+        }
     }
 
     /**
@@ -81,6 +91,14 @@ final class ServiceManagerConfig implements ServiceManagerConfigInterface
     public function getSubManagers(): array
     {
         return $this->config['subManagers'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getNamedServices(): array
+    {
+        return $this->config['namedServices'];
     }
 
     /**
