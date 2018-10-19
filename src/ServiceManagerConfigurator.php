@@ -13,6 +13,7 @@ namespace KiwiSuite\ServiceManager;
 
 use KiwiSuite\Contract\Application\ServiceRegistryInterface;
 use KiwiSuite\Contract\ServiceManager\SubManager\SubManagerFactoryInterface;
+use KiwiSuite\Contract\ServiceManager\SubManager\SubManagerInterface;
 use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
 use KiwiSuite\ServiceManager\SubManager\SubManagerFactory;
 
@@ -30,6 +31,10 @@ final class ServiceManagerConfigurator extends AbstractServiceManagerConfigurato
      */
     public function addSubManager(string $manager, string $factory = SubManagerFactory::class): void
     {
+        if (!\is_subclass_of($manager, SubManagerInterface::class, true)) {
+            throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $manager, SubManagerInterface::class));
+        }
+
         if (!\class_exists($factory)) {
             throw new InvalidArgumentException(\sprintf("Factory '%s' can't be loaded", $factory));
         }
