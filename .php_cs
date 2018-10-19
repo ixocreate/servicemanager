@@ -11,7 +11,7 @@ return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2'                             => true,
-        'header_comment'                  => [
+        'header_comment'                    => [
             'header' => $header,
             'commentType' => 'PHPDoc',
             'location' => 'after_open',
@@ -56,7 +56,7 @@ return PhpCsFixer\Config::create()
         'standardize_not_equals'            => true,
         'trailing_comma_in_multiline_array' => true,
         'declare_strict_types'              => true,
-
+        'class_attributes_separation'       => ['elements' => ['const', 'method', 'property']],
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
