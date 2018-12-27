@@ -17,8 +17,8 @@
         "zendframework/zend-code": "^3.3"
     },
     "require-dev": {
+        "ixocreate/coding-standard": "^1.0.1",
         "phpunit/phpunit": "^6.0.6",
-        "friendsofphp/php-cs-fixer": "^2.13",
         "php-coveralls/php-coveralls": "^2.0"
     },
     "autoload": {
@@ -31,5 +31,8 @@
             "IxocreateMisc\\ServiceManager\\": "tests/misc/",
             "IxocreateTest\\ServiceManager\\": "tests/src/"
         }
+    },
+    "scripts": {
+        "fix-cs": "vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --config vendor/ixocreate/coding-standard/.php_cs"
     }
 }

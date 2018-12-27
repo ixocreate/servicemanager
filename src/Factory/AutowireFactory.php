@@ -1,14 +1,12 @@
 <?php
 /**
- * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
- *
- * @package kiwi-suite/servicemanager
- * @link https://github.com/kiwi-suite/servicemanager
- * @copyright Copyright (c) 2010 - 2018 kiwi suite GmbH
+ * @link https://github.com/ixocreate
+ * @copyright IXOCREATE GmbH
  * @license MIT License
  */
 
 declare(strict_types=1);
+
 namespace Ixocreate\ServiceManager\Factory;
 
 use Ixocreate\Contract\ServiceManager\AutowireFactoryInterface;
@@ -16,7 +14,6 @@ use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
 
 final class AutowireFactory implements AutowireFactoryInterface
 {
-
     /**
      * @param ServiceManagerInterface $container
      * @param $requestedName

@@ -1,14 +1,12 @@
 <?php
 /**
- * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
- *
- * @package kiwi-suite/servicemanager
- * @link https://github.com/kiwi-suite/servicemanager
- * @copyright Copyright (c) 2010 - 2018 kiwi suite GmbH
+ * @link https://github.com/ixocreate
+ * @copyright IXOCREATE GmbH
  * @license MIT License
  */
 
 declare(strict_types=1);
+
 namespace Ixocreate\ServiceManager\Autowire\FactoryResolver;
 
 use Ixocreate\Contract\ServiceManager\Autowire\FactoryResolverInterface;
@@ -22,6 +20,7 @@ final class RuntimeFactoryResolver implements FactoryResolverInterface
      * @var FactoryCode
      */
     private $factoryCode;
+
     /**
      * @var DependencyResolver
      */
@@ -37,7 +36,6 @@ final class RuntimeFactoryResolver implements FactoryResolverInterface
         $this->factoryCode = $factoryCode;
         $this->dependencyResolver = $dependencyResolver;
     }
-
 
     /**
      * @param string $requestedName
