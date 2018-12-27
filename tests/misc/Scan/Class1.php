@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteMisc\ServiceManager\Scan;
+namespace IxocreateMisc\ServiceManager\Scan;
 
 class Class1
 {

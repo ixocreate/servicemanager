@@ -9,9 +9,9 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Autowire;
+namespace IxocreateTest\ServiceManager\Autowire;
 
-use KiwiSuite\ServiceManager\Autowire\ContainerInjection;
+use Ixocreate\ServiceManager\Autowire\ContainerInjection;
 use PHPUnit\Framework\TestCase;
 
 class ContainerInjectionTest extends TestCase

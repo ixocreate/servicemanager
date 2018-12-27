@@ -9,10 +9,10 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteMisc\ServiceManager;
+namespace IxocreateMisc\ServiceManager;
 
-use KiwiSuite\Contract\ServiceManager\FactoryInterface;
-use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
 
 class CantCreateObjectFactory implements FactoryInterface
 {

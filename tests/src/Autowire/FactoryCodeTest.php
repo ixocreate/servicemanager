@@ -9,19 +9,19 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Autowire;
+namespace IxocreateTest\ServiceManager\Autowire;
 
-use KiwiSuite\ServiceManager\Autowire\ContainerInjection;
-use KiwiSuite\ServiceManager\Autowire\DefaultValueInjection;
-use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\FactoryGeneratorTestObject;
-use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
+use Ixocreate\ServiceManager\Autowire\ContainerInjection;
+use Ixocreate\ServiceManager\Autowire\DefaultValueInjection;
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\FactoryGeneratorTestObject;
+use IxocreateMisc\ServiceManager\ResolverTestObject;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 use Zend\Di\Resolver\AbstractInjection;
 use Zend\Di\Resolver\ValueInjection;
@@ -68,7 +68,7 @@ class FactoryCodeTest extends TestCase
         $requestedName = \DateTime::class;
 
         $this->assertSame(
-            '\\KiwiSuite\\GeneratedFactory\\Factory' . \md5($requestedName),
+            '\\Ixocreate\\GeneratedFactory\\Factory' . \md5($requestedName),
             $this->factoryCode->generateFactoryFullQualifiedName($requestedName)
         );
     }

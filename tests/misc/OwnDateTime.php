@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteMisc\ServiceManager;
+namespace IxocreateMisc\ServiceManager;
 
 class OwnDateTime extends \DateTime
 {

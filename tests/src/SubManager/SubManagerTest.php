@@ -9,17 +9,17 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager;
+namespace IxocreateTest\ServiceManager;
 
-use KiwiSuite\Contract\ServiceManager\FactoryInterface;
-use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
-use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuite\ServiceManager\SubManager\SubManager;
-use KiwiSuiteMisc\ServiceManager\CantCreateObjectFactory;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
+use Ixocreate\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
+use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use Ixocreate\ServiceManager\SubManager\SubManager;
+use IxocreateMisc\ServiceManager\CantCreateObjectFactory;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
 use PHPUnit\Framework\TestCase;
 
 class SubManagerTest extends TestCase

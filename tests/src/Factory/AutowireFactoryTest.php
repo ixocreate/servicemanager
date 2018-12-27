@@ -9,15 +9,15 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Factory;
+namespace IxocreateTest\ServiceManager\Factory;
 
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
-use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
+use IxocreateMisc\ServiceManager\ResolverTestObject;
 use PHPUnit\Framework\TestCase;
 
 class AutowireFactoryTest extends TestCase

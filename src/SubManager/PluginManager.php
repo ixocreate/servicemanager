@@ -9,9 +9,9 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\SubManager;
+namespace Ixocreate\ServiceManager\SubManager;
 
-use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
 use Zend\ServiceManager\ServiceManager;
 
 final class PluginManager extends ServiceManager

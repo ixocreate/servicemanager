@@ -9,10 +9,10 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\Generator;
+namespace Ixocreate\ServiceManager\Generator;
 
-use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
-use KiwiSuite\ServiceManager\ServiceManager;
+use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\ServiceManager;
 
 class LazyLoadingFileGenerator
 {

@@ -23,13 +23,13 @@
     },
     "autoload": {
         "psr-4": {
-            "KiwiSuite\\ServiceManager\\": "src/"
+            "Ixocreate\\ServiceManager\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "KiwiSuiteMisc\\ServiceManager\\": "tests/misc/",
-            "KiwiSuiteTest\\ServiceManager\\": "tests/src/"
+            "IxocreateMisc\\ServiceManager\\": "tests/misc/",
+            "IxocreateTest\\ServiceManager\\": "tests/src/"
         }
     }
 }

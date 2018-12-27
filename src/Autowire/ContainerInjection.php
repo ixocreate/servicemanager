@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\Autowire;
+namespace Ixocreate\ServiceManager\Autowire;
 
 use Zend\Di\Resolver\AbstractInjection;
 

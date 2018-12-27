@@ -9,20 +9,20 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager;
+namespace IxocreateTest\ServiceManager;
 
-use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
-use KiwiSuite\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
-use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
-use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\CantCreateObjectFactory;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
-use KiwiSuiteMisc\ServiceManager\TestInterface;
+use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
+use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
+use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
+use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerConfigurator;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\CantCreateObjectFactory;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\LazyLoadingObject;
+use IxocreateMisc\ServiceManager\TestInterface;
 use PHPUnit\Framework\TestCase;
 
 class ServiceManagerTest extends TestCase

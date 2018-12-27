@@ -9,9 +9,9 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager;
+namespace Ixocreate\ServiceManager;
 
-use KiwiSuite\Contract\ServiceManager\ServiceManagerSetupInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerSetupInterface;
 
 final class ServiceManagerSetup implements ServiceManagerSetupInterface
 {

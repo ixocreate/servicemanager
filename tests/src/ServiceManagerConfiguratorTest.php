@@ -9,21 +9,21 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager;
+namespace IxocreateTest\ServiceManager;
 
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\DelegatorFactory;
-use KiwiSuiteMisc\ServiceManager\Initializer;
-use KiwiSuiteMisc\ServiceManager\Scan\AbstractClass;
-use KiwiSuiteMisc\ServiceManager\Scan\Class1;
-use KiwiSuiteMisc\ServiceManager\Scan\Class2;
-use KiwiSuiteMisc\ServiceManager\Scan\Class4;
-use KiwiSuiteMisc\ServiceManager\Scan\SubDir\Class3;
-use KiwiSuiteMisc\ServiceManager\Scan\TestInterface;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerConfigurator;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\DelegatorFactory;
+use IxocreateMisc\ServiceManager\Initializer;
+use IxocreateMisc\ServiceManager\Scan\AbstractClass;
+use IxocreateMisc\ServiceManager\Scan\Class1;
+use IxocreateMisc\ServiceManager\Scan\Class2;
+use IxocreateMisc\ServiceManager\Scan\Class4;
+use IxocreateMisc\ServiceManager\Scan\SubDir\Class3;
+use IxocreateMisc\ServiceManager\Scan\TestInterface;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\Proxy\LazyServiceFactory;
 

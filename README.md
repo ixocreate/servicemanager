@@ -37,7 +37,7 @@ $serviceManager->build(AnotherObject::class);
 ```
 
 ### Factories
-A factory is any class that implements the interface `KiwiSuite\Contract\ServiceManager\FactoryInterface`.
+A factory is any class that implements the interface `Ixocreate\Contract\ServiceManager\FactoryInterface`.
 
 ```php
 class SomeObjectFactory implements FactoryInterface

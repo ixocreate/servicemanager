@@ -9,13 +9,13 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager;
+namespace Ixocreate\ServiceManager;
 
-use KiwiSuite\Contract\Application\ServiceRegistryInterface;
-use KiwiSuite\Contract\ServiceManager\SubManager\SubManagerFactoryInterface;
-use KiwiSuite\Contract\ServiceManager\SubManager\SubManagerInterface;
-use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
-use KiwiSuite\ServiceManager\SubManager\SubManagerFactory;
+use Ixocreate\Contract\Application\ServiceRegistryInterface;
+use Ixocreate\Contract\ServiceManager\SubManager\SubManagerFactoryInterface;
+use Ixocreate\Contract\ServiceManager\SubManager\SubManagerInterface;
+use Ixocreate\ServiceManager\Exception\InvalidArgumentException;
+use Ixocreate\ServiceManager\SubManager\SubManagerFactory;
 
 final class ServiceManagerConfigurator extends AbstractServiceManagerConfigurator
 {

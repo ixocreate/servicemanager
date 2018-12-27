@@ -9,15 +9,15 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Generator;
+namespace IxocreateTest\ServiceManager\Generator;
 
-use KiwiSuite\ServiceManager\Generator\LazyLoadingFileGenerator;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
-use KiwiSuiteTest\ServiceManager\CleanUpTrait;
+use Ixocreate\ServiceManager\Generator\LazyLoadingFileGenerator;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfigurator;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\LazyLoadingObject;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
+use IxocreateTest\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;

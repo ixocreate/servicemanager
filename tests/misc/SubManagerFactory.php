@@ -9,13 +9,13 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteMisc\ServiceManager;
+namespace IxocreateMisc\ServiceManager;
 
-use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
-use KiwiSuite\Contract\ServiceManager\SubManager\SubManagerFactoryInterface;
-use KiwiSuite\Contract\ServiceManager\SubManager\SubManagerInterface;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\SubManager\SubManager;
+use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\Contract\ServiceManager\SubManager\SubManagerFactoryInterface;
+use Ixocreate\Contract\ServiceManager\SubManager\SubManagerInterface;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 
 class SubManagerFactory implements SubManagerFactoryInterface
 {

@@ -9,9 +9,9 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteMisc\ServiceManager\Scan;
+namespace IxocreateMisc\ServiceManager\Scan;
 
-use KiwiSuiteMisc\ServiceManager\Scan\SubDir\Class3;
+use IxocreateMisc\ServiceManager\Scan\SubDir\Class3;
 
 class Class4 extends Class3
 {

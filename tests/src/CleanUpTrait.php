@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager;
+namespace IxocreateTest\ServiceManager;
 
 trait CleanUpTrait
 {

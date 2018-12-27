@@ -9,21 +9,21 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Autowire;
+namespace IxocreateTest\ServiceManager\Autowire;
 
-use KiwiSuite\ServiceManager\Autowire\ContainerInjection;
-use KiwiSuite\ServiceManager\Autowire\DefaultValueInjection;
-use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\ComplexObject;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\DefaultParamObject;
-use KiwiSuiteMisc\ServiceManager\OwnDateTime;
-use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
+use Ixocreate\ServiceManager\Autowire\ContainerInjection;
+use Ixocreate\ServiceManager\Autowire\DefaultValueInjection;
+use Ixocreate\ServiceManager\Autowire\DependencyResolver;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\ComplexObject;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\DefaultParamObject;
+use IxocreateMisc\ServiceManager\OwnDateTime;
+use IxocreateMisc\ServiceManager\ResolverTestObject;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 use Zend\Di\Definition\RuntimeDefinition;
 use Zend\Di\Resolver\ValueInjection;

@@ -9,11 +9,11 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\SubManager;
+namespace Ixocreate\ServiceManager\SubManager;
 
-use KiwiSuite\Contract\Application\ServiceRegistryInterface;
-use KiwiSuite\ServiceManager\AbstractServiceManagerConfigurator;
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\Contract\Application\ServiceRegistryInterface;
+use Ixocreate\ServiceManager\AbstractServiceManagerConfigurator;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
 
 final class SubManagerConfigurator extends AbstractServiceManagerConfigurator
 {

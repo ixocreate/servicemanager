@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager;
+namespace Ixocreate\ServiceManager;
 
 interface ServiceManagerConfiguratorInterface
 {

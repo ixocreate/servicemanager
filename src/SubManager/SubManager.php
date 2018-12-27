@@ -9,17 +9,17 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\SubManager;
+namespace Ixocreate\ServiceManager\SubManager;
 
-use KiwiSuite\Contract\ServiceManager\Autowire\FactoryResolverInterface;
-use KiwiSuite\Contract\ServiceManager\ServiceManagerConfigInterface;
-use KiwiSuite\Contract\ServiceManager\ServiceManagerSetupInterface;
-use KiwiSuite\Contract\ServiceManager\SubManager\SubManagerInterface;
-use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
-use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
+use Ixocreate\Contract\ServiceManager\Autowire\FactoryResolverInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerConfigInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerSetupInterface;
+use Ixocreate\Contract\ServiceManager\SubManager\SubManagerInterface;
+use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
+use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
 
 class SubManager implements SubManagerInterface
 {

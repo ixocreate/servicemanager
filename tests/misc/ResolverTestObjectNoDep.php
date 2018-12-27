@@ -9,9 +9,9 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteMisc\ServiceManager;
+namespace IxocreateMisc\ServiceManager;
 
-use KiwiSuite\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\Contract\ServiceManager\FactoryInterface;
 
 class ResolverTestObjectNoDep
 {

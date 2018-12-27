@@ -9,14 +9,14 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager;
+namespace Ixocreate\ServiceManager;
 
-use KiwiSuite\Contract\Application\ConfiguratorInterface;
-use KiwiSuite\Contract\ServiceManager\DelegatorFactoryInterface;
-use KiwiSuite\Contract\ServiceManager\FactoryInterface;
-use KiwiSuite\Contract\ServiceManager\InitializerInterface;
-use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\Contract\Application\ConfiguratorInterface;
+use Ixocreate\Contract\ServiceManager\DelegatorFactoryInterface;
+use Ixocreate\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\Contract\ServiceManager\InitializerInterface;
+use Ixocreate\ServiceManager\Exception\InvalidArgumentException;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Zend\Code\Reflection\FileReflection;
 use Zend\ServiceManager\Proxy\LazyServiceFactory;
 

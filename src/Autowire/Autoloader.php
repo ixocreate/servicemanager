@@ -9,9 +9,9 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\Autowire;
+namespace Ixocreate\ServiceManager\Autowire;
 
-use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
 
 final class Autoloader
 {
@@ -39,12 +39,12 @@ final class Autoloader
             return false;
         }
 
-        if (\mb_strpos($className, 'KiwiSuite\\GeneratedFactory\\Factory') === false) {
+        if (\mb_strpos($className, 'Ixocreate\\GeneratedFactory\\Factory') === false) {
             return false;
         }
 
 
-        $filename = $this->serviceManager->getServiceManagerSetup()->getAutowireLocation() . \str_replace('KiwiSuite\\GeneratedFactory\\', "", $className) . ".php";
+        $filename = $this->serviceManager->getServiceManagerSetup()->getAutowireLocation() . \str_replace('Ixocreate\\GeneratedFactory\\', "", $className) . ".php";
 
         if (!\file_exists($filename)) {
             return false;

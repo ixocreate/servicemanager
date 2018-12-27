@@ -9,11 +9,11 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\BootstrapItem;
+namespace Ixocreate\ServiceManager\BootstrapItem;
 
-use KiwiSuite\Contract\Application\BootstrapItemInterface;
-use KiwiSuite\Contract\Application\ConfiguratorInterface;
-use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
+use Ixocreate\Contract\Application\BootstrapItemInterface;
+use Ixocreate\Contract\Application\ConfiguratorInterface;
+use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 
 final class ServiceManagerBootstrapItem implements BootstrapItemInterface
 {

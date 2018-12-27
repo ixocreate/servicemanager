@@ -9,18 +9,18 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Generator;
+namespace IxocreateTest\ServiceManager\Generator;
 
-use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\Generator\AutowireFactoryGenerator;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
-use KiwiSuiteTest\ServiceManager\CleanUpTrait;
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\Generator\AutowireFactoryGenerator;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\ResolverTestObject;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
+use IxocreateTest\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 
 class AutowireFactoryGeneratorTest extends TestCase

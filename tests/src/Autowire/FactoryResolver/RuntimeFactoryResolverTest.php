@@ -9,15 +9,15 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Autowire\FactoryResolver;
+namespace IxocreateTest\ServiceManager\Autowire\FactoryResolver;
 
-use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
-use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\ResolverTestObjectNoConstructor;
+use Ixocreate\ServiceManager\Autowire\DependencyResolver;
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\ResolverTestObjectNoConstructor;
 use PHPUnit\Framework\TestCase;
 use Zend\Di\Definition\RuntimeDefinition;
 

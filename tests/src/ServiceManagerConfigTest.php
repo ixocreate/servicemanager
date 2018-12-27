@@ -9,18 +9,18 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager;
+namespace IxocreateTest\ServiceManager;
 
-use KiwiSuite\ServiceManager\Exception\InvalidArgumentException;
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
-use KiwiSuiteMisc\ServiceManager\CantCreateObjectFactory;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\DelegatorFactory;
-use KiwiSuiteMisc\ServiceManager\Initializer;
-use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
+use Ixocreate\ServiceManager\Exception\InvalidArgumentException;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerConfigurator;
+use IxocreateMisc\ServiceManager\CantCreateObjectFactory;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\DelegatorFactory;
+use IxocreateMisc\ServiceManager\Initializer;
+use IxocreateMisc\ServiceManager\LazyLoadingObject;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\Proxy\LazyServiceFactory;
 

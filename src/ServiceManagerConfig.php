@@ -10,10 +10,10 @@
 
 declare(strict_types=1);
 
-namespace KiwiSuite\ServiceManager;
+namespace Ixocreate\ServiceManager;
 
-use KiwiSuite\Contract\ServiceManager\NamedServiceInterface;
-use KiwiSuite\Contract\ServiceManager\ServiceManagerConfigInterface;
+use Ixocreate\Contract\ServiceManager\NamedServiceInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerConfigInterface;
 
 final class ServiceManagerConfig implements ServiceManagerConfigInterface
 {

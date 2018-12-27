@@ -9,9 +9,9 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteMisc\ServiceManager\Scan\SubDir;
+namespace IxocreateMisc\ServiceManager\Scan\SubDir;
 
-use KiwiSuiteMisc\ServiceManager\Scan\AbstractClass;
+use IxocreateMisc\ServiceManager\Scan\AbstractClass;
 
 class Class3 extends AbstractClass
 {

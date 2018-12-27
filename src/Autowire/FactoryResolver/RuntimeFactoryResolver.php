@@ -9,12 +9,12 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\Autowire\FactoryResolver;
+namespace Ixocreate\ServiceManager\Autowire\FactoryResolver;
 
-use KiwiSuite\Contract\ServiceManager\Autowire\FactoryResolverInterface;
-use KiwiSuite\Contract\ServiceManager\FactoryInterface;
-use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
-use KiwiSuite\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\Contract\ServiceManager\Autowire\FactoryResolverInterface;
+use Ixocreate\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\ServiceManager\Autowire\DependencyResolver;
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
 
 final class RuntimeFactoryResolver implements FactoryResolverInterface
 {

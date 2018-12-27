@@ -9,10 +9,10 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteMisc\ServiceManager;
+namespace IxocreateMisc\ServiceManager;
 
-use KiwiSuite\ServiceManager\InitializerInterface;
-use KiwiSuite\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\InitializerInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 
 class Initializer implements InitializerInterface
 {

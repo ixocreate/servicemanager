@@ -9,10 +9,10 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteMisc\ServiceManager;
+namespace IxocreateMisc\ServiceManager;
 
-use KiwiSuite\ServiceManager\DelegatorFactoryInterface;
-use KiwiSuite\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\DelegatorFactoryInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 
 class DelegatorFactory implements DelegatorFactoryInterface
 {

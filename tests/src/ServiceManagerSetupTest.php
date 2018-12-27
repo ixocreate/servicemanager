@@ -9,9 +9,9 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager;
+namespace IxocreateTest\ServiceManager;
 
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
 use PHPUnit\Framework\TestCase;
 
 class ServiceManagerSetupTest extends TestCase

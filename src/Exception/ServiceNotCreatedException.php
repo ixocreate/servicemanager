@@ -9,7 +9,7 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\Exception;
+namespace Ixocreate\ServiceManager\Exception;
 
 use Psr\Container\ContainerExceptionInterface;
 

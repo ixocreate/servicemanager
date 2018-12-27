@@ -9,20 +9,20 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager;
+namespace Ixocreate\ServiceManager;
 
 use Interop\Container\ContainerInterface;
-use KiwiSuite\Contract\ServiceManager\Autowire\FactoryResolverInterface;
-use KiwiSuite\Contract\ServiceManager\ServiceManagerConfigInterface;
-use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
-use KiwiSuite\Contract\ServiceManager\ServiceManagerSetupInterface;
-use KiwiSuite\ServiceManager\Autowire\Autoloader;
-use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
-use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
-use KiwiSuite\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
-use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
-use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
+use Ixocreate\Contract\ServiceManager\Autowire\FactoryResolverInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerConfigInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerSetupInterface;
+use Ixocreate\ServiceManager\Autowire\Autoloader;
+use Ixocreate\ServiceManager\Autowire\DependencyResolver;
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
+use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
+use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
+use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\Di\Definition\RuntimeDefinition;
 
 final class ServiceManager implements ServiceManagerInterface, ContainerInterface

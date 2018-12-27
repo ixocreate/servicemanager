@@ -9,10 +9,10 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\Factory;
+namespace Ixocreate\ServiceManager\Factory;
 
-use KiwiSuite\Contract\ServiceManager\AutowireFactoryInterface;
-use KiwiSuite\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\Contract\ServiceManager\AutowireFactoryInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
 
 final class AutowireFactory implements AutowireFactoryInterface
 {

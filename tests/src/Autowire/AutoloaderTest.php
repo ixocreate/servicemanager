@@ -9,21 +9,21 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Autowire;
+namespace IxocreateTest\ServiceManager\Autowire;
 
-use KiwiSuite\Contract\ServiceManager\FactoryInterface;
-use KiwiSuite\ServiceManager\Autowire\Autoloader;
-use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\Generator\AutowireFactoryGenerator;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
-use KiwiSuiteMisc\ServiceManager\ResolverTestObjectNoConstructor;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
-use KiwiSuiteTest\ServiceManager\CleanUpTrait;
+use Ixocreate\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\ServiceManager\Autowire\Autoloader;
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\Generator\AutowireFactoryGenerator;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\ResolverTestObject;
+use IxocreateMisc\ServiceManager\ResolverTestObjectNoConstructor;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
+use IxocreateTest\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 
 class AutoloaderTest extends TestCase
@@ -91,6 +91,6 @@ class AutoloaderTest extends TestCase
     {
         $autoload = new Autoloader($this->serviceManager);
 
-        $this->assertFalse($autoload->__invoke('KiwiSuite\\GeneratedFactory\\FactoryFooBar'));
+        $this->assertFalse($autoload->__invoke('Ixocreate\\GeneratedFactory\\FactoryFooBar'));
     }
 }

@@ -9,11 +9,11 @@
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Autowire\FactoryResolver;
+namespace IxocreateTest\ServiceManager\Autowire\FactoryResolver;
 
-use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
-use KiwiSuiteMisc\ServiceManager\ResolverTestObjectNoConstructor;
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
+use IxocreateMisc\ServiceManager\ResolverTestObjectNoConstructor;
 use PHPUnit\Framework\TestCase;
 
 class FileFactoryResolverTest extends TestCase
