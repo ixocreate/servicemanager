@@ -1,16 +1,16 @@
 {
-    "name": "kiwi-suite/servicemanager",
-    "description": "kiwi-suite/servicemanager is a psr-11 container library",
+    "name": "ixocreate/servicemanager",
+    "description": "A psr-11 container library",
     "license": "MIT",
     "type": "library",
     "authors": [
         {
-            "name": "Thomas Payer"
+            "name": "IXOCREATE"
         }
     ],
     "require": {
         "php": "^7.1",
-        "kiwi-suite/contract": "dev-develop",
+        "ixocreate/contract": "dev-develop",
         "zendframework/zend-servicemanager": "^3.3",
         "ocramius/proxy-manager": "=2.1.1",
         "zendframework/zend-di": "=3.0",
