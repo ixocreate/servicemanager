@@ -4,7 +4,7 @@
 
 ixocreate/servicemanager is a psr-11 container library
 
-[![Build Status](https://travis-ci.org/ixocreate/servicemanager.svg?branch=master)](https://travis-ci.org/ixocreate/servicemanager)
+[![Build Status](https://travis-ci.com/ixocreate/servicemanager.svg?branch=master)](https://travis-ci.com/ixocreate/servicemanager)
 [![Coverage Status](https://coveralls.io/repos/github/ixocreate/servicemanager/badge.svg?branch=develop)](https://coveralls.io/github/ixocreate/servicemanager?branch=develop)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/a0f2c8b5-b9a6-4a58-b06f-00648fe90041/mini.png)](https://insight.sensiolabs.com/projects/a0f2c8b5-b9a6-4a58-b06f-00648fe90041)
 [![Packagist](https://img.shields.io/packagist/v/ixocreate/servicemanager.svg)](https://packagist.org/packages/ixocreate/servicemanager)
