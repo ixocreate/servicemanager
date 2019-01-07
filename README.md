@@ -1,8 +1,4 @@
-**This is a draft. Don't use in production**
-
 # IXOCREATE servicemanager
-
-ixocreate/servicemanager is a psr-11 container library
 
 [![Build Status](https://travis-ci.com/ixocreate/servicemanager.svg?branch=master)](https://travis-ci.com/ixocreate/servicemanager)
 [![Coverage Status](https://coveralls.io/repos/github/ixocreate/servicemanager/badge.svg?branch=develop)](https://coveralls.io/github/ixocreate/servicemanager?branch=develop)
@@ -11,19 +7,25 @@ ixocreate/servicemanager is a psr-11 container library
 [![Packagist Pre Release](https://img.shields.io/packagist/vpre/ixocreate/servicemanager.svg)](https://packagist.org/packages/ixocreate/servicemanager)
 [![Packagist](https://img.shields.io/packagist/l/ixocreate/servicemanager.svg)](https://packagist.org/packages/ixocreate/servicemanager)
 
+ixocreate/servicemanager is a psr-11 container library built on top of [zendframework/zend-servicemanager](https://github.com/zendframework/zend-servicemanager). Like 
+`zend-servicemanager` it is a factory based approach.
+
 ## Installation
 
 Install the package via composer:
 
 ```sh
-composer require ixocreate/:package_name
+composer require ixocreate/servicemanager
 ```
 
-## About ixocreate/servicemanager
-ixocreate/servicemanager is built on top of [zendframework/zend-servicemanager](https://github.com/zendframework/zend-servicemanager). Like 
-`zend-servicemanager` it is a factory based approach.
+## Testing
 
-### Example
+```sh
+composer install --dev
+phpunit
+```
+
+## Usage
 
 ```php
 $configurator = new ServiceManagerConfigurator();
