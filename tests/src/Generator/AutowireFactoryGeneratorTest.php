@@ -1,26 +1,24 @@
 <?php
 /**
- * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
- *
- * @package kiwi-suite/servicemanager
- * @see https://github.com/kiwi-suite/servicemanager
- * @copyright Copyright (c) 2010 - 2017 kiwi suite GmbH
+ * @link https://github.com/ixocreate
+ * @copyright IXOCREATE GmbH
  * @license MIT License
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Generator;
 
-use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\Generator\AutowireFactoryGenerator;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
-use KiwiSuiteTest\ServiceManager\CleanUpTrait;
+namespace IxocreateTest\ServiceManager\Generator;
+
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\Generator\AutowireFactoryGenerator;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\ResolverTestObject;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
+use IxocreateTest\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 
 class AutowireFactoryGeneratorTest extends TestCase
@@ -34,16 +32,16 @@ class AutowireFactoryGeneratorTest extends TestCase
 
     public function setUp()
     {
-        $serviceManagerConfig = new ServiceManagerConfig([
-            'factories' => [
+        $serviceManagerConfig = new ServiceManagerConfig(
+            [
                 \DateTime::class => DateTimeFactory::class,
                 'someThing' => DateTimeFactory::class,
                 ResolverTestObject::class => AutowireFactory::class,
             ],
-            'subManagers' => [
+            [
                 'subManager1' => SubManagerFactory::class,
-            ],
-        ]);
+            ]
+        );
 
         $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
     }

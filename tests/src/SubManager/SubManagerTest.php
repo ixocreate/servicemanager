@@ -1,25 +1,23 @@
 <?php
 /**
- * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
- *
- * @package kiwi-suite/servicemanager
- * @see https://github.com/kiwi-suite/servicemanager
- * @copyright Copyright (c) 2010 - 2017 kiwi suite GmbH
+ * @link https://github.com/ixocreate
+ * @copyright IXOCREATE GmbH
  * @license MIT License
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager;
 
-use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
-use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\FactoryInterface;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuite\ServiceManager\SubManager\SubManager;
-use KiwiSuiteMisc\ServiceManager\CantCreateObjectFactory;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
+namespace IxocreateTest\ServiceManager;
+
+use Ixocreate\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
+use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use Ixocreate\ServiceManager\SubManager\SubManager;
+use IxocreateMisc\ServiceManager\CantCreateObjectFactory;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
 use PHPUnit\Framework\TestCase;
 
 class SubManagerTest extends TestCase
@@ -43,13 +41,11 @@ class SubManagerTest extends TestCase
     {
         $this->serviceManager = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
 
-        $items = [
-            'factories' => [
-                'dateTime' => DateTimeFactory::class,
-                'cantCreate' => CantCreateObjectFactory::class,
-            ],
+        $factories = [
+            'dateTime' => DateTimeFactory::class,
+            'cantCreate' => CantCreateObjectFactory::class,
         ];
-        $this->subManagerConfig = new ServiceManagerConfig($items);
+        $this->subManagerConfig = new ServiceManagerConfig($factories);
 
         $this->subManager = new SubManager(
             $this->serviceManager,
@@ -121,12 +117,10 @@ class SubManagerTest extends TestCase
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $items = [
-            'factories' => [
-                'test' => DateTimeFactory::class,
-            ],
+        $factories = [
+            'test' => DateTimeFactory::class,
         ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
+        $serviceManagerConfig = new ServiceManagerConfig($factories);
 
         $serviceManager = new SubManager(
             $this->serviceManager,
@@ -141,12 +135,10 @@ class SubManagerTest extends TestCase
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $items = [
-            'factories' => [
-                'test' => DateTimeFactory::class,
-            ],
+        $factories = [
+            'test' => DateTimeFactory::class,
         ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
+        $serviceManagerConfig = new ServiceManagerConfig($factories);
 
         $serviceManager = new SubManager(
             $this->serviceManager,

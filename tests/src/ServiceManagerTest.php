@@ -1,28 +1,26 @@
 <?php
 /**
- * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
- *
- * @package kiwi-suite/servicemanager
- * @see https://github.com/kiwi-suite/servicemanager
- * @copyright Copyright (c) 2010 - 2017 kiwi suite GmbH
+ * @link https://github.com/ixocreate
+ * @copyright IXOCREATE GmbH
  * @license MIT License
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager;
 
-use KiwiSuite\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
-use KiwiSuite\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
-use KiwiSuite\ServiceManager\Exception\ServiceNotCreatedException;
-use KiwiSuite\ServiceManager\Exception\ServiceNotFoundException;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\CantCreateObjectFactory;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
-use KiwiSuiteMisc\ServiceManager\TestInterface;
+namespace IxocreateTest\ServiceManager;
+
+use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
+use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
+use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
+use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerConfigurator;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\CantCreateObjectFactory;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\LazyLoadingObject;
+use IxocreateMisc\ServiceManager\TestInterface;
 use PHPUnit\Framework\TestCase;
 
 class ServiceManagerTest extends TestCase
@@ -118,12 +116,10 @@ class ServiceManagerTest extends TestCase
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $items = [
-            'factories' => [
-                'test' => CantCreateObjectFactory::class,
-            ],
+        $factories = [
+            'test' => CantCreateObjectFactory::class,
         ];
-        $serviceManagerConfig = new ServiceManagerConfig($items);
+        $serviceManagerConfig = new ServiceManagerConfig($factories);
         $serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $serviceManager->build("test");

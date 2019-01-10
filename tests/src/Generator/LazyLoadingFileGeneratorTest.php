@@ -1,23 +1,21 @@
 <?php
 /**
- * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
- *
- * @package kiwi-suite/servicemanager
- * @see https://github.com/kiwi-suite/servicemanager
- * @copyright Copyright (c) 2010 - 2017 kiwi suite GmbH
+ * @link https://github.com/ixocreate
+ * @copyright IXOCREATE GmbH
  * @license MIT License
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Generator;
 
-use KiwiSuite\ServiceManager\Generator\LazyLoadingFileGenerator;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\LazyLoadingObject;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
-use KiwiSuiteTest\ServiceManager\CleanUpTrait;
+namespace IxocreateTest\ServiceManager\Generator;
+
+use Ixocreate\ServiceManager\Generator\LazyLoadingFileGenerator;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfigurator;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\LazyLoadingObject;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
+use IxocreateTest\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
@@ -26,6 +24,7 @@ use ProxyManager\Version;
 class LazyLoadingFileGeneratorTest extends TestCase
 {
     use CleanUpTrait;
+
     /**
      * @var ServiceManager
      */

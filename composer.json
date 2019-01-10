@@ -1,34 +1,38 @@
 {
-    "name": "kiwi-suite/servicemanager",
-    "description": "kiwi-suite/servicemanager is a psr-11 container library",
+    "name": "ixocreate/servicemanager",
+    "description": "A psr-11 container library",
     "license": "MIT",
     "type": "library",
     "authors": [
         {
-            "name": "Thomas Payer"
+            "name": "IXOCREATE"
         }
     ],
     "require": {
         "php": "^7.1",
+        "ixocreate/contract": "=1.0.0-alpha1",
         "zendframework/zend-servicemanager": "^3.3",
-        "ocramius/proxy-manager": "^2.1",
-        "zendframework/zend-di": "^3.0",
+        "ocramius/proxy-manager": "=2.1.1",
+        "zendframework/zend-di": "=3.0",
         "zendframework/zend-code": "^3.3"
     },
     "require-dev": {
+        "ixocreate/coding-standard": "^1.0.1",
         "phpunit/phpunit": "^6.0.6",
-        "friendsofphp/php-cs-fixer": "^2.5",
         "php-coveralls/php-coveralls": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "KiwiSuite\\ServiceManager\\": "src/"
+            "Ixocreate\\ServiceManager\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "KiwiSuiteMisc\\ServiceManager\\": "tests/misc/",
-            "KiwiSuiteTest\\ServiceManager\\": "tests/src/"
+            "IxocreateMisc\\ServiceManager\\": "tests/misc/",
+            "IxocreateTest\\ServiceManager\\": "tests/src/"
         }
+    },
+    "scripts": {
+        "fix-cs": "vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --config vendor/ixocreate/coding-standard/.php_cs"
     }
 }

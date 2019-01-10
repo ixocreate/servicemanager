@@ -1,27 +1,25 @@
 <?php
 /**
- * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
- *
- * @package kiwi-suite/servicemanager
- * @see https://github.com/kiwi-suite/servicemanager
- * @copyright Copyright (c) 2010 - 2017 kiwi suite GmbH
+ * @link https://github.com/ixocreate
+ * @copyright IXOCREATE GmbH
  * @license MIT License
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager\Autowire;
 
-use KiwiSuite\ServiceManager\Autowire\ContainerInjection;
-use KiwiSuite\ServiceManager\Autowire\DefaultValueInjection;
-use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\ServiceManager;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerSetup;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\FactoryGeneratorTestObject;
-use KiwiSuiteMisc\ServiceManager\ResolverTestObject;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
+namespace IxocreateTest\ServiceManager\Autowire;
+
+use Ixocreate\ServiceManager\Autowire\ContainerInjection;
+use Ixocreate\ServiceManager\Autowire\DefaultValueInjection;
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\FactoryGeneratorTestObject;
+use IxocreateMisc\ServiceManager\ResolverTestObject;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 use Zend\Di\Resolver\AbstractInjection;
 use Zend\Di\Resolver\ValueInjection;
@@ -42,16 +40,16 @@ class FactoryCodeTest extends TestCase
     {
         $this->factoryCode = new FactoryCode();
 
-        $serviceManagerConfig = new ServiceManagerConfig([
-            'factories' => [
+        $serviceManagerConfig = new ServiceManagerConfig(
+            [
                 \DateTime::class => DateTimeFactory::class,
                 'someThing' => DateTimeFactory::class,
                 ResolverTestObject::class => AutowireFactory::class,
             ],
-            'subManagers' => [
+            [
                 'subManager1' => SubManagerFactory::class,
-            ],
-        ]);
+            ]
+        );
 
         $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
     }
@@ -68,7 +66,7 @@ class FactoryCodeTest extends TestCase
         $requestedName = \DateTime::class;
 
         $this->assertSame(
-            '\\KiwiSuite\\GeneratedFactory\\Factory' . \md5($requestedName),
+            '\\Ixocreate\\GeneratedFactory\\Factory' . \md5($requestedName),
             $this->factoryCode->generateFactoryFullQualifiedName($requestedName)
         );
     }

@@ -1,32 +1,29 @@
 <?php
 /**
- * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
- *
- * @package kiwi-suite/servicemanager
- * @see https://github.com/kiwi-suite/servicemanager
- * @copyright Copyright (c) 2010 - 2017 kiwi suite GmbH
+ * @link https://github.com/ixocreate
+ * @copyright IXOCREATE GmbH
  * @license MIT License
  */
 
 declare(strict_types=1);
-namespace KiwiSuiteTest\ServiceManager;
 
-use KiwiSuite\ServiceManager\Factory\AutowireFactory;
-use KiwiSuite\ServiceManager\Factory\LazyServiceDelegatorFactory;
-use KiwiSuite\ServiceManager\ServiceManagerConfig;
-use KiwiSuite\ServiceManager\ServiceManagerConfigurator;
-use KiwiSuiteMisc\ServiceManager\ConfigProvider;
-use KiwiSuiteMisc\ServiceManager\DateTimeFactory;
-use KiwiSuiteMisc\ServiceManager\DelegatorFactory;
-use KiwiSuiteMisc\ServiceManager\Initializer;
-use KiwiSuiteMisc\ServiceManager\Scan\AbstractClass;
-use KiwiSuiteMisc\ServiceManager\Scan\Class1;
-use KiwiSuiteMisc\ServiceManager\Scan\Class2;
-use KiwiSuiteMisc\ServiceManager\Scan\Class4;
-use KiwiSuiteMisc\ServiceManager\Scan\SubDir\Class3;
-use KiwiSuiteMisc\ServiceManager\Scan\TestInterface;
-use KiwiSuiteMisc\ServiceManager\SubManagerFactory;
+namespace IxocreateTest\ServiceManager;
+
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerConfigurator;
+use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\DelegatorFactory;
+use IxocreateMisc\ServiceManager\Initializer;
+use IxocreateMisc\ServiceManager\Scan\AbstractClass;
+use IxocreateMisc\ServiceManager\Scan\Class1;
+use IxocreateMisc\ServiceManager\Scan\Class2;
+use IxocreateMisc\ServiceManager\Scan\Class4;
+use IxocreateMisc\ServiceManager\Scan\SubDir\Class3;
+use IxocreateMisc\ServiceManager\Scan\TestInterface;
+use IxocreateMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
+use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
 class ServiceManagerConfiguratorTest extends TestCase
 {
@@ -100,8 +97,8 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertEquals($lazyServices, $serviceManagerConfigurator->getLazyServices());
 
         $this->assertEquals([
-            'dateTime' => [LazyServiceDelegatorFactory::class],
-            'testFallBack' => [LazyServiceDelegatorFactory::class],
+            'dateTime' => [LazyServiceFactory::class],
+            'testFallBack' => [LazyServiceFactory::class],
         ], $serviceManagerConfigurator->getDelegators());
     }
 
@@ -152,21 +149,6 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertEquals($subManagers, $serviceManagerConfigurator->getSubManagers());
     }
 
-    public function testConfigProviders()
-    {
-        $configProviders = [
-            ConfigProvider::class,
-        ];
-
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-
-        foreach ($configProviders as $value) {
-            $serviceManagerConfigurator->addConfigProvider($value);
-        }
-
-        $this->assertEquals($configProviders, $serviceManagerConfigurator->getConfigProviders());
-    }
-
     public function testDirectoryScan()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
@@ -203,20 +185,15 @@ class ServiceManagerConfiguratorTest extends TestCase
         $serviceManagerConfigurator->addLazyService(\DateTime::class);
         $serviceManagerConfigurator->addDelegator("test", [DelegatorFactory::class]);
         $serviceManagerConfigurator->addFactory("factory", DateTimeFactory::class);
-        $serviceManagerConfigurator->addConfigProvider(ConfigProvider::class);
 
         $serviceManagerConfig = $serviceManagerConfigurator->getServiceManagerConfig();
 
         $this->assertInstanceOf(ServiceManagerConfig::class, $serviceManagerConfig);
 
         $this->assertEquals($serviceManagerConfigurator->getInitializers(), $serviceManagerConfig->getInitializers());
-        $this->assertEquals(\array_merge(
-            ['dateTimeFromConfigProvider' => DateTimeFactory::class],
-            $serviceManagerConfigurator->getFactories()
-        ), $serviceManagerConfig->getFactories());
+        $this->assertEquals($serviceManagerConfigurator->getFactories(), $serviceManagerConfig->getFactories());
         $this->assertEquals($serviceManagerConfigurator->getSubManagers(), $serviceManagerConfig->getSubManagers());
         $this->assertEquals($serviceManagerConfigurator->getLazyServices(), $serviceManagerConfig->getLazyServices());
         $this->assertEquals($serviceManagerConfigurator->getDelegators(), $serviceManagerConfig->getDelegators());
-        $this->assertEquals($serviceManagerConfigurator->getConfigProviders(), $serviceManagerConfig->getConfigProviders());
     }
 }

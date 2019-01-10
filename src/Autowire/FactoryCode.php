@@ -1,15 +1,13 @@
 <?php
 /**
- * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
- *
- * @package kiwi-suite/servicemanager
- * @see https://github.com/kiwi-suite/servicemanager
- * @copyright Copyright (c) 2010 - 2017 kiwi suite GmbH
+ * @link https://github.com/ixocreate
+ * @copyright IXOCREATE GmbH
  * @license MIT License
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\Autowire;
+
+namespace Ixocreate\ServiceManager\Autowire;
 
 use Zend\Di\Resolver\ValueInjection;
 
@@ -17,10 +15,10 @@ final class FactoryCode
 {
     private $template = <<<'EOD'
 <?php
-namespace KiwiSuite\GeneratedFactory;
+namespace Ixocreate\GeneratedFactory;
 
-use KiwiSuite\ServiceManager\FactoryInterface;
-use KiwiSuite\ServiceManager\ServiceManagerInterface;
+use Ixocreate\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
 
 final class %s implements FactoryInterface
 {
@@ -68,7 +66,7 @@ EOD;
 
             $ifCheck = <<<'EOD'
 if (!\is_array($options) || !\array_key_exists('%s', $options)) {
-    throw new \KiwiSuite\ServiceManager\Exception\InvalidArgumentException('Invalid option for %s');
+    throw new \Ixocreate\ServiceManager\Exception\InvalidArgumentException('Invalid option for %s');
 }
 EOD;
             $checkParams[] = \sprintf($ifCheck, $injection->getParameterName(), $injection->getParameterName());
@@ -91,6 +89,6 @@ EOD;
 
     public function generateFactoryFullQualifiedName(string $instanceName): string
     {
-        return '\\KiwiSuite\\GeneratedFactory\\' . $this->generateFactoryName($instanceName);
+        return '\\Ixocreate\\GeneratedFactory\\' . $this->generateFactoryName($instanceName);
     }
 }

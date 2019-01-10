@@ -1,29 +1,31 @@
-**This is a draft. Don't use in production**
+# IXOCREATE servicemanager
 
-# kiwi-suite/servicemanager
-
-kiwi-suite/servicemanager is a psr-11 container library
-
-[![Build Status](https://travis-ci.org/kiwi-suite/servicemanager.svg?branch=master)](https://travis-ci.org/kiwi-suite/servicemanager)
-[![Coverage Status](https://coveralls.io/repos/github/kiwi-suite/servicemanager/badge.svg?branch=develop)](https://coveralls.io/github/kiwi-suite/servicemanager?branch=develop)
+[![Build Status](https://travis-ci.com/ixocreate/servicemanager.svg?branch=master)](https://travis-ci.com/ixocreate/servicemanager)
+[![Coverage Status](https://coveralls.io/repos/github/ixocreate/servicemanager/badge.svg?branch=develop)](https://coveralls.io/github/ixocreate/servicemanager?branch=develop)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/a0f2c8b5-b9a6-4a58-b06f-00648fe90041/mini.png)](https://insight.sensiolabs.com/projects/a0f2c8b5-b9a6-4a58-b06f-00648fe90041)
-[![Packagist](https://img.shields.io/packagist/v/kiwi-suite/servicemanager.svg)](https://packagist.org/packages/kiwi-suite/servicemanager)
-[![Packagist Pre Release](https://img.shields.io/packagist/vpre/kiwi-suite/servicemanager.svg)](https://packagist.org/packages/kiwi-suite/servicemanager)
-[![Packagist](https://img.shields.io/packagist/l/kiwi-suite/servicemanager.svg)](https://packagist.org/packages/kiwi-suite/servicemanager)
+[![Packagist](https://img.shields.io/packagist/v/ixocreate/servicemanager.svg)](https://packagist.org/packages/ixocreate/servicemanager)
+[![Packagist Pre Release](https://img.shields.io/packagist/vpre/ixocreate/servicemanager.svg)](https://packagist.org/packages/ixocreate/servicemanager)
+[![Packagist](https://img.shields.io/packagist/l/ixocreate/servicemanager.svg)](https://packagist.org/packages/ixocreate/servicemanager)
+
+ixocreate/servicemanager is a psr-11 container library built on top of [zendframework/zend-servicemanager](https://github.com/zendframework/zend-servicemanager). Like 
+`zend-servicemanager` it is a factory based approach.
 
 ## Installation
 
-The suggested installation method is via [composer](https://getcomposer.org/):
+Install the package via composer:
 
 ```sh
-php composer.phar require kiwi-suite/servicemanager
+composer require ixocreate/servicemanager
 ```
 
-## About kiwi-suite/servicemanager
-kiwi-suite/servicemanager is built on top of [zendframework/zend-servicemanager](https://github.com/zendframework/zend-servicemanager). Like 
-`zend-servicemanager` it is a factory based approach.
+## Testing
 
-### Example
+```sh
+composer install --dev
+phpunit
+```
+
+## Usage
 
 ```php
 $configurator = new ServiceManagerConfigurator();
@@ -37,7 +39,7 @@ $serviceManager->build(AnotherObject::class);
 ```
 
 ### Factories
-A factory is any class that implements the interface `KiwiSuite\ServiceManager\FactoryInterface`.
+A factory is any class that implements the interface `Ixocreate\Contract\ServiceManager\FactoryInterface`.
 
 ```php
 class SomeObjectFactory implements FactoryInterface
@@ -57,4 +59,4 @@ $serviceManager->get(SomeObject::class);
 
 ## License
 
-kiwi-suite/servicemanager is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT) - see the `LICENSE` file for details
+The MIT License (MIT). Please see [LICENSE](LICENSE) for more information.

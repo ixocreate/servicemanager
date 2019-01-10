@@ -1,20 +1,18 @@
 <?php
 /**
- * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
- *
- * @package kiwi-suite/servicemanager
- * @see https://github.com/kiwi-suite/servicemanager
- * @copyright Copyright (c) 2010 - 2017 kiwi suite GmbH
+ * @link https://github.com/ixocreate
+ * @copyright IXOCREATE GmbH
  * @license MIT License
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\Generator;
 
-use KiwiSuite\ServiceManager\Autowire\DependencyResolver;
-use KiwiSuite\ServiceManager\Autowire\FactoryCode;
-use KiwiSuite\ServiceManager\AutowireFactoryInterface;
-use KiwiSuite\ServiceManager\ServiceManagerInterface;
+namespace Ixocreate\ServiceManager\Generator;
+
+use Ixocreate\Contract\ServiceManager\AutowireFactoryInterface;
+use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\Autowire\DependencyResolver;
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Zend\Di\Definition\RuntimeDefinition;
 
 final class AutowireFactoryGenerator

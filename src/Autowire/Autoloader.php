@@ -1,17 +1,15 @@
 <?php
 /**
- * kiwi-suite/servicemanager (https://github.com/kiwi-suite/servicemanager)
- *
- * @package kiwi-suite/servicemanager
- * @see https://github.com/kiwi-suite/servicemanager
- * @copyright Copyright (c) 2010 - 2017 kiwi suite GmbH
+ * @link https://github.com/ixocreate
+ * @copyright IXOCREATE GmbH
  * @license MIT License
  */
 
 declare(strict_types=1);
-namespace KiwiSuite\ServiceManager\Autowire;
 
-use KiwiSuite\ServiceManager\ServiceManagerInterface;
+namespace Ixocreate\ServiceManager\Autowire;
+
+use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
 
 final class Autoloader
 {
@@ -39,12 +37,12 @@ final class Autoloader
             return false;
         }
 
-        if (\mb_strpos($className, 'KiwiSuite\\GeneratedFactory\\Factory') === false) {
+        if (\mb_strpos($className, 'Ixocreate\\GeneratedFactory\\Factory') === false) {
             return false;
         }
 
 
-        $filename = $this->serviceManager->getServiceManagerSetup()->getAutowireLocation() . \str_replace('KiwiSuite\\GeneratedFactory\\', "", $className) . ".php";
+        $filename = $this->serviceManager->getServiceManagerSetup()->getAutowireLocation() . \str_replace('Ixocreate\\GeneratedFactory\\', "", $className) . ".php";
 
         if (!\file_exists($filename)) {
             return false;
