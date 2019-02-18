@@ -12,11 +12,12 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.1",
-        "ixocreate/contract": "dev-develop",
         "zendframework/zend-servicemanager": "^3.3",
         "ocramius/proxy-manager": "=2.1.1",
         "zendframework/zend-di": "=3.0",
-        "zendframework/zend-code": "^3.3"
+        "zendframework/zend-code": "^3.3",
+        "ixocreate/servicemanager-contract": "dev-develop",
+        "ixocreate/application-contract": "dev-develop"
     },
     "require-dev": {
         "ixocreate/coding-standard": "^1.0.1",
