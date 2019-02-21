@@ -75,6 +75,14 @@ abstract class AbstractServiceManagerConfigurator implements ConfiguratorInterfa
     }
 
     /**
+     * @return array
+     */
+    public function getDirectories(): array
+    {
+        return $this->directories;
+    }
+
+    /**
      * @param string $name
      * @param null|string $factory
      */
