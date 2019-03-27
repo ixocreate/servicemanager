@@ -46,6 +46,11 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     private $factoryResolver;
 
     /**
+     * @var array
+     */
+    private $initalServices = [];
+
+    /**
      * @param ServiceManagerConfig $serviceManagerConfig
      * @param ServiceManagerSetup $serviceManagerSetup
      * @param array $services
@@ -56,6 +61,8 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
         array $services = []
     ) {
         $this->serviceManagerConfig = $serviceManagerConfig;
+
+        $this->initalServices = $services;
 
         $config = $serviceManagerConfig->getConfig();
         $config['services'] = $services;
@@ -77,6 +84,14 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
 
         $this->serviceManager = new OriginalServiceManager($this, $config);
         $this->serviceManagerSetup = $serviceManagerSetup;
+    }
+
+    /**
+     * @return array
+     */
+    public function initialServices(): array
+    {
+        return $this->initalServices;
     }
 
     /**

@@ -27,7 +27,7 @@ class LazyLoadingFileGenerator
         $serviceManagerConfig = $serviceManager->getServiceManagerConfig();
         $serviceManagerSetup = $serviceManager->getServiceManagerSetup()->withPersistLazyLoading(true);
 
-        $persistServiceManager = new ServiceManager($serviceManagerConfig, $serviceManagerSetup);
+        $persistServiceManager = new ServiceManager($serviceManagerConfig, $serviceManagerSetup, $serviceManager->initialServices());
 
         foreach (\array_keys($serviceManagerConfig->getLazyServices()) as $serviceName) {
             $persistServiceManager->get($serviceName);

@@ -204,4 +204,12 @@ class SubManager implements SubManagerInterface
     {
         return \array_keys($this->getServiceManagerConfig()->getFactories());
     }
+
+    /**
+     * @return array
+     */
+    public function initialServices(): array
+    {
+        return [];
+    }
 }
