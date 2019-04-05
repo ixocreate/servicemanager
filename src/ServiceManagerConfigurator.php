@@ -36,11 +36,7 @@ final class ServiceManagerConfigurator extends AbstractServiceManagerConfigurato
             throw new InvalidArgumentException(\sprintf("Factory '%s' can't be loaded", $factory));
         }
 
-        $classImplements = @\class_implements($factory);
-        if (!\is_array($classImplements)) {
-            throw new InvalidArgumentException(\sprintf("Factory '%s' can't be loaded", $factory));
-        }
-        if (!\in_array(SubManagerFactoryInterface::class, $classImplements)) {
+        if (!\is_subclass_of($factory, SubManagerFactoryInterface::class)) {
             throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $factory, SubManagerFactoryInterface::class));
         }
 

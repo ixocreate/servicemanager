@@ -105,12 +105,8 @@ abstract class AbstractServiceManagerConfigurator implements ConfiguratorInterfa
             throw new InvalidArgumentException(\sprintf("Factory '%s' can't be loaded", $factory));
         }
 
-        $classImplements = @\class_implements($factory);
-        if (!\is_array($classImplements)) {
-            throw new InvalidArgumentException(\sprintf("Factory '%s' can't be loaded", $factory));
-        }
-        if (!\in_array(FactoryInterface::class, $classImplements)) {
-            throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $name, FactoryInterface::class));
+        if (!\is_subclass_of($factory, FactoryInterface::class)) {
+            throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $factory, FactoryInterface::class));
         }
 
         $this->factories[$name] = $factory;
@@ -130,11 +126,6 @@ abstract class AbstractServiceManagerConfigurator implements ConfiguratorInterfa
      */
     final public function addDelegator(string $name, array $delegators): void
     {
-        if (!\array_key_exists($name, $this->delegators)) {
-            $this->delegators[$name] = $delegators;
-            return;
-        }
-
         foreach ($delegators as $delegator) {
             if (!\is_string($delegator)) {
                 throw new InvalidArgumentException(\sprintf("'%s' is not a valid delegator", \var_export($delegator, true)));
@@ -144,13 +135,14 @@ abstract class AbstractServiceManagerConfigurator implements ConfiguratorInterfa
                 continue;
             }
 
-            $classImplements = @\class_implements($delegator);
-            if (!\is_array($classImplements)) {
-                throw new InvalidArgumentException(\sprintf("Delegator '%s' can't be loaded", $delegator));
-            }
-            if (!\in_array(DelegatorFactoryInterface::class, $classImplements)) {
+            if (!\is_subclass_of($delegator, DelegatorFactoryInterface::class)) {
                 throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $delegator, DelegatorFactoryInterface::class));
             }
+        }
+
+        if (!\array_key_exists($name, $this->delegators)) {
+            $this->delegators[$name] = $delegators;
+            return;
         }
 
         $this->delegators[$name] += $delegators;
@@ -195,15 +187,7 @@ abstract class AbstractServiceManagerConfigurator implements ConfiguratorInterfa
      */
     final public function addInitializer(string $name): void
     {
-        if (!\class_exists($name)) {
-            throw new InvalidArgumentException(\sprintf("Initializer '%s' can't be loaded", $name));
-        }
-
-        $classImplements = @\class_implements($name);
-        if (!\is_array($classImplements)) {
-            throw new InvalidArgumentException(\sprintf("Initializer '%s' can't be loaded", $name));
-        }
-        if (!\in_array(InitializerInterface::class, $classImplements)) {
+        if (!\is_subclass_of($name, InitializerInterface::class)) {
             throw new InvalidArgumentException(\sprintf("'%s' doesn't implement '%s'", $name, InitializerInterface::class));
         }
 

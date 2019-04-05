@@ -14,6 +14,7 @@ use Ixocreate\ServiceManager\ServiceManagerConfig;
 use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\SubManager\SubManager;
 use IxocreateMisc\ServiceManager\DateTimeFactory;
+use IxocreateMisc\ServiceManager\Delegator2Factory;
 use IxocreateMisc\ServiceManager\DelegatorFactory;
 use IxocreateMisc\ServiceManager\Initializer;
 use IxocreateMisc\ServiceManager\Initializer2;
@@ -29,6 +30,10 @@ use PHPUnit\Framework\TestCase;
 
 class ServiceManagerConfiguratorTest extends TestCase
 {
+    /**
+     * @covers \Ixocreate\ServiceManager\AbstractServiceManagerConfigurator
+     * @covers \Ixocreate\ServiceManager\ServiceManagerConfigurator
+     */
     public function testFactories()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
@@ -51,12 +56,29 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertEquals($factories, $serviceManagerConfigurator->getFactories());
     }
 
+    /**
+     * @covers \Ixocreate\ServiceManager\AbstractServiceManagerConfigurator
+     * @covers \Ixocreate\ServiceManager\ServiceManagerConfigurator
+     */
+    public function testServices()
+    {
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+
+        $factories = [
+            'dateTime' => DateTimeFactory::class,
+        ];
+
+        $serviceManagerConfigurator->addService('dateTime', DateTimeFactory::class);
+
+        $this->assertEquals($factories, $serviceManagerConfigurator->getFactories());
+    }
+
     public function testDelegators()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
 
         $delegators1 = [
-            'test' => ['test'],
+            'test' => [DelegatorFactory::class],
         ];
 
         foreach ($delegators1 as $name => $value) {
@@ -67,7 +89,7 @@ class ServiceManagerConfiguratorTest extends TestCase
 
         $delegators2 = [
             'test2' => [],
-            'test' => [DelegatorFactory::class],
+            'test' => [Delegator2Factory::class],
         ];
 
         foreach ($delegators2 as $name => $value) {
@@ -118,6 +140,9 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertEquals($initializer, $serviceManagerConfigurator->getInitializers());
     }
 
+    /**
+     * @covers \Ixocreate\ServiceManager\ServiceManagerConfigurator
+     */
     public function testSubManagers()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
@@ -133,6 +158,9 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertEquals($subManagers, $serviceManagerConfigurator->getSubManagers());
     }
 
+    /**
+     * @covers \Ixocreate\ServiceManager\ServiceManagerConfigurator
+     */
     public function testDirectoryScan()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
@@ -161,6 +189,9 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertArrayHasKey(Class4::class, $serviceManagerConfig->getFactories());
     }
 
+    /**
+     * @covers \Ixocreate\ServiceManager\ServiceManagerConfigurator
+     */
     public function testGetServiceManagerConfig()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
