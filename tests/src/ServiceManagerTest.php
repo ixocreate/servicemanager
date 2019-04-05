@@ -116,10 +116,10 @@ class ServiceManagerTest extends TestCase
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $factories = [
-            'test' => CantCreateObjectFactory::class,
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($factories);
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addService("test", CantCreateObjectFactory::class);
+
+        $serviceManagerConfig = new ServiceManagerConfig($serviceManagerConfigurator);
         $serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $serviceManager->build("test");
@@ -127,13 +127,13 @@ class ServiceManagerTest extends TestCase
 
     public function testGetFactoryResolverPersist()
     {
-        $serviceManager = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup(null, null, true));
+        $serviceManager = new ServiceManager(new ServiceManagerConfig(new ServiceManagerConfigurator()), new ServiceManagerSetup(null, null, true));
         $this->assertInstanceOf(FileFactoryResolver::class, $serviceManager->getFactoryResolver());
     }
 
     public function testGetFactoryResolverRuntime()
     {
-        $serviceManager = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
+        $serviceManager = new ServiceManager(new ServiceManagerConfig(new ServiceManagerConfigurator()), new ServiceManagerSetup());
         $this->assertInstanceOf(RuntimeFactoryResolver::class, $serviceManager->getFactoryResolver());
     }
 }

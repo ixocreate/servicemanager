@@ -12,9 +12,12 @@ namespace IxocreateTest\ServiceManager;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManagerConfig;
 use Ixocreate\ServiceManager\ServiceManagerConfigurator;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 use IxocreateMisc\ServiceManager\DateTimeFactory;
 use IxocreateMisc\ServiceManager\DelegatorFactory;
 use IxocreateMisc\ServiceManager\Initializer;
+use IxocreateMisc\ServiceManager\Initializer2;
+use IxocreateMisc\ServiceManager\LazyLoadingObject;
 use IxocreateMisc\ServiceManager\Scan\AbstractClass;
 use IxocreateMisc\ServiceManager\Scan\Class1;
 use IxocreateMisc\ServiceManager\Scan\Class2;
@@ -65,7 +68,7 @@ class ServiceManagerConfiguratorTest extends TestCase
 
         $delegators2 = [
             'test2' => [],
-            'test' => ['test1'],
+            'test' => [DelegatorFactory::class],
         ];
 
         foreach ($delegators2 as $name => $value) {
@@ -81,7 +84,7 @@ class ServiceManagerConfiguratorTest extends TestCase
 
         $lazyServices = [
             'dateTime' => DateTimeFactory::class,
-            'testFallBack' => null,
+            LazyLoadingObject::class => null,
         ];
 
         foreach ($lazyServices as $name => $value) {
@@ -92,21 +95,19 @@ class ServiceManagerConfiguratorTest extends TestCase
             $serviceManagerConfigurator->addLazyService($name, $value);
         }
 
-        $lazyServices['testFallBack'] = "testFallBack";
-
-        $this->assertEquals($lazyServices, $serviceManagerConfigurator->getLazyServices());
+        $lazyServices[LazyLoadingObject::class] = LazyLoadingObject::class;
 
         $this->assertEquals([
-            'dateTime' => [LazyServiceFactory::class],
-            'testFallBack' => [LazyServiceFactory::class],
-        ], $serviceManagerConfigurator->getDelegators());
+            'dateTime' => DateTimeFactory::class,
+            LazyLoadingObject::class => LazyLoadingObject::class,
+        ], $serviceManagerConfigurator->getLazyServices());
     }
 
     public function testInitializer()
     {
         $initializer = [
-            'array',
-            'dateTime',
+            Initializer::class,
+            Initializer2::class,
         ];
 
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
@@ -118,28 +119,12 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertEquals($initializer, $serviceManagerConfigurator->getInitializers());
     }
 
-    public function testDisablingSharing()
-    {
-        $disableSharing = [
-            'array',
-            'dateTime',
-        ];
-
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-
-        foreach ($disableSharing as $value) {
-            $serviceManagerConfigurator->disableSharingFor($value);
-        }
-
-        $this->assertEquals($disableSharing, $serviceManagerConfigurator->getDisableSharing());
-    }
-
     public function testSubManagers()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
 
         $subManagers = [
-            'sub1' => SubManagerFactory::class,
+            SubManager::class => SubManagerFactory::class,
         ];
 
         foreach ($subManagers as $name => $value) {
@@ -181,7 +166,7 @@ class ServiceManagerConfiguratorTest extends TestCase
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
         $serviceManagerConfigurator->addInitializer(Initializer::class);
-        $serviceManagerConfigurator->addSubManager("subManager", SubManagerFactory::class);
+        $serviceManagerConfigurator->addSubManager(SubManager::class, SubManagerFactory::class);
         $serviceManagerConfigurator->addLazyService(\DateTime::class);
         $serviceManagerConfigurator->addDelegator("test", [DelegatorFactory::class]);
         $serviceManagerConfigurator->addFactory("factory", DateTimeFactory::class);

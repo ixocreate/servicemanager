@@ -14,7 +14,9 @@ use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\Generator\AutowireFactoryGenerator;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 use IxocreateMisc\ServiceManager\DateTimeFactory;
 use IxocreateMisc\ServiceManager\ResolverTestObject;
 use IxocreateMisc\ServiceManager\SubManagerFactory;
@@ -32,18 +34,13 @@ class AutowireFactoryGeneratorTest extends TestCase
 
     public function setUp()
     {
-        $serviceManagerConfig = new ServiceManagerConfig(
-            [
-                \DateTime::class => DateTimeFactory::class,
-                'someThing' => DateTimeFactory::class,
-                ResolverTestObject::class => AutowireFactory::class,
-            ],
-            [
-                'subManager1' => SubManagerFactory::class,
-            ]
-        );
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addService(\DateTime::class, DateTimeFactory::class);
+        $serviceManagerConfigurator->addService('someThing', DateTimeFactory::class);
+        $serviceManagerConfigurator->addService(ResolverTestObject::class, AutowireFactory::class);
+        $serviceManagerConfigurator->addSubManager(SubManager::class, SubManagerFactory::class);
 
-        $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
+        $this->serviceManager = new ServiceManager($serviceManagerConfigurator->getServiceManagerConfig(), new ServiceManagerSetup());
     }
 
     public function testGenerate()

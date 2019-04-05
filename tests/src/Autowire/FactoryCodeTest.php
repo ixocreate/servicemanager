@@ -14,8 +14,9 @@ use Ixocreate\ServiceManager\Autowire\DefaultValueInjection;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 use IxocreateMisc\ServiceManager\DateTimeFactory;
 use IxocreateMisc\ServiceManager\FactoryGeneratorTestObject;
 use IxocreateMisc\ServiceManager\ResolverTestObject;
@@ -40,18 +41,13 @@ class FactoryCodeTest extends TestCase
     {
         $this->factoryCode = new FactoryCode();
 
-        $serviceManagerConfig = new ServiceManagerConfig(
-            [
-                \DateTime::class => DateTimeFactory::class,
-                'someThing' => DateTimeFactory::class,
-                ResolverTestObject::class => AutowireFactory::class,
-            ],
-            [
-                'subManager1' => SubManagerFactory::class,
-            ]
-        );
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addService(\DateTime::class, DateTimeFactory::class);
+        $serviceManagerConfigurator->addService('someThing', DateTimeFactory::class);
+        $serviceManagerConfigurator->addService(ResolverTestObject::class, AutowireFactory::class);
+        $serviceManagerConfigurator->addSubManager(SubManager::class, SubManagerFactory::class);
 
-        $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
+        $this->serviceManager = new ServiceManager($serviceManagerConfigurator->getServiceManagerConfig(), new ServiceManagerSetup());
     }
 
     public function testGenerateFactoryName()
@@ -76,7 +72,7 @@ class FactoryCodeTest extends TestCase
         $resolution = [
             'dateTime'  => new ContainerInjection(\DateTime::class, null),
             'test'      => new ValueInjection("test"),
-            'test1'     => new ContainerInjection('test1', 'subManager1'),
+            'test1'     => new ContainerInjection('test1', SubManager::class),
             'default1'  => new DefaultValueInjection("default"),
             'default2'  => new DefaultValueInjection(null),
         ];

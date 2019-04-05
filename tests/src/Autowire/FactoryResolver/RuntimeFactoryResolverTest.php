@@ -14,6 +14,7 @@ use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use IxocreateMisc\ServiceManager\ResolverTestObjectNoConstructor;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +27,7 @@ class RuntimeFactoryResolverTest extends TestCase
         $requestedName = ResolverTestObjectNoConstructor::class;
         $factoryCode = new FactoryCode();
         $resolver = new DependencyResolver(new RuntimeDefinition());
-        $resolver->setContainer(new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup()));
+        $resolver->setContainer(new ServiceManager(new ServiceManagerConfig(new ServiceManagerConfigurator()), new ServiceManagerSetup()));
 
         $runtimeFactoryResolver = new RuntimeFactoryResolver($resolver, $factoryCode);
 

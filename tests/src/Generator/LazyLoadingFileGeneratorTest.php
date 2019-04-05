@@ -13,6 +13,7 @@ use Ixocreate\ServiceManager\Generator\LazyLoadingFileGenerator;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 use IxocreateMisc\ServiceManager\LazyLoadingObject;
 use IxocreateMisc\ServiceManager\SubManagerFactory;
 use IxocreateTest\ServiceManager\CleanUpTrait;
@@ -35,7 +36,7 @@ class LazyLoadingFileGeneratorTest extends TestCase
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
         $serviceManagerConfigurator->addFactory(LazyLoadingObject::class);
         $serviceManagerConfigurator->addLazyService(LazyLoadingObject::class);
-        $serviceManagerConfigurator->addSubManager("sub1", SubManagerFactory::class);
+        $serviceManagerConfigurator->addSubManager(SubManager::class, SubManagerFactory::class);
 
         $this->serviceManager = new ServiceManager(
             $serviceManagerConfigurator->getServiceManagerConfig(),
