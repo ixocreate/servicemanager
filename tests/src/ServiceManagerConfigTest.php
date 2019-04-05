@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace IxocreateTest\ServiceManager;
 
-use Ixocreate\ServiceManager\Exception\InvalidArgumentException;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManagerConfig;
 use Ixocreate\ServiceManager\ServiceManagerConfigurator;
@@ -121,7 +120,7 @@ class ServiceManagerConfigTest extends TestCase
             'initializers' => [],
             'subManagers' => [],
             'metadata' => [],
-            'namedServices' => []
+            'namedServices' => [],
         ]), $serviceManagerConfig->serialize());
     }
 

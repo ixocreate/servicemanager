@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace IxocreateMisc\ServiceManager;
 
-
 use Ixocreate\Contract\ServiceManager\InitializerInterface;
 use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
 

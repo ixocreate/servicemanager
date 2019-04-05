@@ -26,7 +26,6 @@ use IxocreateMisc\ServiceManager\Scan\SubDir\Class3;
 use IxocreateMisc\ServiceManager\Scan\TestInterface;
 use IxocreateMisc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
-use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
 class ServiceManagerConfiguratorTest extends TestCase
 {
