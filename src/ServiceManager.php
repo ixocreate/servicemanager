@@ -10,15 +10,12 @@ declare(strict_types=1);
 namespace Ixocreate\ServiceManager;
 
 use Interop\Container\ContainerInterface;
-use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
-use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
-use Ixocreate\ServiceManager\ServiceManagerInterface;
-use Ixocreate\ServiceManager\ServiceManagerSetupInterface;
 use Ixocreate\ServiceManager\Autowire\Autoloader;
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
+use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\Di\Definition\RuntimeDefinition;
@@ -51,13 +48,13 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     private $initalServices = [];
 
     /**
-     * @param ServiceManagerConfig $serviceManagerConfig
-     * @param ServiceManagerSetup $serviceManagerSetup
+     * @param ServiceManagerConfigInterface $serviceManagerConfig
+     * @param ServiceManagerSetupInterface $serviceManagerSetup
      * @param array $services
      */
     public function __construct(
-        ServiceManagerConfig $serviceManagerConfig,
-        ServiceManagerSetup $serviceManagerSetup,
+        ServiceManagerConfigInterface $serviceManagerConfig,
+        ServiceManagerSetupInterface $serviceManagerSetup,
         array $services = []
     ) {
         $this->serviceManagerConfig = $serviceManagerConfig;
@@ -96,9 +93,9 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
 
     /**
      * @param string $id
-     * @throws ServiceNotCreatedException
-     * @throws ServiceNotFoundException
      * @return mixed
+     * @throws ServiceNotFoundException
+     * @throws ServiceNotCreatedException
      */
     public function get($id)
     {
@@ -127,9 +124,9 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     /**
      * @param string $id
      * @param array|null $options
-     * @throws ServiceNotCreatedException
-     * @throws ServiceNotFoundException
      * @return mixed
+     * @throws ServiceNotFoundException
+     * @throws ServiceNotCreatedException
      */
     public function build(string $id, array $options = null)
     {

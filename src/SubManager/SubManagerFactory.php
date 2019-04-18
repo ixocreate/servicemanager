@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\SubManager;
 
-use Ixocreate\ServiceManager\ServiceManagerInterface;
-use Ixocreate\ServiceManager\SubManager\SubManagerFactoryInterface;
-use Ixocreate\ServiceManager\SubManager\SubManagerInterface;
 use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 
 final class SubManagerFactory implements SubManagerFactoryInterface
 {
@@ -20,12 +18,15 @@ final class SubManagerFactory implements SubManagerFactoryInterface
      * @param ServiceManagerInterface $container
      * @param $requestedName
      * @param array|null $options
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      * @return SubManagerInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
      */
-    public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null): SubManagerInterface
-    {
+    public function __invoke(
+        ServiceManagerInterface $container,
+        $requestedName,
+        array $options = null
+    ): SubManagerInterface {
         /** @var ServiceManagerConfig $serviceManagerConfig */
         $serviceManagerConfig = $container->get($requestedName . '::Config');
 

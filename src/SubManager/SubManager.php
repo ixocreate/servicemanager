@@ -11,6 +11,7 @@ namespace Ixocreate\ServiceManager\SubManager;
 
 use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
 use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetupInterface;
 use Ixocreate\ServiceManager\SubManager\SubManagerInterface;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
@@ -47,11 +48,11 @@ class SubManager implements SubManagerInterface
     private $factoryResolver;
 
     /**
-     * @param ServiceManager $serviceManager
-     * @param ServiceManagerConfig $serviceManagerConfig
+     * @param ServiceManagerInterface $serviceManager
+     * @param ServiceManagerConfigInterface $serviceManagerConfig
      * @param string $validation
      */
-    final public function __construct(ServiceManager $serviceManager, ServiceManagerConfig $serviceManagerConfig, string $validation)
+    final public function __construct(ServiceManagerInterface $serviceManager, ServiceManagerConfigInterface $serviceManagerConfig, string $validation)
     {
         $config = $serviceManagerConfig->getConfig();
         $config['lazy_services'] = [
