@@ -16,6 +16,7 @@ final class PluginManager extends ServiceManager
 {
     /**
      * PluginManager constructor.
+     *
      * @param ServiceManagerInterface $container
      * @param array $config
      */

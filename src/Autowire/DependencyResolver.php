@@ -28,6 +28,7 @@ final class DependencyResolver implements DependencyResolverInterface
 
     /**
      * DependencyResolver constructor.
+     *
      * @param DefinitionInterface $definition
      */
     public function __construct(DefinitionInterface $definition)
@@ -48,11 +49,11 @@ final class DependencyResolver implements DependencyResolverInterface
     /**
      * @param string $requestedType
      * @param array $callTimeParameters
-     * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
      * @return array
      */
-    public function resolveParameters(string $requestedType, array $callTimeParameters = []) : array
+    public function resolveParameters(string $requestedType, array $callTimeParameters = []): array
     {
         $definition = $this->definition->getClassDefinition($requestedType);
         $params = $definition->getParameters();
@@ -117,7 +118,7 @@ final class DependencyResolver implements DependencyResolverInterface
      * @param null|string $context
      * @return null|string
      */
-    public function resolvePreference(string $type, ?string $context = null) : ?string
+    public function resolvePreference(string $type, ?string $context = null): ?string
     {
         return null;
     }

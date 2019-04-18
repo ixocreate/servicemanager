@@ -9,6 +9,12 @@ declare(strict_types=1);
 
 namespace Ixocreate\Test\ServiceManager\Autowire;
 
+use Ixocreate\Misc\ServiceManager\ComplexObject;
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\DefaultParamObject;
+use Ixocreate\Misc\ServiceManager\OwnDateTime;
+use Ixocreate\Misc\ServiceManager\ResolverTestObject;
+use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use Ixocreate\ServiceManager\Autowire\ContainerInjection;
 use Ixocreate\ServiceManager\Autowire\DefaultValueInjection;
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
@@ -16,12 +22,6 @@ use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\SubManager;
-use Ixocreate\Misc\ServiceManager\ComplexObject;
-use Ixocreate\Misc\ServiceManager\DateTimeFactory;
-use Ixocreate\Misc\ServiceManager\DefaultParamObject;
-use Ixocreate\Misc\ServiceManager\OwnDateTime;
-use Ixocreate\Misc\ServiceManager\ResolverTestObject;
-use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 use Zend\Di\Definition\RuntimeDefinition;
 use Zend\Di\Resolver\ValueInjection;
@@ -50,7 +50,10 @@ class DependencyResolverTest extends TestCase
         $serviceManagerConfigurator->addService(DefaultParamObject::class, AutowireFactory::class);
         $serviceManagerConfigurator->addSubManager(SubManager::class, SubManagerFactory::class);
 
-        $this->serviceManager = new ServiceManager($serviceManagerConfigurator->getServiceManagerConfig(), new ServiceManagerSetup());
+        $this->serviceManager = new ServiceManager(
+            $serviceManagerConfigurator->getServiceManagerConfig(),
+            new ServiceManagerSetup()
+        );
         $this->dependencyResolver->setContainer($this->serviceManager);
     }
 

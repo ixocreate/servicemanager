@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace Ixocreate\Test\ServiceManager\Autowire\FactoryResolver;
 
+use Ixocreate\Misc\ServiceManager\ResolverTestObjectNoConstructor;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
-use Ixocreate\Misc\ServiceManager\ResolverTestObjectNoConstructor;
 use PHPUnit\Framework\TestCase;
 
 class FileFactoryResolverTest extends TestCase

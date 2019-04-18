@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Autowire\FactoryResolver;
 
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
 use Ixocreate\ServiceManager\FactoryInterface;
-use Ixocreate\ServiceManager\Autowire\FactoryCode;
 
 final class FileFactoryResolver implements FactoryResolverInterface
 {
@@ -22,6 +22,7 @@ final class FileFactoryResolver implements FactoryResolverInterface
 
     /**
      * RuntimeFactoryResolver constructor.
+     *
      * @param FactoryCode $factoryCode
      */
     public function __construct(FactoryCode $factoryCode)

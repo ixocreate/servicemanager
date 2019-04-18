@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace Ixocreate\Test\ServiceManager\Generator;
 
+use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
+use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use Ixocreate\ServiceManager\Generator\LazyLoadingFileGenerator;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\SubManager;
-use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
-use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use Ixocreate\Test\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
@@ -52,14 +52,21 @@ class LazyLoadingFileGeneratorTest extends TestCase
         $lazyLoadingFileGenerator->generate($this->serviceManager);
 
         $proxyParameters = [
-            'className'           => LazyLoadingObject::class,
-            'factory'             => LazyLoadingValueHolderFactory::class,
+            'className' => LazyLoadingObject::class,
+            'factory' => LazyLoadingValueHolderFactory::class,
             'proxyManagerVersion' => Version::getVersion(),
         ];
 
         $proxyConfiguration = new Configuration();
-        $filename = $proxyConfiguration->getClassNameInflector()->getProxyClassName(LazyLoadingObject::class, $proxyParameters);
-        $filename = $this->serviceManager->getServiceManagerSetup()->getLazyLoadingLocation() . DIRECTORY_SEPARATOR . \str_replace('\\', '', $filename) . '.php';
+        $filename = $proxyConfiguration->getClassNameInflector()->getProxyClassName(
+            LazyLoadingObject::class,
+            $proxyParameters
+        );
+        $filename = $this->serviceManager->getServiceManagerSetup()->getLazyLoadingLocation() . DIRECTORY_SEPARATOR . \str_replace(
+            '\\',
+            '',
+            $filename
+        ) . '.php';
 
         $this->serviceManager->get(LazyLoadingObject::class);
 

@@ -13,6 +13,7 @@ class ResolverTestObjectScalar
 {
     /**
      * ResolverTestObjectScalar constructor.
+     *
      * @param array $test
      */
     public function __construct(array $test)

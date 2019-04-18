@@ -9,14 +9,14 @@ declare(strict_types=1);
 
 namespace Ixocreate\Test\ServiceManager;
 
-use Ixocreate\ServiceManager\Factory\AutowireFactory;
-use Ixocreate\ServiceManager\SubManager\SubManager;
 use Ixocreate\Misc\ServiceManager\CantCreateObjectFactory;
 use Ixocreate\Misc\ServiceManager\DateTimeFactory;
 use Ixocreate\Misc\ServiceManager\DelegatorFactory;
 use Ixocreate\Misc\ServiceManager\Initializer;
 use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
 use Ixocreate\Misc\ServiceManager\SubManagerFactory;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\Proxy\LazyServiceFactory;
 

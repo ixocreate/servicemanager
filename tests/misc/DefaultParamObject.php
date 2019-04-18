@@ -13,6 +13,7 @@ class DefaultParamObject
 {
     /**
      * DefaultParamObject constructor.
+     *
      * @param string|null $name
      */
     public function __construct(string $name = "name")

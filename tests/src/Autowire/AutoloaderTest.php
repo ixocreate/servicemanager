@@ -9,18 +9,18 @@ declare(strict_types=1);
 
 namespace Ixocreate\Test\ServiceManager\Autowire;
 
-use Ixocreate\ServiceManager\FactoryInterface;
-use Ixocreate\ServiceManager\Autowire\Autoloader;
-use Ixocreate\ServiceManager\Autowire\FactoryCode;
-use Ixocreate\ServiceManager\Factory\AutowireFactory;
-use Ixocreate\ServiceManager\Generator\AutowireFactoryGenerator;
-use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerSetup;
-use Ixocreate\ServiceManager\SubManager\SubManager;
 use Ixocreate\Misc\ServiceManager\DateTimeFactory;
 use Ixocreate\Misc\ServiceManager\ResolverTestObject;
 use Ixocreate\Misc\ServiceManager\ResolverTestObjectNoConstructor;
 use Ixocreate\Misc\ServiceManager\SubManagerFactory;
+use Ixocreate\ServiceManager\Autowire\Autoloader;
+use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\FactoryInterface;
+use Ixocreate\ServiceManager\Generator\AutowireFactoryGenerator;
+use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerSetup;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 use Ixocreate\Test\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 

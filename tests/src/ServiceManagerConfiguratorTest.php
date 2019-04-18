@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Ixocreate\Test\ServiceManager;
 
-use Ixocreate\ServiceManager\Factory\AutowireFactory;
-use Ixocreate\ServiceManager\SubManager\SubManager;
 use Ixocreate\Misc\ServiceManager\DateTimeFactory;
 use Ixocreate\Misc\ServiceManager\Delegator2Factory;
 use Ixocreate\Misc\ServiceManager\DelegatorFactory;
@@ -24,6 +22,8 @@ use Ixocreate\Misc\ServiceManager\Scan\Class4;
 use Ixocreate\Misc\ServiceManager\Scan\SubDir\Class3;
 use Ixocreate\Misc\ServiceManager\Scan\TestInterface;
 use Ixocreate\Misc\ServiceManager\SubManagerFactory;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 use PHPUnit\Framework\TestCase;
 
 class ServiceManagerConfiguratorTest extends TestCase
@@ -179,7 +179,11 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertArrayNotHasKey(Class3::class, $serviceManagerConfig->getFactories());
 
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
-        $serviceManagerConfigurator->addDirectory(__DIR__ . '/../misc/Scan', true, [AbstractClass::class, TestInterface::class]);
+        $serviceManagerConfigurator->addDirectory(
+            __DIR__ . '/../misc/Scan',
+            true,
+            [AbstractClass::class, TestInterface::class]
+        );
         $serviceManagerConfig = $serviceManagerConfigurator->getServiceManagerConfig();
         $this->assertArrayNotHasKey(Class1::class, $serviceManagerConfig->getFactories());
         $this->assertArrayHasKey(Class2::class, $serviceManagerConfig->getFactories());

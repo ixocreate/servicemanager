@@ -17,7 +17,10 @@ class ServiceManagerSetupTest extends TestCase
     public function testDefaults()
     {
         $serviceManagerSetup = new ServiceManagerSetup();
-        $this->assertEquals('resources/generated/servicemanager/autowire/', $serviceManagerSetup->getAutowireLocation());
+        $this->assertEquals(
+            'resources/generated/servicemanager/autowire/',
+            $serviceManagerSetup->getAutowireLocation()
+        );
         $this->assertFalse($serviceManagerSetup->isPersistLazyLoading());
     }
 

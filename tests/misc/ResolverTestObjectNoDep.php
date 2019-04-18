@@ -15,6 +15,7 @@ class ResolverTestObjectNoDep
 {
     /**
      * ResolverTestObject constructor.
+     *
      * @param \DateTime $dateTime
      * @param \DateTimeInterface $test1
      */

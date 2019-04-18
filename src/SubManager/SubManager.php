@@ -84,9 +84,9 @@ class SubManager implements SubManagerInterface
 
     /**
      * @param string $id
-     * @return mixed
      * @throws ServiceNotFoundException
      * @throws ServiceNotCreatedException
+     * @return mixed
      */
     final public function get($id)
     {
@@ -123,9 +123,9 @@ class SubManager implements SubManagerInterface
     /**
      * @param string $id
      * @param array|null $options
-     * @return mixed
      * @throws ServiceNotFoundException
      * @throws ServiceNotCreatedException
+     * @return mixed
      */
     final public function build(string $id, array $options = null)
     {

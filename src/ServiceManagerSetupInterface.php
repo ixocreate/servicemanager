@@ -19,33 +19,33 @@ interface ServiceManagerSetupInterface
     /**
      * @return string
      */
-    public function getAutowireLocation() : string;
+    public function getAutowireLocation(): string;
 
     /**
      * @return bool
      */
-    public function isPersistLazyLoading() : bool;
+    public function isPersistLazyLoading(): bool;
 
     /**
      * @return bool
      */
-    public function isPersistAutowire() : bool;
+    public function isPersistAutowire(): bool;
 
     /**
      * @param string $persistRoot
      * @return ServiceManagerSetupInterface
      */
-    public function withPersistRoot(string $persistRoot) : ServiceManagerSetupInterface;
+    public function withPersistRoot(string $persistRoot): ServiceManagerSetupInterface;
 
     /**
      * @param bool $persistLazyLoading
      * @return ServiceManagerSetupInterface
      */
-    public function withPersistLazyLoading(bool $persistLazyLoading) : ServiceManagerSetupInterface;
+    public function withPersistLazyLoading(bool $persistLazyLoading): ServiceManagerSetupInterface;
 
     /**
      * @param bool $persistAutowire
      * @return ServiceManagerSetupInterface
      */
-    public function withPersistAutowire(bool $persistAutowire) : ServiceManagerSetupInterface;
+    public function withPersistAutowire(bool $persistAutowire): ServiceManagerSetupInterface;
 }
