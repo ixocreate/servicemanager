@@ -7,10 +7,10 @@
 
 declare(strict_types=1);
 
-namespace IxocreateMisc\ServiceManager;
+namespace Ixocreate\Misc\ServiceManager;
 
-use Ixocreate\Contract\ServiceManager\DelegatorFactoryInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\DelegatorFactoryInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 
 class DelegatorFactory implements DelegatorFactoryInterface
 {

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager;
 
-use Ixocreate\Contract\ServiceManager\ServiceManagerSetupInterface;
+use Ixocreate\ServiceManager\ServiceManagerSetupInterface;
 
 final class ServiceManagerSetup implements ServiceManagerSetupInterface
 {

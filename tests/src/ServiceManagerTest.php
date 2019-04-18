@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager;
+namespace Ixocreate\Test\ServiceManager;
 
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
@@ -17,10 +17,10 @@ use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerConfig;
 use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use IxocreateMisc\ServiceManager\CantCreateObjectFactory;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
-use IxocreateMisc\ServiceManager\LazyLoadingObject;
-use IxocreateMisc\ServiceManager\TestInterface;
+use Ixocreate\Misc\ServiceManager\CantCreateObjectFactory;
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
+use Ixocreate\Misc\ServiceManager\TestInterface;
 use PHPUnit\Framework\TestCase;
 
 class ServiceManagerTest extends TestCase

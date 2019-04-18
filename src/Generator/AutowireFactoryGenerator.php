@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Generator;
 
-use Ixocreate\Contract\ServiceManager\AutowireFactoryInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\AutowireFactoryInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Zend\Di\Definition\RuntimeDefinition;

@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager;
 
-use Ixocreate\Contract\Application\ConfiguratorInterface;
-use Ixocreate\Contract\ServiceManager\DelegatorFactoryInterface;
-use Ixocreate\Contract\ServiceManager\FactoryInterface;
-use Ixocreate\Contract\ServiceManager\InitializerInterface;
+use Ixocreate\Application\ConfiguratorInterface;
+use Ixocreate\ServiceManager\DelegatorFactoryInterface;
+use Ixocreate\ServiceManager\FactoryInterface;
+use Ixocreate\ServiceManager\InitializerInterface;
 use Ixocreate\ServiceManager\Exception\InvalidArgumentException;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Zend\Code\Reflection\FileReflection;

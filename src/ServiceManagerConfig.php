@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager;
 
-use Ixocreate\Contract\Application\SerializableServiceInterface;
-use Ixocreate\Contract\ServiceManager\NamedServiceInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerConfigInterface;
+use Ixocreate\Application\SerializableServiceInterface;
+use Ixocreate\ServiceManager\NamedServiceInterface;
+use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 
 final class ServiceManagerConfig implements ServiceManagerConfigInterface, SerializableServiceInterface
 {

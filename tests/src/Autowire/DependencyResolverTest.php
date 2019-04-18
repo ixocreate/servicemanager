@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager\Autowire;
+namespace Ixocreate\Test\ServiceManager\Autowire;
 
 use Ixocreate\ServiceManager\Autowire\ContainerInjection;
 use Ixocreate\ServiceManager\Autowire\DefaultValueInjection;
@@ -17,12 +17,12 @@ use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\SubManager;
-use IxocreateMisc\ServiceManager\ComplexObject;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
-use IxocreateMisc\ServiceManager\DefaultParamObject;
-use IxocreateMisc\ServiceManager\OwnDateTime;
-use IxocreateMisc\ServiceManager\ResolverTestObject;
-use IxocreateMisc\ServiceManager\SubManagerFactory;
+use Ixocreate\Misc\ServiceManager\ComplexObject;
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\DefaultParamObject;
+use Ixocreate\Misc\ServiceManager\OwnDateTime;
+use Ixocreate\Misc\ServiceManager\ResolverTestObject;
+use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 use Zend\Di\Definition\RuntimeDefinition;
 use Zend\Di\Resolver\ValueInjection;

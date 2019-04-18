@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\SubManager;
 
-use Ixocreate\Contract\Application\ServiceRegistryInterface;
+use Ixocreate\Application\ServiceRegistryInterface;
 use Ixocreate\ServiceManager\AbstractServiceManagerConfigurator;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 

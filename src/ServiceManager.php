@@ -10,10 +10,10 @@ declare(strict_types=1);
 namespace Ixocreate\ServiceManager;
 
 use Interop\Container\ContainerInterface;
-use Ixocreate\Contract\ServiceManager\Autowire\FactoryResolverInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerConfigInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerSetupInterface;
+use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
+use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\ServiceManagerSetupInterface;
 use Ixocreate\ServiceManager\Autowire\Autoloader;
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;

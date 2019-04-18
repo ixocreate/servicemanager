@@ -7,25 +7,25 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager;
+namespace Ixocreate\Test\ServiceManager;
 
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManagerConfig;
 use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\SubManager\SubManager;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
-use IxocreateMisc\ServiceManager\Delegator2Factory;
-use IxocreateMisc\ServiceManager\DelegatorFactory;
-use IxocreateMisc\ServiceManager\Initializer;
-use IxocreateMisc\ServiceManager\Initializer2;
-use IxocreateMisc\ServiceManager\LazyLoadingObject;
-use IxocreateMisc\ServiceManager\Scan\AbstractClass;
-use IxocreateMisc\ServiceManager\Scan\Class1;
-use IxocreateMisc\ServiceManager\Scan\Class2;
-use IxocreateMisc\ServiceManager\Scan\Class4;
-use IxocreateMisc\ServiceManager\Scan\SubDir\Class3;
-use IxocreateMisc\ServiceManager\Scan\TestInterface;
-use IxocreateMisc\ServiceManager\SubManagerFactory;
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\Delegator2Factory;
+use Ixocreate\Misc\ServiceManager\DelegatorFactory;
+use Ixocreate\Misc\ServiceManager\Initializer;
+use Ixocreate\Misc\ServiceManager\Initializer2;
+use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
+use Ixocreate\Misc\ServiceManager\Scan\AbstractClass;
+use Ixocreate\Misc\ServiceManager\Scan\Class1;
+use Ixocreate\Misc\ServiceManager\Scan\Class2;
+use Ixocreate\Misc\ServiceManager\Scan\Class4;
+use Ixocreate\Misc\ServiceManager\Scan\SubDir\Class3;
+use Ixocreate\Misc\ServiceManager\Scan\TestInterface;
+use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 
 class ServiceManagerConfiguratorTest extends TestCase

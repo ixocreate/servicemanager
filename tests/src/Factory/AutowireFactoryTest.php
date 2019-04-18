@@ -7,16 +7,16 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager\Factory;
+namespace Ixocreate\Test\ServiceManager\Factory;
 
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\SubManager;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
-use IxocreateMisc\ServiceManager\SubManagerFactory;
-use IxocreateMisc\ServiceManager\ResolverTestObject;
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\SubManagerFactory;
+use Ixocreate\Misc\ServiceManager\ResolverTestObject;
 use PHPUnit\Framework\TestCase;
 
 class AutowireFactoryTest extends TestCase

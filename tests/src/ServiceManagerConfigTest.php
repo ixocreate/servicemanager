@@ -7,18 +7,18 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager;
+namespace Ixocreate\Test\ServiceManager;
 
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManagerConfig;
 use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\SubManager\SubManager;
-use IxocreateMisc\ServiceManager\CantCreateObjectFactory;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
-use IxocreateMisc\ServiceManager\DelegatorFactory;
-use IxocreateMisc\ServiceManager\Initializer;
-use IxocreateMisc\ServiceManager\LazyLoadingObject;
-use IxocreateMisc\ServiceManager\SubManagerFactory;
+use Ixocreate\Misc\ServiceManager\CantCreateObjectFactory;
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\DelegatorFactory;
+use Ixocreate\Misc\ServiceManager\Initializer;
+use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
+use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\Proxy\LazyServiceFactory;
 

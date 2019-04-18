@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace IxocreateMisc\ServiceManager\Scan\SubDir;
+namespace Ixocreate\Misc\ServiceManager\Scan\SubDir;
 
-use IxocreateMisc\ServiceManager\Scan\AbstractClass;
+use Ixocreate\Misc\ServiceManager\Scan\AbstractClass;
 
 class Class3 extends AbstractClass
 {

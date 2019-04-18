@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager\Autowire;
+namespace Ixocreate\Test\ServiceManager\Autowire;
 
 use Ixocreate\ServiceManager\Autowire\ContainerInjection;
 use PHPUnit\Framework\TestCase;

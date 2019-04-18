@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Autowire\FactoryResolver;
 
-use Ixocreate\Contract\ServiceManager\Autowire\FactoryResolverInterface;
-use Ixocreate\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
+use Ixocreate\ServiceManager\FactoryInterface;
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 

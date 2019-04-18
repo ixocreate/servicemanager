@@ -17,8 +17,8 @@ final class FactoryCode
 <?php
 namespace Ixocreate\GeneratedFactory;
 
-use Ixocreate\Contract\ServiceManager\FactoryInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\FactoryInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 
 final class %s implements FactoryInterface
 {

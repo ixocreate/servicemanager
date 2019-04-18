@@ -7,10 +7,9 @@
 
 declare(strict_types=1);
 
-namespace Ixocreate\Misc\ServiceManager\Scan;
+namespace Ixocreate\ServiceManager;
 
-use Ixocreate\Misc\ServiceManager\Scan\SubDir\Class3;
-
-class Class4 extends Class3
+interface NamedServiceInterface
 {
+    public static function serviceName(): string;
 }

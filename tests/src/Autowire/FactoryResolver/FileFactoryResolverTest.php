@@ -7,11 +7,11 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager\Autowire\FactoryResolver;
+namespace Ixocreate\Test\ServiceManager\Autowire\FactoryResolver;
 
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
-use IxocreateMisc\ServiceManager\ResolverTestObjectNoConstructor;
+use Ixocreate\Misc\ServiceManager\ResolverTestObjectNoConstructor;
 use PHPUnit\Framework\TestCase;
 
 class FileFactoryResolverTest extends TestCase
