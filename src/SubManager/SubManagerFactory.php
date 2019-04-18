@@ -18,9 +18,9 @@ final class SubManagerFactory implements SubManagerFactoryInterface
      * @param ServiceManagerInterface $container
      * @param $requestedName
      * @param array|null $options
-     * @return SubManagerInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
+     * @return SubManagerInterface
      */
     public function __invoke(
         ServiceManagerInterface $container,

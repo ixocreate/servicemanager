@@ -93,9 +93,9 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
 
     /**
      * @param string $id
-     * @return mixed
      * @throws ServiceNotFoundException
      * @throws ServiceNotCreatedException
+     * @return mixed
      */
     public function get($id)
     {
@@ -124,9 +124,9 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     /**
      * @param string $id
      * @param array|null $options
-     * @return mixed
      * @throws ServiceNotFoundException
      * @throws ServiceNotCreatedException
+     * @return mixed
      */
     public function build(string $id, array $options = null)
     {
