@@ -10,14 +10,12 @@ declare(strict_types=1);
 namespace Ixocreate\ServiceManager\SubManager;
 
 use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
-use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
-use Ixocreate\ServiceManager\ServiceManagerInterface;
-use Ixocreate\ServiceManager\ServiceManagerSetupInterface;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
-use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
+use Ixocreate\ServiceManager\ServiceManagerSetupInterface;
 
 class SubManager implements SubManagerInterface
 {
@@ -37,7 +35,7 @@ class SubManager implements SubManagerInterface
     private $serviceManagerSetup;
 
     /**
-     * @var ServiceManagerConfig
+     * @var ServiceManagerConfigInterface
      */
     private $serviceManagerConfig;
 
@@ -51,8 +49,11 @@ class SubManager implements SubManagerInterface
      * @param ServiceManagerConfigInterface $serviceManagerConfig
      * @param string $validation
      */
-    final public function __construct(ServiceManagerInterface $serviceManager, ServiceManagerConfigInterface $serviceManagerConfig, string $validation)
-    {
+    final public function __construct(
+        ServiceManagerInterface $serviceManager,
+        ServiceManagerConfigInterface $serviceManagerConfig,
+        string $validation
+    ) {
         $config = $serviceManagerConfig->getConfig();
         $config['lazy_services'] = [
             'class_map' => $serviceManagerConfig->getLazyServices(),
@@ -83,9 +84,9 @@ class SubManager implements SubManagerInterface
 
     /**
      * @param string $id
-     * @throws ServiceNotCreatedException
-     * @throws ServiceNotFoundException
      * @return mixed
+     * @throws ServiceNotFoundException
+     * @throws ServiceNotCreatedException
      */
     final public function get($id)
     {
@@ -122,9 +123,9 @@ class SubManager implements SubManagerInterface
     /**
      * @param string $id
      * @param array|null $options
-     * @throws ServiceNotCreatedException
-     * @throws ServiceNotFoundException
      * @return mixed
+     * @throws ServiceNotFoundException
+     * @throws ServiceNotCreatedException
      */
     final public function build(string $id, array $options = null)
     {

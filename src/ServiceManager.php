@@ -28,7 +28,7 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     private $serviceManager;
 
     /**
-     * @var ServiceManagerConfig
+     * @var ServiceManagerConfigInterface
      */
     private $serviceManagerConfig;
 
