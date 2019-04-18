@@ -12,7 +12,6 @@ namespace Ixocreate\Misc\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
 use Ixocreate\ServiceManager\SubManager\SubManagerFactoryInterface;
 use Ixocreate\ServiceManager\SubManager\SubManagerInterface;
-use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\SubManager\SubManager;
 
 class SubManagerFactory implements SubManagerFactoryInterface

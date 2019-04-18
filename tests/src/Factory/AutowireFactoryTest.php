@@ -11,7 +11,6 @@ namespace Ixocreate\Test\ServiceManager\Factory;
 
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\SubManager;
 use Ixocreate\Misc\ServiceManager\DateTimeFactory;

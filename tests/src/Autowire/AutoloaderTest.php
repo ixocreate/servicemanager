@@ -15,14 +15,13 @@ use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\Generator\AutowireFactoryGenerator;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\SubManager;
 use Ixocreate\Misc\ServiceManager\DateTimeFactory;
 use Ixocreate\Misc\ServiceManager\ResolverTestObject;
 use Ixocreate\Misc\ServiceManager\ResolverTestObjectNoConstructor;
 use Ixocreate\Misc\ServiceManager\SubManagerFactory;
-use IxocreateTest\ServiceManager\CleanUpTrait;
+use Ixocreate\Test\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 
 class AutoloaderTest extends TestCase

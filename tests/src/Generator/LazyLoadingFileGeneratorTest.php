@@ -11,12 +11,11 @@ namespace Ixocreate\Test\ServiceManager\Generator;
 
 use Ixocreate\ServiceManager\Generator\LazyLoadingFileGenerator;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\SubManager;
 use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
 use Ixocreate\Misc\ServiceManager\SubManagerFactory;
-use IxocreateTest\ServiceManager\CleanUpTrait;
+use Ixocreate\Test\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;

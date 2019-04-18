@@ -10,8 +10,6 @@ declare(strict_types=1);
 namespace Ixocreate\Test\ServiceManager;
 
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
-use Ixocreate\ServiceManager\ServiceManagerConfig;
-use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\SubManager\SubManager;
 use Ixocreate\Misc\ServiceManager\CantCreateObjectFactory;
 use Ixocreate\Misc\ServiceManager\DateTimeFactory;
