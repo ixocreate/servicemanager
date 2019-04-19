@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace IxocreateMisc\ServiceManager;
+namespace Ixocreate\Misc\ServiceManager;
 
 class FactoryGeneratorTestObject
 {
@@ -38,14 +38,20 @@ class FactoryGeneratorTestObject
 
     /**
      * ResolverTestObject constructor.
+     *
      * @param \DateTime $dateTime
      * @param string $test
      * @param \DateTimeInterface $test1
      * @param string $default1
      * @param null $default2
      */
-    public function __construct(\DateTime $dateTime, string $test, \DateTimeInterface $test1, $default1 = "default", $default2 = null)
-    {
+    public function __construct(
+        \DateTime $dateTime,
+        string $test,
+        \DateTimeInterface $test1,
+        $default1 = "default",
+        $default2 = null
+    ) {
         $this->dateTime = $dateTime;
         $this->test = $test;
         $this->test1 = $test1;

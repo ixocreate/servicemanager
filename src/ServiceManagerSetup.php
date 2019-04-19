@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager;
 
-use Ixocreate\Contract\ServiceManager\ServiceManagerSetupInterface;
-
 final class ServiceManagerSetup implements ServiceManagerSetupInterface
 {
     /**
@@ -40,13 +38,17 @@ final class ServiceManagerSetup implements ServiceManagerSetupInterface
 
     /**
      * ServiceManagerSetup constructor.
+     *
      * @param null|string $persistRoot
      * @param bool|null $persistLazyLoading
      * @param bool|null $persistAutowire
      * @internal param array $config
      */
-    public function __construct(?string $persistRoot = null, ?bool $persistLazyLoading = null, ?bool $persistAutowire = null)
-    {
+    public function __construct(
+        ?string $persistRoot = null,
+        ?bool $persistLazyLoading = null,
+        ?bool $persistAutowire = null
+    ) {
         if ($persistRoot !== null) {
             $this->persistRoot = \rtrim($persistRoot, '/') . '/';
         }
@@ -71,7 +73,7 @@ final class ServiceManagerSetup implements ServiceManagerSetupInterface
     /**
      * @return string
      */
-    public function getAutowireLocation() : string
+    public function getAutowireLocation(): string
     {
         return $this->persistRoot . $this->persistAutowireLocation;
     }
@@ -79,7 +81,7 @@ final class ServiceManagerSetup implements ServiceManagerSetupInterface
     /**
      * @return bool
      */
-    public function isPersistLazyLoading() : bool
+    public function isPersistLazyLoading(): bool
     {
         return $this->persistLazyLoading;
     }
@@ -87,7 +89,7 @@ final class ServiceManagerSetup implements ServiceManagerSetupInterface
     /**
      * @return bool
      */
-    public function isPersistAutowire() : bool
+    public function isPersistAutowire(): bool
     {
         return $this->persistAutowire;
     }
@@ -96,7 +98,7 @@ final class ServiceManagerSetup implements ServiceManagerSetupInterface
      * @param string $persistRoot
      * @return ServiceManagerSetupInterface
      */
-    public function withPersistRoot(string $persistRoot) : ServiceManagerSetupInterface
+    public function withPersistRoot(string $persistRoot): ServiceManagerSetupInterface
     {
         return new ServiceManagerSetup(
             $persistRoot,
@@ -109,7 +111,7 @@ final class ServiceManagerSetup implements ServiceManagerSetupInterface
      * @param bool $persistLazyLoading
      * @return ServiceManagerSetupInterface
      */
-    public function withPersistLazyLoading(bool $persistLazyLoading) : ServiceManagerSetupInterface
+    public function withPersistLazyLoading(bool $persistLazyLoading): ServiceManagerSetupInterface
     {
         return new ServiceManagerSetup(
             $this->persistRoot,
@@ -123,7 +125,7 @@ final class ServiceManagerSetup implements ServiceManagerSetupInterface
      * @return ServiceManagerSetup
      * @internal param bool $persistLazyLoading
      */
-    public function withPersistAutowire(bool $persistAutowire) : ServiceManagerSetupInterface
+    public function withPersistAutowire(bool $persistAutowire): ServiceManagerSetupInterface
     {
         return new ServiceManagerSetup(
             $this->persistRoot,

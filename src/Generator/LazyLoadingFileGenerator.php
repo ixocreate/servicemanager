@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Generator;
 
-use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
 use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 
 class LazyLoadingFileGenerator
 {
@@ -27,7 +27,11 @@ class LazyLoadingFileGenerator
         $serviceManagerConfig = $serviceManager->getServiceManagerConfig();
         $serviceManagerSetup = $serviceManager->getServiceManagerSetup()->withPersistLazyLoading(true);
 
-        $persistServiceManager = new ServiceManager($serviceManagerConfig, $serviceManagerSetup);
+        $persistServiceManager = new ServiceManager(
+            $serviceManagerConfig,
+            $serviceManagerSetup,
+            $serviceManager->initialServices()
+        );
 
         foreach (\array_keys($serviceManagerConfig->getLazyServices()) as $serviceName) {
             $persistServiceManager->get($serviceName);

@@ -7,19 +7,19 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager\Autowire;
+namespace Ixocreate\Test\ServiceManager\Autowire;
 
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\FactoryGeneratorTestObject;
+use Ixocreate\Misc\ServiceManager\ResolverTestObject;
+use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use Ixocreate\ServiceManager\Autowire\ContainerInjection;
 use Ixocreate\ServiceManager\Autowire\DefaultValueInjection;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfig;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
-use IxocreateMisc\ServiceManager\FactoryGeneratorTestObject;
-use IxocreateMisc\ServiceManager\ResolverTestObject;
-use IxocreateMisc\ServiceManager\SubManagerFactory;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 use PHPUnit\Framework\TestCase;
 use Zend\Di\Resolver\AbstractInjection;
 use Zend\Di\Resolver\ValueInjection;
@@ -40,18 +40,16 @@ class FactoryCodeTest extends TestCase
     {
         $this->factoryCode = new FactoryCode();
 
-        $serviceManagerConfig = new ServiceManagerConfig(
-            [
-                \DateTime::class => DateTimeFactory::class,
-                'someThing' => DateTimeFactory::class,
-                ResolverTestObject::class => AutowireFactory::class,
-            ],
-            [
-                'subManager1' => SubManagerFactory::class,
-            ]
-        );
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addService(\DateTime::class, DateTimeFactory::class);
+        $serviceManagerConfigurator->addService('someThing', DateTimeFactory::class);
+        $serviceManagerConfigurator->addService(ResolverTestObject::class, AutowireFactory::class);
+        $serviceManagerConfigurator->addSubManager(SubManager::class, SubManagerFactory::class);
 
-        $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
+        $this->serviceManager = new ServiceManager(
+            $serviceManagerConfigurator->getServiceManagerConfig(),
+            new ServiceManagerSetup()
+        );
     }
 
     public function testGenerateFactoryName()
@@ -74,11 +72,11 @@ class FactoryCodeTest extends TestCase
     public function testGenerateCode()
     {
         $resolution = [
-            'dateTime'  => new ContainerInjection(\DateTime::class, null),
-            'test'      => new ValueInjection("test"),
-            'test1'     => new ContainerInjection('test1', 'subManager1'),
-            'default1'  => new DefaultValueInjection("default"),
-            'default2'  => new DefaultValueInjection(null),
+            'dateTime' => new ContainerInjection(\DateTime::class, null),
+            'test' => new ValueInjection("test"),
+            'test1' => new ContainerInjection('test1', SubManager::class),
+            'default1' => new DefaultValueInjection("default"),
+            'default2' => new DefaultValueInjection(null),
         ];
         /** @var AbstractInjection $injection */
         foreach ($resolution as $key => $injection) {
@@ -90,7 +88,10 @@ class FactoryCodeTest extends TestCase
 
         $code = $this->factoryCode->generateFactoryCode($requestedName, $resolution);
 
-        $fileName = \tempnam(\sys_get_temp_dir(), $this->factoryCode->generateFactoryName($requestedName) . '.php.tmp.');
+        $fileName = \tempnam(
+            \sys_get_temp_dir(),
+            $this->factoryCode->generateFactoryName($requestedName) . '.php.tmp.'
+        );
 
         \file_put_contents(
             $fileName,

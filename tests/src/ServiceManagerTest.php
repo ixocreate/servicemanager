@@ -7,20 +7,18 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager;
+namespace Ixocreate\Test\ServiceManager;
 
+use Ixocreate\Misc\ServiceManager\CantCreateObjectFactory;
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
+use Ixocreate\Misc\ServiceManager\TestInterface;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfig;
-use Ixocreate\ServiceManager\ServiceManagerConfigurator;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use IxocreateMisc\ServiceManager\CantCreateObjectFactory;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
-use IxocreateMisc\ServiceManager\LazyLoadingObject;
-use IxocreateMisc\ServiceManager\TestInterface;
 use PHPUnit\Framework\TestCase;
 
 class ServiceManagerTest extends TestCase
@@ -116,10 +114,10 @@ class ServiceManagerTest extends TestCase
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $factories = [
-            'test' => CantCreateObjectFactory::class,
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($factories);
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addService("test", CantCreateObjectFactory::class);
+
+        $serviceManagerConfig = new ServiceManagerConfig($serviceManagerConfigurator);
         $serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $serviceManager->build("test");
@@ -127,13 +125,19 @@ class ServiceManagerTest extends TestCase
 
     public function testGetFactoryResolverPersist()
     {
-        $serviceManager = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup(null, null, true));
+        $serviceManager = new ServiceManager(
+            new ServiceManagerConfig(new ServiceManagerConfigurator()),
+            new ServiceManagerSetup(null, null, true)
+        );
         $this->assertInstanceOf(FileFactoryResolver::class, $serviceManager->getFactoryResolver());
     }
 
     public function testGetFactoryResolverRuntime()
     {
-        $serviceManager = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
+        $serviceManager = new ServiceManager(
+            new ServiceManagerConfig(new ServiceManagerConfigurator()),
+            new ServiceManagerSetup()
+        );
         $this->assertInstanceOf(RuntimeFactoryResolver::class, $serviceManager->getFactoryResolver());
     }
 }

@@ -7,14 +7,15 @@
 
 declare(strict_types=1);
 
-namespace IxocreateMisc\ServiceManager;
+namespace Ixocreate\Misc\ServiceManager;
 
-use Ixocreate\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\ServiceManager\FactoryInterface;
 
 class ResolverTestObjectNoDep
 {
     /**
      * ResolverTestObject constructor.
+     *
      * @param \DateTime $dateTime
      * @param \DateTimeInterface $test1
      */

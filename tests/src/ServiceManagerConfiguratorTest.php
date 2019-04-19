@@ -7,26 +7,31 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager;
+namespace Ixocreate\Test\ServiceManager;
 
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\Delegator2Factory;
+use Ixocreate\Misc\ServiceManager\DelegatorFactory;
+use Ixocreate\Misc\ServiceManager\Initializer;
+use Ixocreate\Misc\ServiceManager\Initializer2;
+use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
+use Ixocreate\Misc\ServiceManager\Scan\AbstractClass;
+use Ixocreate\Misc\ServiceManager\Scan\Class1;
+use Ixocreate\Misc\ServiceManager\Scan\Class2;
+use Ixocreate\Misc\ServiceManager\Scan\Class4;
+use Ixocreate\Misc\ServiceManager\Scan\SubDir\Class3;
+use Ixocreate\Misc\ServiceManager\Scan\TestInterface;
+use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
-use Ixocreate\ServiceManager\ServiceManagerConfig;
-use Ixocreate\ServiceManager\ServiceManagerConfigurator;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
-use IxocreateMisc\ServiceManager\DelegatorFactory;
-use IxocreateMisc\ServiceManager\Initializer;
-use IxocreateMisc\ServiceManager\Scan\AbstractClass;
-use IxocreateMisc\ServiceManager\Scan\Class1;
-use IxocreateMisc\ServiceManager\Scan\Class2;
-use IxocreateMisc\ServiceManager\Scan\Class4;
-use IxocreateMisc\ServiceManager\Scan\SubDir\Class3;
-use IxocreateMisc\ServiceManager\Scan\TestInterface;
-use IxocreateMisc\ServiceManager\SubManagerFactory;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 use PHPUnit\Framework\TestCase;
-use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
 class ServiceManagerConfiguratorTest extends TestCase
 {
+    /**
+     * @covers \Ixocreate\ServiceManager\AbstractServiceManagerConfigurator
+     * @covers \Ixocreate\ServiceManager\ServiceManagerConfigurator
+     */
     public function testFactories()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
@@ -49,12 +54,29 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertEquals($factories, $serviceManagerConfigurator->getFactories());
     }
 
+    /**
+     * @covers \Ixocreate\ServiceManager\AbstractServiceManagerConfigurator
+     * @covers \Ixocreate\ServiceManager\ServiceManagerConfigurator
+     */
+    public function testServices()
+    {
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+
+        $factories = [
+            'dateTime' => DateTimeFactory::class,
+        ];
+
+        $serviceManagerConfigurator->addService('dateTime', DateTimeFactory::class);
+
+        $this->assertEquals($factories, $serviceManagerConfigurator->getFactories());
+    }
+
     public function testDelegators()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
 
         $delegators1 = [
-            'test' => ['test'],
+            'test' => [DelegatorFactory::class],
         ];
 
         foreach ($delegators1 as $name => $value) {
@@ -65,7 +87,7 @@ class ServiceManagerConfiguratorTest extends TestCase
 
         $delegators2 = [
             'test2' => [],
-            'test' => ['test1'],
+            'test' => [Delegator2Factory::class],
         ];
 
         foreach ($delegators2 as $name => $value) {
@@ -81,7 +103,7 @@ class ServiceManagerConfiguratorTest extends TestCase
 
         $lazyServices = [
             'dateTime' => DateTimeFactory::class,
-            'testFallBack' => null,
+            LazyLoadingObject::class => null,
         ];
 
         foreach ($lazyServices as $name => $value) {
@@ -92,21 +114,19 @@ class ServiceManagerConfiguratorTest extends TestCase
             $serviceManagerConfigurator->addLazyService($name, $value);
         }
 
-        $lazyServices['testFallBack'] = "testFallBack";
-
-        $this->assertEquals($lazyServices, $serviceManagerConfigurator->getLazyServices());
+        $lazyServices[LazyLoadingObject::class] = LazyLoadingObject::class;
 
         $this->assertEquals([
-            'dateTime' => [LazyServiceFactory::class],
-            'testFallBack' => [LazyServiceFactory::class],
-        ], $serviceManagerConfigurator->getDelegators());
+            'dateTime' => DateTimeFactory::class,
+            LazyLoadingObject::class => LazyLoadingObject::class,
+        ], $serviceManagerConfigurator->getLazyServices());
     }
 
     public function testInitializer()
     {
         $initializer = [
-            'array',
-            'dateTime',
+            Initializer::class,
+            Initializer2::class,
         ];
 
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
@@ -118,28 +138,15 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertEquals($initializer, $serviceManagerConfigurator->getInitializers());
     }
 
-    public function testDisablingSharing()
-    {
-        $disableSharing = [
-            'array',
-            'dateTime',
-        ];
-
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-
-        foreach ($disableSharing as $value) {
-            $serviceManagerConfigurator->disableSharingFor($value);
-        }
-
-        $this->assertEquals($disableSharing, $serviceManagerConfigurator->getDisableSharing());
-    }
-
+    /**
+     * @covers \Ixocreate\ServiceManager\ServiceManagerConfigurator
+     */
     public function testSubManagers()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
 
         $subManagers = [
-            'sub1' => SubManagerFactory::class,
+            SubManager::class => SubManagerFactory::class,
         ];
 
         foreach ($subManagers as $name => $value) {
@@ -149,6 +156,9 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertEquals($subManagers, $serviceManagerConfigurator->getSubManagers());
     }
 
+    /**
+     * @covers \Ixocreate\ServiceManager\ServiceManagerConfigurator
+     */
     public function testDirectoryScan()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
@@ -169,7 +179,11 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertArrayNotHasKey(Class3::class, $serviceManagerConfig->getFactories());
 
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
-        $serviceManagerConfigurator->addDirectory(__DIR__ . '/../misc/Scan', true, [AbstractClass::class, TestInterface::class]);
+        $serviceManagerConfigurator->addDirectory(
+            __DIR__ . '/../misc/Scan',
+            true,
+            [AbstractClass::class, TestInterface::class]
+        );
         $serviceManagerConfig = $serviceManagerConfigurator->getServiceManagerConfig();
         $this->assertArrayNotHasKey(Class1::class, $serviceManagerConfig->getFactories());
         $this->assertArrayHasKey(Class2::class, $serviceManagerConfig->getFactories());
@@ -177,11 +191,14 @@ class ServiceManagerConfiguratorTest extends TestCase
         $this->assertArrayHasKey(Class4::class, $serviceManagerConfig->getFactories());
     }
 
+    /**
+     * @covers \Ixocreate\ServiceManager\ServiceManagerConfigurator
+     */
     public function testGetServiceManagerConfig()
     {
         $serviceManagerConfigurator = new ServiceManagerConfigurator();
         $serviceManagerConfigurator->addInitializer(Initializer::class);
-        $serviceManagerConfigurator->addSubManager("subManager", SubManagerFactory::class);
+        $serviceManagerConfigurator->addSubManager(SubManager::class, SubManagerFactory::class);
         $serviceManagerConfigurator->addLazyService(\DateTime::class);
         $serviceManagerConfigurator->addDelegator("test", [DelegatorFactory::class]);
         $serviceManagerConfigurator->addFactory("factory", DateTimeFactory::class);

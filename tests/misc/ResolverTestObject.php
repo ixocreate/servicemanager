@@ -7,12 +7,13 @@
 
 declare(strict_types=1);
 
-namespace IxocreateMisc\ServiceManager;
+namespace Ixocreate\Misc\ServiceManager;
 
 class ResolverTestObject
 {
     /**
      * ResolverTestObject constructor.
+     *
      * @param \DateTime $dateTime
      * @param \DateTimeInterface $test1
      */

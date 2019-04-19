@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager;
 
-interface ServiceManagerConfiguratorInterface
+interface ServiceManagerConfigInterface
 {
     /**
      * @return array
@@ -24,20 +24,32 @@ interface ServiceManagerConfiguratorInterface
     /**
      * @return array
      */
-    public function getLazyServices(): array;
-
-    /**
-     * @return array
-     */
     public function getInitializers(): array;
 
     /**
      * @return array
      */
-    public function getMetadata(): array;
+    public function getLazyServices(): array;
 
     /**
      * @return array
      */
     public function getSubManagers(): array;
+
+    /**
+     * @return array
+     */
+    public function getConfig(): array;
+
+    /**
+     * @return array
+     */
+    public function getNamedServices(): array;
+
+    /**
+     * @param string|null $name
+     * @param null $default
+     * @return mixed
+     */
+    public function getMetadata(string $name = null, $default = null);
 }

@@ -7,18 +7,16 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager;
+namespace Ixocreate\Test\ServiceManager;
 
-use Ixocreate\ServiceManager\Exception\InvalidArgumentException;
+use Ixocreate\Misc\ServiceManager\CantCreateObjectFactory;
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\DelegatorFactory;
+use Ixocreate\Misc\ServiceManager\Initializer;
+use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
+use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
-use Ixocreate\ServiceManager\ServiceManagerConfig;
-use Ixocreate\ServiceManager\ServiceManagerConfigurator;
-use IxocreateMisc\ServiceManager\CantCreateObjectFactory;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
-use IxocreateMisc\ServiceManager\DelegatorFactory;
-use IxocreateMisc\ServiceManager\Initializer;
-use IxocreateMisc\ServiceManager\LazyLoadingObject;
-use IxocreateMisc\ServiceManager\SubManagerFactory;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
@@ -27,235 +25,100 @@ class ServiceManagerConfigTest extends TestCase
     public function testGetFactories()
     {
         $factories = [];
-        $serviceManagerConfig = new ServiceManagerConfig($factories);
+        $serviceManagerConfig = new ServiceManagerConfig(new ServiceManagerConfigurator());
         $this->assertEquals($factories, $serviceManagerConfig->getFactories());
 
         $factories = [
             'test' => DateTimeFactory::class,
         ];
-        $serviceManagerConfig = new ServiceManagerConfig($factories);
-        $this->assertEquals($factories, $serviceManagerConfig->getFactories());
+        $serviceManagerConfigigurator = new ServiceManagerConfigurator();
+        foreach ($factories as $key => $value) {
+            $serviceManagerConfigigurator->addService($key, $value);
+        }
+        $this->assertEquals($factories, $serviceManagerConfigigurator->getServiceManagerConfig()->getFactories());
     }
 
     public function testGetSubManagers()
     {
         $subManagers = [];
-        $serviceManagerConfig = new ServiceManagerConfig([], $subManagers);
+        $serviceManagerConfig = new ServiceManagerConfig(new ServiceManagerConfigurator());
         $this->assertEquals($subManagers, $serviceManagerConfig->getSubManagers());
 
         $subManagers = [
-            'test' => SubManagerFactory::class,
+            SubManager::class => SubManagerFactory::class,
         ];
-        $serviceManagerConfig = new ServiceManagerConfig([], $subManagers);
-        $this->assertEquals($subManagers, $serviceManagerConfig->getSubManagers());
+        $serviceManagerConfigigurator = new ServiceManagerConfigurator();
+        foreach ($subManagers as $key => $value) {
+            $serviceManagerConfigigurator->addSubManager($key, $value);
+        }
+        $this->assertEquals($subManagers, $serviceManagerConfigigurator->getServiceManagerConfig()->getSubManagers());
     }
 
     public function testDelegators()
     {
         $delegators = [];
-        $serviceManagerConfig = new ServiceManagerConfig([], [], $delegators);
+        $serviceManagerConfig = new ServiceManagerConfig(new ServiceManagerConfigurator());
         $this->assertEquals($delegators, $serviceManagerConfig->getDelegators());
 
         $delegators = [
             'test' => [DelegatorFactory::class],
         ];
-        $serviceManagerConfig = new ServiceManagerConfig([], [], $delegators);
-        $this->assertEquals($delegators, $serviceManagerConfig->getDelegators());
+        $serviceManagerConfigigurator = new ServiceManagerConfigurator();
+        foreach ($delegators as $key => $value) {
+            $serviceManagerConfigigurator->addDelegator($key, $value);
+        }
+        $this->assertEquals($delegators, $serviceManagerConfigigurator->getServiceManagerConfig()->getDelegators());
     }
 
     public function testGetLazyServices()
     {
         $lazyServices = [];
-        $serviceManagerConfig = new ServiceManagerConfig([], [], [], $lazyServices);
+        $serviceManagerConfig = new ServiceManagerConfig(new ServiceManagerConfigurator());
         $this->assertEquals($lazyServices, $serviceManagerConfig->getLazyServices());
 
         $lazyServices = [
             'test' => \DateTime::class,
         ];
-        $serviceManagerConfig = new ServiceManagerConfig([], [], [], $lazyServices);
-        $this->assertEquals($lazyServices, $serviceManagerConfig->getLazyServices());
-    }
-
-    public function testGetDisabledSharing()
-    {
-        $disabledSharing = [];
-        $serviceManagerConfig = new ServiceManagerConfig([], [], [], [], $disabledSharing);
-        $this->assertEquals($disabledSharing, $serviceManagerConfig->getDisabledSharing());
-
-        $disabledSharing = [
-            \DateTime::class,
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig([], [], [], [], $disabledSharing);
-        $this->assertEquals($disabledSharing, $serviceManagerConfig->getDisabledSharing());
+        $serviceManagerConfigigurator = new ServiceManagerConfigurator();
+        foreach ($lazyServices as $key => $value) {
+            $serviceManagerConfigigurator->addLazyService($key, $value);
+        }
+        $this->assertEquals($lazyServices, $serviceManagerConfigigurator->getServiceManagerConfig()->getLazyServices());
     }
 
     public function testGetInitializers()
     {
         $initializers = [];
-        $serviceManagerConfig = new ServiceManagerConfig([], [], [], [], [], $initializers);
+        $serviceManagerConfig = new ServiceManagerConfig(new ServiceManagerConfigurator());
         $this->assertEquals($initializers, $serviceManagerConfig->getInitializers());
 
         $initializers = [
-            'test' => Initializer::class,
+            Initializer::class,
         ];
-        $serviceManagerConfig = new ServiceManagerConfig([], [], [], [], [], $initializers);
-        $this->assertEquals($initializers, $serviceManagerConfig->getInitializers());
-    }
-
-    public function testInvalidFactoryString()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'test' => [],
-        ];
-
-        new ServiceManagerConfig($items);
-    }
-
-    public function testInvalidFactoryInvalid()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'test' => "test",
-        ];
-
-        new ServiceManagerConfig($items);
-    }
-
-    public function testInvalidFactoryImplements()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'test' => Initializer::class,
-        ];
-
-        new ServiceManagerConfig($items);
-    }
-
-    public function testInvalidSubManagersString()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'test' => [],
-        ];
-
-        new ServiceManagerConfig([], $items);
-    }
-
-    public function testInvalidSubManagersInvalid()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'test' => "test",
-        ];
-
-        new ServiceManagerConfig([], $items);
-    }
-
-    public function testInvalidSubManagersImplements()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'test' => Initializer::class,
-        ];
-
-        new ServiceManagerConfig([], $items);
-    }
-
-    public function testInvalidInitializerString()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            [],
-        ];
-
-        new ServiceManagerConfig([], [], [], [], [], $items);
-    }
-
-    public function testInvalidInitializerInvalid()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            "test",
-        ];
-
-        new ServiceManagerConfig([], [], [], [], [], $items);
-    }
-
-    public function testInvalidInitializerImplements()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            SubManagerFactory::class,
-        ];
-
-        new ServiceManagerConfig([], [], [], [], [], $items);
-    }
-
-    public function testInvalidDelegatorFactory()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'test' => "test",
-        ];
-        new ServiceManagerConfig([], [], $items);
-    }
-
-    public function testInvalidDelegatorStringFactory()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'test' => [new \DateTime()],
-        ];
-        new ServiceManagerConfig([], [], $items);
-    }
-
-    public function testInvalidDelegatorCantLoadFactory()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'test' => ["test"],
-        ];
-        new ServiceManagerConfig([], [], $items);
-    }
-
-    public function testInvalidDelegatorImplementsFactory()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $items = [
-            'test' => [DateTimeFactory::class],
-        ];
-        new ServiceManagerConfig([], [], $items);
+        $serviceManagerConfigigurator = new ServiceManagerConfigurator();
+        foreach ($initializers as $key => $value) {
+            $serviceManagerConfigigurator->addInitializer($value);
+        }
+        $this->assertEquals($initializers, $serviceManagerConfigigurator->getServiceManagerConfig()->getInitializers());
     }
 
     public function testSerialize()
     {
-        $serviceManagerConfig = new ServiceManagerConfig([
-            'test' => DateTimeFactory::class,
-        ]);
+        $serviceManagerConfigigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigigurator->addService('test', DateTimeFactory::class);
+
+        $serviceManagerConfig = new ServiceManagerConfig($serviceManagerConfigigurator);
 
         $this->assertEquals(\serialize([
             'factories' => [
                 'test' => DateTimeFactory::class,
             ],
-            'subManagers' => [],
             'delegators' => [],
             'lazyServices' => [],
-            'disabledSharing' => [],
             'initializers' => [],
+            'subManagers' => [],
+            'metadata' => [],
+            'namedServices' => [],
         ]), $serviceManagerConfig->serialize());
     }
 
@@ -266,8 +129,10 @@ class ServiceManagerConfigTest extends TestCase
                 'test' => DateTimeFactory::class,
             ],
         ];
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addService('test', DateTimeFactory::class);
 
-        $serviceManagerConfig = new ServiceManagerConfig();
+        $serviceManagerConfig = new ServiceManagerConfig($serviceManagerConfigurator);
         $serviceManagerConfig->unserialize(\serialize($items));
         $this->assertEquals($items['factories'], $serviceManagerConfig->getFactories());
     }
@@ -292,7 +157,6 @@ class ServiceManagerConfigTest extends TestCase
             'delegators' => [
                 LazyLoadingObject::class => [LazyServiceFactory::class],
             ],
-            'shared' => [],
             'initializers' => [],
             'shared_by_default' => true,
         ], $serviceManagerConfig->getConfig());

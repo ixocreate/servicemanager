@@ -7,12 +7,13 @@
 
 declare(strict_types=1);
 
-namespace IxocreateMisc\ServiceManager;
+namespace Ixocreate\Misc\ServiceManager;
 
 class DefaultParamObject
 {
     /**
      * DefaultParamObject constructor.
+     *
      * @param string|null $name
      */
     public function __construct(string $name = "name")

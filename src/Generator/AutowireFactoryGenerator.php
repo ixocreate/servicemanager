@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Generator;
 
-use Ixocreate\Contract\ServiceManager\AutowireFactoryInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\AutowireFactoryInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 use Zend\Di\Definition\RuntimeDefinition;
 
 final class AutowireFactoryGenerator
@@ -52,8 +52,11 @@ final class AutowireFactoryGenerator
         return $services;
     }
 
-    private function generateCode(ServiceManagerInterface $serviceManager, FactoryCode $factoryCode, string $service): string
-    {
+    private function generateCode(
+        ServiceManagerInterface $serviceManager,
+        FactoryCode $factoryCode,
+        string $service
+    ): string {
         $dependencyResolver = new DependencyResolver(new RuntimeDefinition());
         $dependencyResolver->setContainer($serviceManager);
 

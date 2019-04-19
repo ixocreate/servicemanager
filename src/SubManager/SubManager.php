@@ -9,15 +9,13 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\SubManager;
 
-use Ixocreate\Contract\ServiceManager\Autowire\FactoryResolverInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerConfigInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerSetupInterface;
-use Ixocreate\Contract\ServiceManager\SubManager\SubManagerInterface;
+use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
-use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfig;
+use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
+use Ixocreate\ServiceManager\ServiceManagerSetupInterface;
 
 class SubManager implements SubManagerInterface
 {
@@ -37,7 +35,7 @@ class SubManager implements SubManagerInterface
     private $serviceManagerSetup;
 
     /**
-     * @var ServiceManagerConfig
+     * @var ServiceManagerConfigInterface
      */
     private $serviceManagerConfig;
 
@@ -47,12 +45,15 @@ class SubManager implements SubManagerInterface
     private $factoryResolver;
 
     /**
-     * @param ServiceManager $serviceManager
-     * @param ServiceManagerConfig $serviceManagerConfig
+     * @param ServiceManagerInterface $serviceManager
+     * @param ServiceManagerConfigInterface $serviceManagerConfig
      * @param string $validation
      */
-    final public function __construct(ServiceManager $serviceManager, ServiceManagerConfig $serviceManagerConfig, string $validation)
-    {
+    final public function __construct(
+        ServiceManagerInterface $serviceManager,
+        ServiceManagerConfigInterface $serviceManagerConfig,
+        string $validation
+    ) {
         $config = $serviceManagerConfig->getConfig();
         $config['lazy_services'] = [
             'class_map' => $serviceManagerConfig->getLazyServices(),
@@ -83,8 +84,8 @@ class SubManager implements SubManagerInterface
 
     /**
      * @param string $id
-     * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ServiceNotCreatedException
      * @return mixed
      */
     final public function get($id)
@@ -122,8 +123,8 @@ class SubManager implements SubManagerInterface
     /**
      * @param string $id
      * @param array|null $options
-     * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ServiceNotCreatedException
      * @return mixed
      */
     final public function build(string $id, array $options = null)
@@ -203,5 +204,13 @@ class SubManager implements SubManagerInterface
     final public function getServices(): array
     {
         return \array_keys($this->getServiceManagerConfig()->getFactories());
+    }
+
+    /**
+     * @return array
+     */
+    public function initialServices(): array
+    {
+        return [];
     }
 }

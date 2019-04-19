@@ -7,21 +7,21 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager\Autowire;
+namespace Ixocreate\Test\ServiceManager\Autowire;
 
+use Ixocreate\Misc\ServiceManager\ComplexObject;
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\DefaultParamObject;
+use Ixocreate\Misc\ServiceManager\OwnDateTime;
+use Ixocreate\Misc\ServiceManager\ResolverTestObject;
+use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use Ixocreate\ServiceManager\Autowire\ContainerInjection;
 use Ixocreate\ServiceManager\Autowire\DefaultValueInjection;
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfig;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use IxocreateMisc\ServiceManager\ComplexObject;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
-use IxocreateMisc\ServiceManager\DefaultParamObject;
-use IxocreateMisc\ServiceManager\OwnDateTime;
-use IxocreateMisc\ServiceManager\ResolverTestObject;
-use IxocreateMisc\ServiceManager\SubManagerFactory;
+use Ixocreate\ServiceManager\SubManager\SubManager;
 use PHPUnit\Framework\TestCase;
 use Zend\Di\Definition\RuntimeDefinition;
 use Zend\Di\Resolver\ValueInjection;
@@ -42,20 +42,18 @@ class DependencyResolverTest extends TestCase
     {
         $this->dependencyResolver = new DependencyResolver(new RuntimeDefinition());
 
-        $serviceManagerConfig = new ServiceManagerConfig(
-            [
-                \DateTime::class => DateTimeFactory::class,
-                'someThing' => DateTimeFactory::class,
-                ResolverTestObject::class => AutowireFactory::class,
-                'value2' => AutowireFactory::class,
-                DefaultParamObject::class => AutowireFactory::class,
-            ],
-            [
-                'subManager1' => SubManagerFactory::class,
-            ]
-        );
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addService(\DateTime::class, DateTimeFactory::class);
+        $serviceManagerConfigurator->addService('someThing', DateTimeFactory::class);
+        $serviceManagerConfigurator->addService(ResolverTestObject::class, AutowireFactory::class);
+        $serviceManagerConfigurator->addService('value2', AutowireFactory::class);
+        $serviceManagerConfigurator->addService(DefaultParamObject::class, AutowireFactory::class);
+        $serviceManagerConfigurator->addSubManager(SubManager::class, SubManagerFactory::class);
 
-        $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
+        $this->serviceManager = new ServiceManager(
+            $serviceManagerConfigurator->getServiceManagerConfig(),
+            new ServiceManagerSetup()
+        );
         $this->dependencyResolver->setContainer($this->serviceManager);
     }
 
@@ -88,13 +86,13 @@ class DependencyResolverTest extends TestCase
         $this->assertArrayHasKey("dateTime", $resolutions);
         $this->assertInstanceOf(ContainerInjection::class, $resolutions["dateTime"]);
         $this->assertSame(OwnDateTime::class, $resolutions["dateTime"]->getType());
-        $this->assertSame('subManager1', $resolutions["dateTime"]->getContainer());
+        $this->assertSame(SubManager::class, $resolutions["dateTime"]->getContainer());
         $this->assertSame("dateTime", $resolutions["dateTime"]->getParameterName());
 
         $this->assertArrayHasKey("value3", $resolutions);
         $this->assertInstanceOf(ContainerInjection::class, $resolutions["value3"]);
         $this->assertSame("value3", $resolutions["value3"]->getType());
-        $this->assertSame('subManager1', $resolutions["value3"]->getContainer());
+        $this->assertSame(SubManager::class, $resolutions["value3"]->getContainer());
         $this->assertSame("value3", $resolutions["value3"]->getParameterName());
 
         $this->assertArrayHasKey("defaultParamObject", $resolutions);

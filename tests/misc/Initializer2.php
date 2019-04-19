@@ -12,7 +12,7 @@ namespace Ixocreate\Misc\ServiceManager;
 use Ixocreate\ServiceManager\InitializerInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
 
-class Initializer implements InitializerInterface
+class Initializer2 implements InitializerInterface
 {
     /**
      * @param ServiceManagerInterface $container

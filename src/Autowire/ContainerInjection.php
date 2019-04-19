@@ -38,10 +38,9 @@ final class ContainerInjection extends AbstractInjection
     }
 
     /**
-     *
      * @return string
      */
-    public function getType() : string
+    public function getType(): string
     {
         return $this->type;
     }
@@ -49,7 +48,7 @@ final class ContainerInjection extends AbstractInjection
     /**
      * @return null|string
      */
-    public function getContainer() : ?string
+    public function getContainer(): ?string
     {
         return $this->container;
     }
@@ -57,7 +56,7 @@ final class ContainerInjection extends AbstractInjection
     /**
      * @return string
      */
-    public function export() : string
+    public function export(): string
     {
         return "";
     }
@@ -65,16 +64,15 @@ final class ContainerInjection extends AbstractInjection
     /**
      * @return bool
      */
-    public function isExportable() : bool
+    public function isExportable(): bool
     {
         return false;
     }
 
     /**
-     *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->type;
     }

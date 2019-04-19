@@ -12,7 +12,7 @@ namespace Ixocreate\Misc\ServiceManager;
 use Ixocreate\ServiceManager\DelegatorFactoryInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
 
-class DelegatorFactory implements DelegatorFactoryInterface
+class Delegator2Factory implements DelegatorFactoryInterface
 {
     public function __invoke(ServiceManagerInterface $container, $name, callable $callback, array $options = null)
     {

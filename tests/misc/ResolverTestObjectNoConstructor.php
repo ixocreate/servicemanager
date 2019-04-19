@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace IxocreateMisc\ServiceManager;
+namespace Ixocreate\Misc\ServiceManager;
 
 class ResolverTestObjectNoConstructor
 {

@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\SubManager;
 
-use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 use Zend\ServiceManager\ServiceManager;
 
 final class PluginManager extends ServiceManager
 {
     /**
      * PluginManager constructor.
+     *
      * @param ServiceManagerInterface $container
      * @param array $config
      */

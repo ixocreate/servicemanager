@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Autowire\FactoryResolver;
 
-use Ixocreate\Contract\ServiceManager\Autowire\FactoryResolverInterface;
-use Ixocreate\Contract\ServiceManager\FactoryInterface;
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
+use Ixocreate\ServiceManager\FactoryInterface;
 
 final class RuntimeFactoryResolver implements FactoryResolverInterface
 {
@@ -28,6 +28,7 @@ final class RuntimeFactoryResolver implements FactoryResolverInterface
 
     /**
      * RuntimeFactoryResolver constructor.
+     *
      * @param DependencyResolver $dependencyResolver
      * @param FactoryCode $factoryCode
      */
@@ -40,8 +41,8 @@ final class RuntimeFactoryResolver implements FactoryResolverInterface
     /**
      * @param string $requestedName
      * @param array|null $options
-     * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \Psr\Container\ContainerExceptionInterface
      * @return FactoryInterface
      */
     public function getFactory(string $requestedName, array $options = null): FactoryInterface

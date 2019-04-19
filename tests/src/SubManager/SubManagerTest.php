@@ -7,17 +7,16 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager;
+namespace Ixocreate\Test\ServiceManager;
 
-use Ixocreate\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\Misc\ServiceManager\CantCreateObjectFactory;
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
+use Ixocreate\ServiceManager\FactoryInterface;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfig;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\SubManager;
-use IxocreateMisc\ServiceManager\CantCreateObjectFactory;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
 use PHPUnit\Framework\TestCase;
 
 class SubManagerTest extends TestCase
@@ -39,13 +38,14 @@ class SubManagerTest extends TestCase
 
     public function setUp()
     {
-        $this->serviceManager = new ServiceManager(new ServiceManagerConfig([]), new ServiceManagerSetup());
-
-        $factories = [
-            'dateTime' => DateTimeFactory::class,
-            'cantCreate' => CantCreateObjectFactory::class,
-        ];
-        $this->subManagerConfig = new ServiceManagerConfig($factories);
+        $this->serviceManager = new ServiceManager(
+            new ServiceManagerConfig(new ServiceManagerConfigurator()),
+            new ServiceManagerSetup()
+        );
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addService('dateTime', DateTimeFactory::class);
+        $serviceManagerConfigurator->addService('cantCreate', CantCreateObjectFactory::class);
+        $this->subManagerConfig = new ServiceManagerConfig($serviceManagerConfigurator);
 
         $this->subManager = new SubManager(
             $this->serviceManager,
@@ -77,7 +77,10 @@ class SubManagerTest extends TestCase
 
     public function testGetServiceManagerSetup()
     {
-        $this->assertEquals($this->serviceManager->getServiceManagerSetup(), $this->subManager->getServiceManagerSetup());
+        $this->assertEquals(
+            $this->serviceManager->getServiceManagerSetup(),
+            $this->subManager->getServiceManagerSetup()
+        );
     }
 
     public function testGetServiceManagerConfig()
@@ -117,10 +120,9 @@ class SubManagerTest extends TestCase
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $factories = [
-            'test' => DateTimeFactory::class,
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($factories);
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addService("test", DateTimeFactory::class);
+        $serviceManagerConfig = new ServiceManagerConfig($serviceManagerConfigurator);
 
         $serviceManager = new SubManager(
             $this->serviceManager,
@@ -135,10 +137,9 @@ class SubManagerTest extends TestCase
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $factories = [
-            'test' => DateTimeFactory::class,
-        ];
-        $serviceManagerConfig = new ServiceManagerConfig($factories);
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addService("test", DateTimeFactory::class);
+        $serviceManagerConfig = new ServiceManagerConfig($serviceManagerConfigurator);
 
         $serviceManager = new SubManager(
             $this->serviceManager,

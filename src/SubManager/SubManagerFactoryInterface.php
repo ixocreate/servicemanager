@@ -7,21 +7,21 @@
 
 declare(strict_types=1);
 
-namespace Ixocreate\Misc\ServiceManager;
+namespace Ixocreate\ServiceManager\SubManager;
 
-use Ixocreate\ServiceManager\FactoryInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
 
-class DateTimeFactory implements FactoryInterface
+interface SubManagerFactoryInterface
 {
     /**
      * @param ServiceManagerInterface $container
      * @param $requestedName
      * @param array|null $options
-     * @return mixed
+     * @return SubManagerInterface
      */
-    public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null)
-    {
-        return new \DateTime();
-    }
+    public function __invoke(
+        ServiceManagerInterface $container,
+        $requestedName,
+        array $options = null
+    ): SubManagerInterface;
 }

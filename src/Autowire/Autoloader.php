@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Autowire;
 
-use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
 
 final class Autoloader
 {
@@ -20,6 +20,7 @@ final class Autoloader
 
     /**
      * Autoloader constructor.
+     *
      * @param ServiceManagerInterface $serviceManager
      */
     public function __construct(ServiceManagerInterface $serviceManager)
@@ -31,7 +32,7 @@ final class Autoloader
      * @param string $className
      * @return bool
      */
-    public function __invoke(string $className) : bool
+    public function __invoke(string $className): bool
     {
         if (\class_exists($className, false)) {
             return false;
@@ -42,13 +43,17 @@ final class Autoloader
         }
 
 
-        $filename = $this->serviceManager->getServiceManagerSetup()->getAutowireLocation() . \str_replace('Ixocreate\\GeneratedFactory\\', "", $className) . ".php";
+        $filename = $this->serviceManager->getServiceManagerSetup()->getAutowireLocation() . \str_replace(
+            'Ixocreate\\GeneratedFactory\\',
+            "",
+            $className
+        ) . ".php";
 
         if (!\file_exists($filename)) {
             return false;
         }
 
         /* @noinspection PhpIncludeInspection */
-        return (bool) require_once $filename;
+        return (bool)require_once $filename;
     }
 }

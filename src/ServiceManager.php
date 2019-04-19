@@ -10,15 +10,12 @@ declare(strict_types=1);
 namespace Ixocreate\ServiceManager;
 
 use Interop\Container\ContainerInterface;
-use Ixocreate\Contract\ServiceManager\Autowire\FactoryResolverInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerConfigInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerInterface;
-use Ixocreate\Contract\ServiceManager\ServiceManagerSetupInterface;
 use Ixocreate\ServiceManager\Autowire\Autoloader;
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
+use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\Di\Definition\RuntimeDefinition;
@@ -31,7 +28,7 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     private $serviceManager;
 
     /**
-     * @var ServiceManagerConfig
+     * @var ServiceManagerConfigInterface
      */
     private $serviceManagerConfig;
 
@@ -46,16 +43,23 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     private $factoryResolver;
 
     /**
-     * @param ServiceManagerConfig $serviceManagerConfig
-     * @param ServiceManagerSetup $serviceManagerSetup
+     * @var array
+     */
+    private $initalServices = [];
+
+    /**
+     * @param ServiceManagerConfigInterface $serviceManagerConfig
+     * @param ServiceManagerSetupInterface $serviceManagerSetup
      * @param array $services
      */
     public function __construct(
-        ServiceManagerConfig $serviceManagerConfig,
-        ServiceManagerSetup $serviceManagerSetup,
+        ServiceManagerConfigInterface $serviceManagerConfig,
+        ServiceManagerSetupInterface $serviceManagerSetup,
         array $services = []
     ) {
         $this->serviceManagerConfig = $serviceManagerConfig;
+
+        $this->initalServices = $services;
 
         $config = $serviceManagerConfig->getConfig();
         $config['services'] = $services;
@@ -77,6 +81,14 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
 
         $this->serviceManager = new OriginalServiceManager($this, $config);
         $this->serviceManagerSetup = $serviceManagerSetup;
+    }
+
+    /**
+     * @return array
+     */
+    public function initialServices(): array
+    {
+        return $this->initalServices;
     }
 
     /**

@@ -13,6 +13,7 @@ final class OriginalServiceManager extends \Zend\ServiceManager\ServiceManager
 {
     /**
      * OriginalServiceManager constructor.
+     *
      * @param ServiceManager $serviceManager
      * @param array $config
      */

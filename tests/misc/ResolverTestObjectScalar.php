@@ -7,12 +7,13 @@
 
 declare(strict_types=1);
 
-namespace IxocreateMisc\ServiceManager;
+namespace Ixocreate\Misc\ServiceManager;
 
 class ResolverTestObjectScalar
 {
     /**
      * ResolverTestObjectScalar constructor.
+     *
      * @param array $test
      */
     public function __construct(array $test)

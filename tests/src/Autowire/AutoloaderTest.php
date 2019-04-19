@@ -7,21 +7,21 @@
 
 declare(strict_types=1);
 
-namespace IxocreateTest\ServiceManager\Autowire;
+namespace Ixocreate\Test\ServiceManager\Autowire;
 
-use Ixocreate\Contract\ServiceManager\FactoryInterface;
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\ResolverTestObject;
+use Ixocreate\Misc\ServiceManager\ResolverTestObjectNoConstructor;
+use Ixocreate\Misc\ServiceManager\SubManagerFactory;
 use Ixocreate\ServiceManager\Autowire\Autoloader;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
+use Ixocreate\ServiceManager\FactoryInterface;
 use Ixocreate\ServiceManager\Generator\AutowireFactoryGenerator;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfig;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use IxocreateMisc\ServiceManager\DateTimeFactory;
-use IxocreateMisc\ServiceManager\ResolverTestObject;
-use IxocreateMisc\ServiceManager\ResolverTestObjectNoConstructor;
-use IxocreateMisc\ServiceManager\SubManagerFactory;
-use IxocreateTest\ServiceManager\CleanUpTrait;
+use Ixocreate\ServiceManager\SubManager\SubManager;
+use Ixocreate\Test\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 
 class AutoloaderTest extends TestCase
@@ -35,18 +35,16 @@ class AutoloaderTest extends TestCase
 
     public function setUp()
     {
-        $serviceManagerConfig = new ServiceManagerConfig(
-            [
-                \DateTime::class => DateTimeFactory::class,
-                'someThing' => DateTimeFactory::class,
-                ResolverTestObject::class => AutowireFactory::class,
-            ],
-            [
-                'subManager1' => SubManagerFactory::class,
-            ]
-        );
+        $serviceManagerConfigurator = new ServiceManagerConfigurator();
+        $serviceManagerConfigurator->addService(\DateTime::class, DateTimeFactory::class);
+        $serviceManagerConfigurator->addService('someThing', DateTimeFactory::class);
+        $serviceManagerConfigurator->addService(ResolverTestObject::class, AutowireFactory::class);
+        $serviceManagerConfigurator->addSubManager(SubManager::class, SubManagerFactory::class);
 
-        $this->serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup('resources/generated_autoload/servicemanger/', null, true));
+        $this->serviceManager = new ServiceManager(
+            $serviceManagerConfigurator->getServiceManagerConfig(),
+            new ServiceManagerSetup('resources/generated_autoload/servicemanger/', null, true)
+        );
     }
 
     /**
