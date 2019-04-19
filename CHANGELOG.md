@@ -5,4 +5,4 @@
 ## [v0.1.0 (2019-04-19)](https://github.com/ixocreate/servicemanager/compare/master...v0.1.0)
 
 ### Changed
-- Consolidated Packages
+- Consolidate Package
