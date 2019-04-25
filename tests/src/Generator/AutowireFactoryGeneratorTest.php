@@ -16,6 +16,7 @@ use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\Generator\AutowireFactoryGenerator;
 use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\SubManager;
 use Ixocreate\Test\ServiceManager\CleanUpTrait;
@@ -32,14 +33,35 @@ class AutowireFactoryGeneratorTest extends TestCase
 
     public function setUp()
     {
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-        $serviceManagerConfigurator->addService(\DateTime::class, DateTimeFactory::class);
-        $serviceManagerConfigurator->addService('someThing', DateTimeFactory::class);
-        $serviceManagerConfigurator->addService(ResolverTestObject::class, AutowireFactory::class);
-        $serviceManagerConfigurator->addSubManager(SubManager::class, SubManagerFactory::class);
+        $factories = [
+            \DateTime::class => DateTimeFactory::class,
+            'someThing' => DateTimeFactory::class,
+            ResolverTestObject::class => AutowireFactory::class,
+        ];
+        $subManagers = [
+            SubManager::class => SubManagerFactory::class,
+        ];
+
+        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
+        $serviceManagerConfig
+            ->method('getFactories')
+            ->willReturn($factories);
+
+        $serviceManagerConfig
+            ->method('getSubManagers')
+            ->willReturn($subManagers);
+
+        $serviceManagerConfig
+            ->method('getConfig')
+            ->willReturn([
+                'factories' => \array_merge($factories, $subManagers),
+                'delegators' => [],
+                'initializers' => [],
+                'shared_by_default' => true,
+            ]);
 
         $this->serviceManager = new ServiceManager(
-            $serviceManagerConfigurator->getServiceManagerConfig(),
+            $serviceManagerConfig,
             new ServiceManagerSetup()
         );
     }

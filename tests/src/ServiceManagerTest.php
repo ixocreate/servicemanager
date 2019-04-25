@@ -17,9 +17,12 @@ use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
+use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use PHPUnit\Framework\TestCase;
+use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
 class ServiceManagerTest extends TestCase
 {
@@ -29,7 +32,7 @@ class ServiceManagerTest extends TestCase
     private $validServiceManager;
 
     /**
-     * @var ServiceManagerConfig
+     * @var ServiceManagerConfigInterface
      */
     private $serviceManagerConfig;
 
@@ -40,14 +43,41 @@ class ServiceManagerTest extends TestCase
 
     public function setUp()
     {
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-        $serviceManagerConfigurator->addFactory(LazyLoadingObject::class);
-        $serviceManagerConfigurator->addFactory('dateTine', DateTimeFactory::class);
-        $serviceManagerConfigurator->addFactory('cantCreate', CantCreateObjectFactory::class);
+        $factories = [
+            LazyLoadingObject::class => AutowireFactory::class,
+            'dateTine' => DateTimeFactory::class,
+            'cantCreate' => CantCreateObjectFactory::class,
+        ];
+        $delegators = [
+            LazyLoadingObject::class => [LazyServiceFactory::class],
+        ];
 
-        $serviceManagerConfigurator->addLazyService(LazyLoadingObject::class);
+        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
+        $serviceManagerConfig
+            ->method('getFactories')
+            ->willReturn($factories);
 
-        $this->serviceManagerConfig = $serviceManagerConfigurator->getServiceManagerConfig();
+        $serviceManagerConfig
+            ->method('getDelegators')
+            ->willReturn($delegators);
+
+        $serviceManagerConfig
+            ->method('getLazyServices')
+            ->willReturn([
+                LazyLoadingObject::class => LazyLoadingObject::class,
+            ]);
+
+        $serviceManagerConfig
+            ->method('getConfig')
+            ->willReturn([
+                'factories' => $factories,
+                'delegators' => $delegators,
+                'initializers' => [],
+                'shared_by_default' => true,
+            ]);
+
+
+        $this->serviceManagerConfig = $serviceManagerConfig;
         $this->serviceManagerSetup = new ServiceManagerSetup();
 
         $this->validServiceManager = new ServiceManager($this->serviceManagerConfig, $this->serviceManagerSetup);
@@ -114,10 +144,23 @@ class ServiceManagerTest extends TestCase
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-        $serviceManagerConfigurator->addService("test", CantCreateObjectFactory::class);
+        $factories = [
+            'test' => CantCreateObjectFactory::class,
+        ];
+        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
+        $serviceManagerConfig
+            ->method('getFactories')
+            ->willReturn($factories);
 
-        $serviceManagerConfig = new ServiceManagerConfig($serviceManagerConfigurator);
+        $serviceManagerConfig
+            ->method('getConfig')
+            ->willReturn([
+                'factories' => $factories,
+                'delegators' => [],
+                'initializers' => [],
+                'shared_by_default' => true,
+            ]);
+
         $serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
         $serviceManager->build("test");
@@ -126,7 +169,7 @@ class ServiceManagerTest extends TestCase
     public function testGetFactoryResolverPersist()
     {
         $serviceManager = new ServiceManager(
-            new ServiceManagerConfig(new ServiceManagerConfigurator()),
+            $this->createMock(ServiceManagerConfigInterface::class),
             new ServiceManagerSetup(null, null, true)
         );
         $this->assertInstanceOf(FileFactoryResolver::class, $serviceManager->getFactoryResolver());
@@ -135,7 +178,7 @@ class ServiceManagerTest extends TestCase
     public function testGetFactoryResolverRuntime()
     {
         $serviceManager = new ServiceManager(
-            new ServiceManagerConfig(new ServiceManagerConfigurator()),
+            $this->createMock(ServiceManagerConfigInterface::class),
             new ServiceManagerSetup()
         );
         $this->assertInstanceOf(RuntimeFactoryResolver::class, $serviceManager->getFactoryResolver());

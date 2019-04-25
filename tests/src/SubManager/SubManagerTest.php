@@ -15,6 +15,7 @@ use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
 use Ixocreate\ServiceManager\FactoryInterface;
 use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\SubManager;
 use PHPUnit\Framework\TestCase;
@@ -32,20 +33,36 @@ class SubManagerTest extends TestCase
     private $subManager;
 
     /**
-     * @var ServiceManagerConfig
+     * @var ServiceManagerConfigInterface
      */
     private $subManagerConfig;
 
     public function setUp()
     {
         $this->serviceManager = new ServiceManager(
-            new ServiceManagerConfig(new ServiceManagerConfigurator()),
+            $this->createMock(ServiceManagerConfigInterface::class),
             new ServiceManagerSetup()
         );
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-        $serviceManagerConfigurator->addService('dateTime', DateTimeFactory::class);
-        $serviceManagerConfigurator->addService('cantCreate', CantCreateObjectFactory::class);
-        $this->subManagerConfig = new ServiceManagerConfig($serviceManagerConfigurator);
+
+        $factories = [
+            'dateTime' => DateTimeFactory::class,
+            'cantCreate' => CantCreateObjectFactory::class,
+        ];
+        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
+        $serviceManagerConfig
+            ->method('getFactories')
+            ->willReturn($factories);
+
+        $serviceManagerConfig
+            ->method('getConfig')
+            ->willReturn([
+                'factories' => $factories,
+                'delegators' => [],
+                'initializers' => [],
+                'shared_by_default' => true,
+            ]);
+
+        $this->subManagerConfig = $serviceManagerConfig;
 
         $this->subManager = new SubManager(
             $this->serviceManager,
@@ -120,9 +137,23 @@ class SubManagerTest extends TestCase
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-        $serviceManagerConfigurator->addService("test", DateTimeFactory::class);
-        $serviceManagerConfig = new ServiceManagerConfig($serviceManagerConfigurator);
+        $factories = [
+            'test' => DateTimeFactory::class,
+        ];
+        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
+        $serviceManagerConfig
+            ->method('getFactories')
+            ->willReturn($factories);
+
+        $serviceManagerConfig
+            ->method('getConfig')
+            ->willReturn([
+                'factories' => $factories,
+                'delegators' => [],
+                'initializers' => [],
+                'shared_by_default' => true,
+            ]);
+
 
         $serviceManager = new SubManager(
             $this->serviceManager,
@@ -137,9 +168,22 @@ class SubManagerTest extends TestCase
     {
         $this->expectException(ServiceNotCreatedException::class);
 
-        $serviceManagerConfigurator = new ServiceManagerConfigurator();
-        $serviceManagerConfigurator->addService("test", DateTimeFactory::class);
-        $serviceManagerConfig = new ServiceManagerConfig($serviceManagerConfigurator);
+        $factories = [
+            'test' => DateTimeFactory::class,
+        ];
+        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
+        $serviceManagerConfig
+            ->method('getFactories')
+            ->willReturn($factories);
+
+        $serviceManagerConfig
+            ->method('getConfig')
+            ->willReturn([
+                'factories' => $factories,
+                'delegators' => [],
+                'initializers' => [],
+                'shared_by_default' => true,
+            ]);
 
         $serviceManager = new SubManager(
             $this->serviceManager,

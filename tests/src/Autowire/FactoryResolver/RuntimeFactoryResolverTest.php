@@ -14,6 +14,7 @@ use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
 use Ixocreate\ServiceManager\ServiceManager;
+use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use PHPUnit\Framework\TestCase;
 use Zend\Di\Definition\RuntimeDefinition;
@@ -26,7 +27,7 @@ class RuntimeFactoryResolverTest extends TestCase
         $factoryCode = new FactoryCode();
         $resolver = new DependencyResolver(new RuntimeDefinition());
         $resolver->setContainer(new ServiceManager(
-            new ServiceManagerConfig(new ServiceManagerConfigurator()),
+            $this->createMock(ServiceManagerConfigInterface::class),
             new ServiceManagerSetup()
         ));
 
