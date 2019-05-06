@@ -1,6 +1,8 @@
 # Release Notes
 
-## [Unreleased](https://github.com/ixocreate/servicemanager/compare/0.1.0...develop)
+## [Unreleased](https://github.com/ixocreate/servicemanager/compare/0.1.1...develop)
+
+## [v0.1.1 (2019-05-06)](https://github.com/ixocreate/servicemanager/compare/0.1.0...0.1.1)
 ### Fixed
 - Travis Build
 
