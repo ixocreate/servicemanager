@@ -1,8 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/ixocreate/servicemanager/compare/0.1.0...develop)
+## [Unreleased](https://github.com/ixocreate/servicemanager/compare/0.1.1...develop)
 
-## [v0.1.0 (2019-04-19)](https://github.com/ixocreate/servicemanager/compare/master...v0.1.0)
+## [v0.1.1 (2019-05-06)](https://github.com/ixocreate/servicemanager/compare/0.1.0...0.1.1)
+### Fixed
+- Travis Build
 
+## [v0.1.0 (2019-04-19)](https://github.com/ixocreate/servicemanager/compare/master...0.1.0)
 ### Changed
 - Consolidate Package
