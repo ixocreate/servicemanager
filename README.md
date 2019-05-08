@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.com/ixocreate/servicemanager.svg?branch=master)](https://travis-ci.com/ixocreate/servicemanager)
 [![Coverage Status](https://coveralls.io/repos/github/ixocreate/servicemanager/badge.svg?branch=master)](https://coveralls.io/github/ixocreate/servicemanager?branch=master)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/a0f2c8b5-b9a6-4a58-b06f-00648fe90041/mini.png)](https://insight.sensiolabs.com/projects/a0f2c8b5-b9a6-4a58-b06f-00648fe90041)
 [![Packagist](https://img.shields.io/packagist/v/ixocreate/servicemanager.svg)](https://packagist.org/packages/ixocreate/servicemanager)
 [![PHP Version](https://img.shields.io/packagist/php-v/ixocreate/servicemanager.svg)](https://packagist.org/packages/ixocreate/servicemanager)
 [![License](https://img.shields.io/github/license/ixocreate/servicemanager.svg)](LICENSE)
