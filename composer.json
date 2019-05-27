@@ -1,6 +1,6 @@
 {
     "name": "ixocreate/servicemanager",
-    "description": "IXOCREATE Servicemanager",
+    "description": "IXOCREATE Servicemanager Library",
     "license": "MIT",
     "type": "library",
     "authors": [

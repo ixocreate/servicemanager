@@ -1,4 +1,4 @@
-# IXOCREATE Servicemanager
+# IXOCREATE Servicemanager Library
 
 [![Build Status](https://travis-ci.com/ixocreate/servicemanager.svg?branch=master)](https://travis-ci.com/ixocreate/servicemanager)
 [![Coverage Status](https://coveralls.io/repos/github/ixocreate/servicemanager/badge.svg?branch=master)](https://coveralls.io/github/ixocreate/servicemanager?branch=master)
