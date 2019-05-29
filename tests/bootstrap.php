@@ -9,8 +9,11 @@ declare(strict_types=1);
 
 namespace Test\Template;
 
-use DG\BypassFinals;
+/**
+ * TODO: find out why bypass-finals causes the directories to not be created
+ */
+// use DG\BypassFinals;
 
 \chdir(\dirname(__DIR__));
 include 'vendor/autoload.php';
-BypassFinals::enable();
+// BypassFinals::enable();
