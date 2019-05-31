@@ -9,30 +9,31 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\SubManager;
 
-use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
+use Interop\Container\ContainerInterface;
+use Ixocreate\ServiceManager\Autowire\FactoryResolver\FactoryResolverInterface;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
+use Ixocreate\ServiceManager\OriginalServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
-use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\ServiceManagerSetupInterface;
 
-class SubManager implements SubManagerInterface
+abstract class AbstractSubManager implements ServiceManagerInterface, ContainerInterface, SubManagerInterface
 {
-    /**
-     * @var PluginManager
-     */
-    private $serviceManager;
-
     /**
      * @var string
      */
-    private $validation;
+    protected $instanceOf;
 
     /**
-     * @var ServiceManagerSetup
+     * @var ServiceManagerInterface
      */
-    private $serviceManagerSetup;
+    protected $creationContext;
+
+    /**
+     * @var OriginalServiceManager
+     */
+    private $serviceManager;
 
     /**
      * @var ServiceManagerConfigInterface
@@ -40,46 +41,25 @@ class SubManager implements SubManagerInterface
     private $serviceManagerConfig;
 
     /**
-     * @var FactoryResolverInterface
+     * @var array
      */
-    private $factoryResolver;
+    protected $initialServices = [];
 
     /**
      * @param ServiceManagerInterface $serviceManager
      * @param ServiceManagerConfigInterface $serviceManagerConfig
-     * @param string $validation
+     * @param array $services
      */
-    final public function __construct(
+    public function __construct(
         ServiceManagerInterface $serviceManager,
         ServiceManagerConfigInterface $serviceManagerConfig,
-        string $validation
+        array $services = []
     ) {
-        $config = $serviceManagerConfig->getConfig();
-        $config['lazy_services'] = [
-            'class_map' => $serviceManagerConfig->getLazyServices(),
-            'proxies_target_dir' => null,
-            'proxies_namespace' => null,
-            'write_proxy_files' => false,
-        ];
-
-        if ($serviceManager->getServiceManagerSetup()->isPersistLazyLoading()) {
-            if (!\file_exists($serviceManager->getServiceManagerSetup()->getLazyLoadingLocation())) {
-                @\mkdir($serviceManager->getServiceManagerSetup()->getLazyLoadingLocation(), 0777, true);
-            }
-
-            $config['lazy_services']['proxies_target_dir'] = $serviceManager->getServiceManagerSetup()->getLazyLoadingLocation();
-            $config['lazy_services']['write_proxy_files'] = true;
-        }
-
-        $this->serviceManager = new PluginManager(
-            $serviceManager,
-            $config
-        );
-
-        $this->validation = $validation;
-        $this->serviceManagerSetup = $serviceManager->getServiceManagerSetup();
+        $this->creationContext = $serviceManager;
         $this->serviceManagerConfig = $serviceManagerConfig;
-        $this->factoryResolver = $serviceManager->getFactoryResolver();
+        $this->initialServices = $services;
+
+        $this->serviceManager = new OriginalServiceManager($serviceManager, $serviceManagerConfig, $serviceManager->serviceManagerSetup(), $services);
     }
 
     /**
@@ -100,11 +80,7 @@ class SubManager implements SubManagerInterface
             throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
-        if (!$this->validate($instance)) {
-            throw new ServiceNotCreatedException(
-                \sprintf("'%s' isn't an instance of '%s'", $id, $this->validation)
-            );
-        }
+        $this->validate($instance);
 
         return $instance;
     }
@@ -139,19 +115,15 @@ class SubManager implements SubManagerInterface
             throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
-        if (!$this->validate($instance)) {
-            throw new ServiceNotCreatedException(
-                \sprintf("'%s' isn't an instance of '%s'", $id, $this->validation)
-            );
-        }
+        $this->validate($instance);
 
         return $instance;
     }
 
     private function resolveService(string $id): string
     {
-        if (\array_key_exists($id, $this->getServiceManagerConfig()->getNamedServices())) {
-            return $this->getServiceManagerConfig()->getNamedServices()[$id];
+        if (\array_key_exists($id, $this->serviceManagerConfig->getNamedServices())) {
+            return $this->serviceManagerConfig->getNamedServices()[$id];
         }
 
         return $id;
@@ -159,58 +131,66 @@ class SubManager implements SubManagerInterface
 
     /**
      * @param object $instance
-     * @return bool
      */
-    private function validate($instance): bool
+    private function validate($instance): void
     {
-        return $instance instanceof $this->validation;
+        if (empty($this->instanceOf) || $instance instanceof $this->instanceOf) {
+            return;
+        }
+
+        throw new ServiceNotCreatedException(\sprintf(
+            'Plugin manager "%s" expected an instance of type "%s", but "%s" was received',
+            __CLASS__,
+            $this->instanceOf,
+            \is_object($instance) ? \get_class($instance) : \gettype($instance)
+        ));
     }
 
     /**
      * @return string
      */
-    final public function getValidation(): string
+    final public function getValidation(): ?string
     {
-        return $this->validation;
-    }
-
-    /**
-     * @return ServiceManagerSetupInterface
-     */
-    final public function getServiceManagerSetup(): ServiceManagerSetupInterface
-    {
-        return $this->serviceManagerSetup;
-    }
-
-    /**
-     * @return ServiceManagerConfigInterface
-     */
-    final public function getServiceManagerConfig(): ServiceManagerConfigInterface
-    {
-        return $this->serviceManagerConfig;
+        return $this->instanceOf;
     }
 
     /**
      * @return FactoryResolverInterface
      */
-    final public function getFactoryResolver(): FactoryResolverInterface
+    final public function factoryResolver(): FactoryResolverInterface
     {
-        return $this->factoryResolver;
+        return $this->creationContext->factoryResolver();
+    }
+
+    /**
+     * @return ServiceManagerConfigInterface
+     */
+    final public function serviceManagerConfig(): ServiceManagerConfigInterface
+    {
+        return $this->serviceManagerConfig;
+    }
+
+    /**
+     * @return ServiceManagerSetupInterface
+     */
+    final public function serviceManagerSetup(): ServiceManagerSetupInterface
+    {
+        return $this->creationContext->serviceManagerSetup();
     }
 
     /**
      * @return array
      */
-    final public function getServices(): array
+    final public function services(): array
     {
-        return \array_keys($this->getServiceManagerConfig()->getFactories());
+        return \array_keys($this->serviceManagerConfig->getFactories());
     }
 
     /**
      * @return array
      */
-    public function initialServices(): array
+    final public function initialServices(): array
     {
-        return [];
+        return $this->initialServices;
     }
 }

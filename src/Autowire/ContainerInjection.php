@@ -9,9 +9,10 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Autowire;
 
-use Zend\Di\Resolver\AbstractInjection;
+use Psr\Container\ContainerInterface;
+use Zend\Di\Resolver\InjectionInterface;
 
-final class ContainerInjection extends AbstractInjection
+final class ContainerInjection implements InjectionInterface
 {
     /**
      * Holds the type name to look up
@@ -54,11 +55,20 @@ final class ContainerInjection extends AbstractInjection
     }
 
     /**
+     * @param ContainerInterface $container
+     * @return mixed|string
+     */
+    public function toValue(ContainerInterface $container)
+    {
+        return $this->type;
+    }
+
+    /**
      * @return string
      */
     public function export(): string
     {
-        return "";
+        return '';
     }
 
     /**

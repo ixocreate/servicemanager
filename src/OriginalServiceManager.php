@@ -9,17 +9,60 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager;
 
+/**
+ * Class OriginalServiceManager
+ * @package Ixocreate\ServiceManager
+ * @internal
+ */
 final class OriginalServiceManager extends \Zend\ServiceManager\ServiceManager
 {
     /**
      * OriginalServiceManager constructor.
      *
-     * @param ServiceManager $serviceManager
-     * @param array $config
+     * required to change creationContext
+     *
+     * @param ServiceManagerInterface $serviceManager
+     * @param ServiceManagerConfigInterface $serviceManagerConfig
+     * @param ServiceManagerSetupInterface $serviceManagerSetup
+     * @param array $services
      */
-    public function __construct(ServiceManager $serviceManager, array $config = [])
-    {
+    public function __construct(
+        ServiceManagerInterface $serviceManager,
+        ServiceManagerConfigInterface $serviceManagerConfig,
+        ServiceManagerSetupInterface $serviceManagerSetup,
+        array $services = []
+    ) {
+        $factories = $serviceManagerConfig->getFactories();
+        if ($serviceManagerConfig instanceof SubManagerAwareInterface) {
+            $factories = \array_merge($factories, $serviceManagerConfig->getSubManagers());
+        }
+
+        $config = [
+            'factories' => $factories,
+            'delegators' => $serviceManagerConfig->getDelegators(),
+            'initializers' => $serviceManagerConfig->getInitializers(),
+            'shared_by_default' => true,
+        ];
+
+        $config['services'] = $services;
+        $config['lazy_services'] = [
+            'class_map' => $serviceManagerConfig->getLazyServices(),
+            'proxies_target_dir' => null,
+            'proxies_namespace' => null,
+            'write_proxy_files' => false,
+        ];
+
+        if ($serviceManagerSetup->isPersistLazyLoading()) {
+            if (!\file_exists($serviceManagerSetup->getLazyLoadingLocation())) {
+                @\mkdir($serviceManagerSetup->getLazyLoadingLocation(), 0777, true);
+            }
+
+            $config['lazy_services']['proxies_target_dir'] = $serviceManagerSetup->getLazyLoadingLocation();
+            $config['lazy_services']['write_proxy_files'] = true;
+        }
+
         parent::__construct($config);
+
         $this->creationContext = $serviceManager;
     }
 }

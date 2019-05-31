@@ -11,8 +11,9 @@ namespace Ixocreate\ServiceManager\Generator;
 
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
-use Ixocreate\ServiceManager\AutowireFactoryInterface;
+use Ixocreate\ServiceManager\Factory\AutowireFactoryInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\SubManagerAwareInterface;
 use Zend\Di\Definition\RuntimeDefinition;
 
 final class AutowireFactoryGenerator
@@ -20,18 +21,20 @@ final class AutowireFactoryGenerator
     public function generate(ServiceManagerInterface $serviceManager): void
     {
         $services = $this->requestAutowireFactories($serviceManager);
-        foreach (\array_keys($serviceManager->getServiceManagerConfig()->getSubManagers()) as $subManager) {
-            $services = \array_merge($services, $this->requestAutowireFactories($serviceManager->get($subManager)));
+        if ($serviceManager->serviceManagerConfig() instanceof SubManagerAwareInterface) {
+            foreach (\array_keys($serviceManager->serviceManagerConfig()->getSubManagers()) as $subManager) {
+                $services = \array_merge($services, $this->requestAutowireFactories($serviceManager->get($subManager)));
+            }
         }
 
-        if (!\file_exists($serviceManager->getServiceManagerSetup()->getAutowireLocation())) {
-            \mkdir($serviceManager->getServiceManagerSetup()->getAutowireLocation(), 0777, true);
+        if (!\file_exists($serviceManager->serviceManagerSetup()->getAutowireLocation())) {
+            \mkdir($serviceManager->serviceManagerSetup()->getAutowireLocation(), 0777, true);
         }
 
         $factoryCode = new FactoryCode();
         foreach ($services as $service) {
             $code = $this->generateCode($serviceManager, $factoryCode, $service);
-            $filename = $serviceManager->getServiceManagerSetup()->getAutowireLocation() . $factoryCode->generateFactoryName($service) . ".php";
+            $filename = $serviceManager->serviceManagerSetup()->getAutowireLocation() . $factoryCode->generateFactoryName($service) . '.php';
 
             \file_put_contents($filename, $code);
         }
@@ -40,7 +43,7 @@ final class AutowireFactoryGenerator
     private function requestAutowireFactories(ServiceManagerInterface $serviceManager): array
     {
         $services = [];
-        $serviceManagerConfig = $serviceManager->getServiceManagerConfig();
+        $serviceManagerConfig = $serviceManager->serviceManagerConfig();
         foreach ($serviceManagerConfig->getFactories() as $serviceName => $factory) {
             $implements = \class_implements($factory);
             if (!\in_array(AutowireFactoryInterface::class, $implements)) {

@@ -12,19 +12,23 @@ namespace Ixocreate\Test\ServiceManager\Autowire;
 use Ixocreate\Misc\ServiceManager\DateTimeFactory;
 use Ixocreate\Misc\ServiceManager\FactoryGeneratorTestObject;
 use Ixocreate\Misc\ServiceManager\ResolverTestObject;
-use Ixocreate\Misc\ServiceManager\SubManagerFactory;
+use Ixocreate\Misc\ServiceManager\ServiceManagerConfig;
+use Ixocreate\Misc\ServiceManager\SubManager\DateTimeManagerFactory;
 use Ixocreate\ServiceManager\Autowire\ContainerInjection;
 use Ixocreate\ServiceManager\Autowire\DefaultValueInjection;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use Ixocreate\ServiceManager\SubManager\SubManager;
+use Ixocreate\ServiceManager\SubManager\AbstractSubManager;
 use PHPUnit\Framework\TestCase;
-use Zend\Di\Resolver\AbstractInjection;
 use Zend\Di\Resolver\ValueInjection;
 
+/**
+ * Class FactoryCodeTest
+ * @package Ixocreate\Test\ServiceManager\Autowire
+ * @covers \Ixocreate\ServiceManager\Autowire\FactoryCode
+ */
 class FactoryCodeTest extends TestCase
 {
     /**
@@ -47,26 +51,10 @@ class FactoryCodeTest extends TestCase
             ResolverTestObject::class => AutowireFactory::class,
         ];
         $subManagers = [
-            SubManager::class => SubManagerFactory::class,
+            AbstractSubManager::class => DateTimeManagerFactory::class,
         ];
 
-        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
-        $serviceManagerConfig
-            ->method('getFactories')
-            ->willReturn($factories);
-
-        $serviceManagerConfig
-            ->method('getSubManagers')
-            ->willReturn($subManagers);
-
-        $serviceManagerConfig
-            ->method('getConfig')
-            ->willReturn([
-                'factories' => \array_merge($factories, $subManagers),
-                'delegators' => [],
-                'initializers' => [],
-                'shared_by_default' => true,
-            ]);
+        $serviceManagerConfig = new ServiceManagerConfig($factories, [], [], [], [], $subManagers);
 
         $this->serviceManager = new ServiceManager(
             $serviceManagerConfig,
@@ -95,15 +83,11 @@ class FactoryCodeTest extends TestCase
     {
         $resolution = [
             'dateTime' => new ContainerInjection(\DateTime::class, null),
-            'test' => new ValueInjection("test"),
-            'test1' => new ContainerInjection('test1', SubManager::class),
-            'default1' => new DefaultValueInjection("default"),
+            'test' => new ValueInjection('test'),
+            'test1' => new ContainerInjection('test1', AbstractSubManager::class),
+            'default1' => new DefaultValueInjection('default'),
             'default2' => new DefaultValueInjection(null),
         ];
-        /** @var AbstractInjection $injection */
-        foreach ($resolution as $key => $injection) {
-            $injection->setParameterName($key);
-        }
 
         $requestedName = FactoryGeneratorTestObject::class;
         $factoryName = $this->factoryCode->generateFactoryFullQualifiedName($requestedName);
@@ -129,8 +113,8 @@ class FactoryCodeTest extends TestCase
         $object = $factory->__invoke($this->serviceManager, $requestedName, ['test' => 'somestring']);
 
         $this->assertInstanceOf($requestedName, $object);
-        $this->assertSame("somestring", $object->getTest());
-        $this->assertSame("default", $object->getDefault1());
+        $this->assertSame('somestring', $object->getTest());
+        $this->assertSame('default', $object->getDefault1());
         $this->assertNull($object->getDefault2());
         $this->assertInstanceOf(\DateTime::class, $object->getDateTime());
         $this->assertInstanceOf(\DateTime::class, $object->getTest1());

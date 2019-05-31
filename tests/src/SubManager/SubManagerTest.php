@@ -11,15 +11,19 @@ namespace Ixocreate\Test\ServiceManager;
 
 use Ixocreate\Misc\ServiceManager\CantCreateObjectFactory;
 use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\SubManager\DateTimeManager;
+use Ixocreate\Misc\ServiceManager\SubManager\SerializableManager;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
-use Ixocreate\ServiceManager\FactoryInterface;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use Ixocreate\ServiceManager\SubManager\SubManager;
+use Ixocreate\ServiceManager\SubManager\AbstractSubManager;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Ixocreate\ServiceManager\SubManager\AbstractSubManager
+ */
 class SubManagerTest extends TestCase
 {
     /**
@@ -28,7 +32,7 @@ class SubManagerTest extends TestCase
     private $serviceManager;
 
     /**
-     * @var SubManager
+     * @var AbstractSubManager
      */
     private $subManager;
 
@@ -48,32 +52,67 @@ class SubManagerTest extends TestCase
             'dateTime' => DateTimeFactory::class,
             'cantCreate' => CantCreateObjectFactory::class,
         ];
+        $namedServices = [
+            'dateTimeNamed' => 'dateTime'
+        ];
         $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
         $serviceManagerConfig
             ->method('getFactories')
             ->willReturn($factories);
-
         $serviceManagerConfig
-            ->method('getConfig')
-            ->willReturn([
-                'factories' => $factories,
-                'delegators' => [],
-                'initializers' => [],
-                'shared_by_default' => true,
-            ]);
+            ->method('getNamedServices')
+            ->willReturn($namedServices);
 
         $this->subManagerConfig = $serviceManagerConfig;
 
-        $this->subManager = new SubManager(
+        $this->subManager = new DateTimeManager(
             $this->serviceManager,
-            $this->subManagerConfig,
-            \DateTimeInterface::class
+            $this->subManagerConfig
         );
     }
 
     public function testGet()
     {
-        $this->assertInstanceOf(\DateTimeInterface::class, $this->subManager->get("dateTime"));
+        $this->assertInstanceOf(\DateTimeInterface::class, $this->subManager->get('dateTime'));
+    }
+
+    public function testBuild()
+    {
+        $this->assertInstanceOf(\DateTimeInterface::class, $this->subManager->build('dateTime'));
+    }
+
+    public function testHas()
+    {
+        $this->assertTrue($this->subManager->has('dateTime'));
+        $this->assertFalse($this->subManager->has('doesnt_exist'));
+    }
+
+    public function testServiceNotFoundExceptionGet()
+    {
+        $this->expectException(ServiceNotFoundException::class);
+
+        $this->subManager->get('doesnt_exists');
+    }
+
+    public function testServiceNotFoundExceptionBuild()
+    {
+        $this->expectException(ServiceNotFoundException::class);
+
+        $this->subManager->build('doesnt_exists');
+    }
+
+    public function testServiceNotCreatedExceptionGet()
+    {
+        $this->expectException(ServiceNotCreatedException::class);
+
+        $this->subManager->get('cantCreate');
+    }
+
+    public function testServiceNotCreatedExceptionBuild()
+    {
+        $this->expectException(ServiceNotCreatedException::class);
+
+        $this->subManager->build('cantCreate');
     }
 
     public function testGetValidation()
@@ -81,59 +120,20 @@ class SubManagerTest extends TestCase
         $this->assertEquals(\DateTimeInterface::class, $this->subManager->getValidation());
     }
 
-    public function testBuild()
-    {
-        $this->assertInstanceOf(\DateTimeInterface::class, $this->subManager->build("dateTime"));
-    }
-
-    public function testHas()
-    {
-        $this->assertTrue($this->subManager->has("dateTime"));
-        $this->assertFalse($this->subManager->has("doesnt_exist"));
-    }
-
     public function testGetServiceManagerSetup()
     {
         $this->assertEquals(
-            $this->serviceManager->getServiceManagerSetup(),
-            $this->subManager->getServiceManagerSetup()
+            $this->serviceManager->serviceManagerSetup(),
+            $this->subManager->serviceManagerSetup()
         );
     }
 
     public function testGetServiceManagerConfig()
     {
-        $this->assertEquals($this->subManagerConfig, $this->subManager->getServiceManagerConfig());
+        $this->assertEquals($this->subManagerConfig, $this->subManager->serviceManagerConfig());
     }
 
-    public function testServiceNotFoundExceptionGet()
-    {
-        $this->expectException(ServiceNotFoundException::class);
-
-        $this->subManager->get("doesnt_exists");
-    }
-
-    public function testServiceNotFoundExceptionBuild()
-    {
-        $this->expectException(ServiceNotFoundException::class);
-
-        $this->subManager->build("doesnt_exists");
-    }
-
-    public function testServiceNotCreatedExceptionGet()
-    {
-        $this->expectException(ServiceNotCreatedException::class);
-
-        $this->subManager->get("cantCreate");
-    }
-
-    public function testServiceNotCreatedExceptionBuild()
-    {
-        $this->expectException(ServiceNotCreatedException::class);
-
-        $this->subManager->build("cantCreate");
-    }
-
-    public function testValidateBuild()
+    public function testInvalidateGet()
     {
         $this->expectException(ServiceNotCreatedException::class);
 
@@ -145,26 +145,15 @@ class SubManagerTest extends TestCase
             ->method('getFactories')
             ->willReturn($factories);
 
-        $serviceManagerConfig
-            ->method('getConfig')
-            ->willReturn([
-                'factories' => $factories,
-                'delegators' => [],
-                'initializers' => [],
-                'shared_by_default' => true,
-            ]);
-
-
-        $serviceManager = new SubManager(
+        $serviceManager = new SerializableManager(
             $this->serviceManager,
-            $serviceManagerConfig,
-            FactoryInterface::class
+            $serviceManagerConfig
         );
 
-        $serviceManager->build("test");
+        $serviceManager->get('test');
     }
 
-    public function testValidateGet()
+    public function testInvalidateBuild()
     {
         $this->expectException(ServiceNotCreatedException::class);
 
@@ -176,26 +165,51 @@ class SubManagerTest extends TestCase
             ->method('getFactories')
             ->willReturn($factories);
 
-        $serviceManagerConfig
-            ->method('getConfig')
-            ->willReturn([
-                'factories' => $factories,
-                'delegators' => [],
-                'initializers' => [],
-                'shared_by_default' => true,
-            ]);
-
-        $serviceManager = new SubManager(
+        $serviceManager = new SerializableManager(
             $this->serviceManager,
-            $serviceManagerConfig,
-            FactoryInterface::class
+            $serviceManagerConfig
         );
 
-        $serviceManager->get("test");
+        $serviceManager->build('test');
+    }
+
+    public function testNamedService()
+    {
+        $namedDate = $this->subManager->get('dateTimeNamed');
+        $date = $this->subManager->get('dateTime');
+
+        $this->assertSame($date, $namedDate);
     }
 
     public function testGetFactoryResolver()
     {
-        $this->assertSame($this->serviceManager->getFactoryResolver(), $this->subManager->getFactoryResolver());
+        $this->assertSame($this->serviceManager->factoryResolver(), $this->subManager->factoryResolver());
+    }
+
+    public function testServices()
+    {
+        $serviceManager = new SerializableManager($this->serviceManager, $this->subManagerConfig);
+
+        $servicerNames = [
+            'dateTime',
+            'cantCreate',
+        ];
+
+        $this->assertEquals($servicerNames, $serviceManager->services());
+    }
+
+    public function testInitialServices()
+    {
+        $services = [
+            \DateTime::class => new \DateTime(),
+        ];
+
+        $subManager = new DateTimeManager(
+            $this->serviceManager,
+            $this->subManagerConfig,
+            $services
+        );
+
+        $this->assertSame($services, $subManager->initialServices());
     }
 }

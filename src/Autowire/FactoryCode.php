@@ -13,6 +13,9 @@ use Zend\Di\Resolver\ValueInjection;
 
 final class FactoryCode
 {
+    /**
+     * @var string
+     */
     private $template = <<<'EOD'
 <?php
 namespace Ixocreate\GeneratedFactory;
@@ -37,7 +40,7 @@ EOD;
 
         $checkParams = [];
         $constructParams = [];
-        foreach ($resolution as $injection) {
+        foreach ($resolution as $name => $injection) {
             if ($injection instanceof ContainerInjection) {
                 $string = '$container->get(\'';
                 if ($injection->getContainer() !== null) {
@@ -52,8 +55,8 @@ EOD;
             if ($injection instanceof DefaultValueInjection) {
                 $constructParams[] = \sprintf(
                     '(\is_array($options) && \array_key_exists(\'%s\', $options)) ? $options[\'%s\'] : %s',
-                    $injection->getParameterName(),
-                    $injection->getParameterName(),
+                    $name,
+                    $name,
                     $injection->export()
                 );
 
@@ -69,8 +72,8 @@ if (!\is_array($options) || !\array_key_exists('%s', $options)) {
     throw new \Ixocreate\ServiceManager\Exception\InvalidArgumentException('Invalid option for %s');
 }
 EOD;
-            $checkParams[] = \sprintf($ifCheck, $injection->getParameterName(), $injection->getParameterName());
-            $constructParams[] = \sprintf('$options[\'%s\']', $injection->getParameterName());
+            $checkParams[] = \sprintf($ifCheck, $name, $name);
+            $constructParams[] = \sprintf('$options[\'%s\']', $name);
         }
 
         return \sprintf(
@@ -78,7 +81,7 @@ EOD;
             $factoryName,
             \implode("\n", $checkParams),
             $instanceName,
-            \implode(",", $constructParams)
+            \implode(',', $constructParams)
         );
     }
 

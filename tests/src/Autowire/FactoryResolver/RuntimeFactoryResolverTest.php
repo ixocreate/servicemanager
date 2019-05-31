@@ -21,6 +21,9 @@ use Zend\Di\Definition\RuntimeDefinition;
 
 class RuntimeFactoryResolverTest extends TestCase
 {
+    /**
+     * @runInSeparateProcess
+     */
     public function testGetFactory()
     {
         $requestedName = ResolverTestObjectNoConstructor::class;
@@ -32,7 +35,6 @@ class RuntimeFactoryResolverTest extends TestCase
         ));
 
         $runtimeFactoryResolver = new RuntimeFactoryResolver($resolver, $factoryCode);
-
 
         $this->assertInstanceOf(
             $factoryCode->generateFactoryFullQualifiedName($requestedName),

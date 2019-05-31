@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager;
 
-use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
+use Ixocreate\ServiceManager\Autowire\FactoryResolver\FactoryResolverInterface;
 use Psr\Container\ContainerInterface;
 
 interface ServiceManagerInterface extends ContainerInterface
@@ -24,22 +24,22 @@ interface ServiceManagerInterface extends ContainerInterface
     /**
      * @return ServiceManagerConfigInterface
      */
-    public function getServiceManagerConfig(): ServiceManagerConfigInterface;
+    public function serviceManagerConfig(): ServiceManagerConfigInterface;
 
     /**
      * @return ServiceManagerSetupInterface
      */
-    public function getServiceManagerSetup(): ServiceManagerSetupInterface;
+    public function serviceManagerSetup(): ServiceManagerSetupInterface;
 
     /**
      * @return FactoryResolverInterface
      */
-    public function getFactoryResolver(): FactoryResolverInterface;
+    public function factoryResolver(): FactoryResolverInterface;
 
     /**
      * @return array
      */
-    public function getServices(): array;
+    public function services(): array;
 
     /**
      * @return array

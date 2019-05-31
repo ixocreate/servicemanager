@@ -12,10 +12,15 @@ namespace Ixocreate\Misc\ServiceManager;
 use Ixocreate\ServiceManager\DelegatorFactoryInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
 
-class Delegator2Factory implements DelegatorFactoryInterface
+class DateTimeDelegatorFactory implements DelegatorFactoryInterface
 {
     public function __invoke(ServiceManagerInterface $container, $name, callable $callback, array $options = null)
     {
-        return new \DateTime();
+        $dateTime = \call_user_func($callback);
+
+        $dateTime->setDate(2000, 6, 15);
+        $dateTime->setTime(12, 0, 0);
+
+        return $dateTime;
     }
 }

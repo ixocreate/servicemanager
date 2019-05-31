@@ -2,7 +2,14 @@
 
 ## [Unreleased](https://github.com/ixocreate/servicemanager/compare/0.1.1...develop)
 
-## [v0.1.1 (2019-05-06)](https://github.com/ixocreate/servicemanager/compare/0.1.0...0.1.1)
+### Changed
+- SubManager is abstract
+- remove autoloader
+- validate must be set in Manager (static for configurator ?!)
+- extend unit tests
+- cleanup code
+
+
 ### Fixed
 - Travis Build
 

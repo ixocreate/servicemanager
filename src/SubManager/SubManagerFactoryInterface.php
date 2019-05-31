@@ -15,13 +15,9 @@ interface SubManagerFactoryInterface
 {
     /**
      * @param ServiceManagerInterface $container
-     * @param $requestedName
+     * @param string $requestedName
      * @param array|null $options
      * @return SubManagerInterface
      */
-    public function __invoke(
-        ServiceManagerInterface $container,
-        $requestedName,
-        array $options = null
-    ): SubManagerInterface;
+    public function __invoke(ServiceManagerInterface $container, string $requestedName, array $options = null): SubManagerInterface;
 }

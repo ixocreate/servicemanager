@@ -32,12 +32,6 @@ interface ServiceManagerSetupInterface
     public function isPersistAutowire(): bool;
 
     /**
-     * @param string $persistRoot
-     * @return ServiceManagerSetupInterface
-     */
-    public function withPersistRoot(string $persistRoot): ServiceManagerSetupInterface;
-
-    /**
      * @param bool $persistLazyLoading
      * @return ServiceManagerSetupInterface
      */

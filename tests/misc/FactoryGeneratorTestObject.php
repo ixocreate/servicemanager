@@ -49,7 +49,7 @@ class FactoryGeneratorTestObject
         \DateTime $dateTime,
         string $test,
         \DateTimeInterface $test1,
-        $default1 = "default",
+        $default1 = 'default',
         $default2 = null
     ) {
         $this->dateTime = $dateTime;

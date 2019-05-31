@@ -100,11 +100,10 @@ final class ServiceManagerSetup implements ServiceManagerSetupInterface
      */
     public function withPersistRoot(string $persistRoot): ServiceManagerSetupInterface
     {
-        return new ServiceManagerSetup(
-            $persistRoot,
-            $this->persistLazyLoading,
-            $this->persistAutowire
-        );
+        $setup = clone $this;
+        $setup->persistRoot = \rtrim($persistRoot, '/') . '/';
+
+        return $setup;
     }
 
     /**
@@ -113,11 +112,10 @@ final class ServiceManagerSetup implements ServiceManagerSetupInterface
      */
     public function withPersistLazyLoading(bool $persistLazyLoading): ServiceManagerSetupInterface
     {
-        return new ServiceManagerSetup(
-            $this->persistRoot,
-            $persistLazyLoading,
-            $this->persistAutowire
-        );
+        $setup = clone $this;
+        $setup->persistLazyLoading = $persistLazyLoading;
+
+        return $setup;
     }
 
     /**
@@ -127,10 +125,9 @@ final class ServiceManagerSetup implements ServiceManagerSetupInterface
      */
     public function withPersistAutowire(bool $persistAutowire): ServiceManagerSetupInterface
     {
-        return new ServiceManagerSetup(
-            $this->persistRoot,
-            $this->persistLazyLoading,
-            $persistAutowire
-        );
+        $setup = clone $this;
+        $setup->persistAutowire = $persistAutowire;
+
+        return $setup;
     }
 }

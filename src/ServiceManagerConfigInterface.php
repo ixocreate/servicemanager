@@ -34,22 +34,5 @@ interface ServiceManagerConfigInterface
     /**
      * @return array
      */
-    public function getSubManagers(): array;
-
-    /**
-     * @return array
-     */
-    public function getConfig(): array;
-
-    /**
-     * @return array
-     */
     public function getNamedServices(): array;
-
-    /**
-     * @param string|null $name
-     * @param null $default
-     * @return mixed
-     */
-    public function getMetadata(string $name = null, $default = null);
 }

@@ -10,12 +10,11 @@ declare(strict_types=1);
 namespace Ixocreate\ServiceManager;
 
 use Interop\Container\ContainerInterface;
-use Ixocreate\ServiceManager\Autowire\Autoloader;
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
+use Ixocreate\ServiceManager\Autowire\FactoryResolver\FactoryResolverInterface;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
-use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\Di\Definition\RuntimeDefinition;
@@ -33,7 +32,7 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     private $serviceManagerConfig;
 
     /**
-     * @var ServiceManagerSetup
+     * @var ServiceManagerSetupInterface
      */
     private $serviceManagerSetup;
 
@@ -45,56 +44,32 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     /**
      * @var array
      */
-    private $initalServices = [];
+    private $initialServices = [];
 
     /**
      * @param ServiceManagerConfigInterface $serviceManagerConfig
      * @param ServiceManagerSetupInterface $serviceManagerSetup
      * @param array $services
+     * @param mixed $creationContext
      */
     public function __construct(
         ServiceManagerConfigInterface $serviceManagerConfig,
         ServiceManagerSetupInterface $serviceManagerSetup,
-        array $services = []
+        array $services = [],
+        $creationContext = null
     ) {
         $this->serviceManagerConfig = $serviceManagerConfig;
-
-        $this->initalServices = $services;
-
-        $config = $serviceManagerConfig->getConfig();
-        $config['services'] = $services;
-        $config['lazy_services'] = [
-            'class_map' => $serviceManagerConfig->getLazyServices(),
-            'proxies_target_dir' => null,
-            'proxies_namespace' => null,
-            'write_proxy_files' => false,
-        ];
-
-        if ($serviceManagerSetup->isPersistLazyLoading()) {
-            if (!\file_exists($serviceManagerSetup->getLazyLoadingLocation())) {
-                @\mkdir($serviceManagerSetup->getLazyLoadingLocation(), 0777, true);
-            }
-
-            $config['lazy_services']['proxies_target_dir'] = $serviceManagerSetup->getLazyLoadingLocation();
-            $config['lazy_services']['write_proxy_files'] = true;
-        }
-
-        $this->serviceManager = new OriginalServiceManager($this, $config);
         $this->serviceManagerSetup = $serviceManagerSetup;
-    }
 
-    /**
-     * @return array
-     */
-    public function initialServices(): array
-    {
-        return $this->initalServices;
+        $this->initialServices = $services;
+
+        $this->serviceManager = new OriginalServiceManager($creationContext ?? $this, $serviceManagerConfig, $serviceManagerSetup, $services);
     }
 
     /**
      * @param string $id
-     * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ServiceNotCreatedException
      * @return mixed
      */
     public function get($id)
@@ -124,8 +99,8 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     /**
      * @param string $id
      * @param array|null $options
-     * @throws ServiceNotCreatedException
      * @throws ServiceNotFoundException
+     * @throws ServiceNotCreatedException
      * @return mixed
      */
     public function build(string $id, array $options = null)
@@ -143,8 +118,8 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
 
     private function resolveService(string $id): string
     {
-        if (\array_key_exists($id, $this->getServiceManagerConfig()->getNamedServices())) {
-            return $this->getServiceManagerConfig()->getNamedServices()[$id];
+        if (\array_key_exists($id, $this->serviceManagerConfig->getNamedServices())) {
+            return $this->serviceManagerConfig->getNamedServices()[$id];
         }
 
         return $id;
@@ -153,7 +128,7 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     /**
      * @return ServiceManagerConfigInterface
      */
-    public function getServiceManagerConfig(): ServiceManagerConfigInterface
+    public function serviceManagerConfig(): ServiceManagerConfigInterface
     {
         return $this->serviceManagerConfig;
     }
@@ -161,7 +136,7 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     /**
      * @return ServiceManagerSetupInterface
      */
-    public function getServiceManagerSetup(): ServiceManagerSetupInterface
+    public function serviceManagerSetup(): ServiceManagerSetupInterface
     {
         return $this->serviceManagerSetup;
     }
@@ -169,14 +144,11 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     /**
      * @return FactoryResolverInterface
      */
-    public function getFactoryResolver(): FactoryResolverInterface
+    public function factoryResolver(): FactoryResolverInterface
     {
         if ($this->factoryResolver === null) {
             $factoryCode = new FactoryCode();
-            if ($this->getServiceManagerSetup()->isPersistAutowire()) {
-                $autoloader = new Autoloader($this);
-                \spl_autoload_register($autoloader);
-
+            if ($this->serviceManagerSetup->isPersistAutowire()) {
                 $this->factoryResolver = new FileFactoryResolver($factoryCode);
             } else {
                 $resolver = new DependencyResolver(new RuntimeDefinition());
@@ -191,8 +163,16 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     /**
      * @return array
      */
-    public function getServices(): array
+    public function services(): array
     {
-        return \array_keys($this->getServiceManagerConfig()->getFactories());
+        return \array_keys($this->serviceManagerConfig->getFactories());
+    }
+
+    /**
+     * @return array
+     */
+    public function initialServices(): array
+    {
+        return $this->initialServices;
     }
 }

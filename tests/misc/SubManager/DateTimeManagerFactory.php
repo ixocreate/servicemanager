@@ -7,25 +7,26 @@
 
 declare(strict_types=1);
 
-namespace Ixocreate\Misc\ServiceManager;
+namespace Ixocreate\Misc\ServiceManager\SubManager;
 
+use Ixocreate\Misc\ServiceManager\DateTimeFactory;
+use Ixocreate\Misc\ServiceManager\OwnDateTime;
 use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
-use Ixocreate\ServiceManager\SubManager\SubManager;
 use Ixocreate\ServiceManager\SubManager\SubManagerFactoryInterface;
 use Ixocreate\ServiceManager\SubManager\SubManagerInterface;
 
-class SubManagerFactory implements SubManagerFactoryInterface
+class DateTimeManagerFactory implements SubManagerFactoryInterface
 {
     /**
      * @param ServiceManagerInterface $container
-     * @param $requestedName
+     * @param string $requestedName
      * @param array|null $options
      * @return SubManagerInterface
      */
     public function __invoke(
         ServiceManagerInterface $container,
-        $requestedName,
+        string $requestedName,
         array $options = null
     ): SubManagerInterface {
         $serviceManagerConfig = new class() implements ServiceManagerConfigInterface {
@@ -68,48 +69,15 @@ class SubManagerFactory implements SubManagerFactoryInterface
             /**
              * @return array
              */
-            public function getSubManagers(): array
-            {
-                return [];
-            }
-
-            /**
-             * @return array
-             */
-            public function getConfig(): array
-            {
-                $factories = \array_merge($this->getFactories(), $this->getSubManagers());
-                return [
-                    'factories' => $factories,
-                    'delegators' => $this->getDelegators(),
-                    'initializers' => $this->getInitializers(),
-                    'shared_by_default' => true,
-                ];
-            }
-
-            /**
-             * @return array
-             */
             public function getNamedServices(): array
             {
                 return [];
             }
-
-            /**
-             * @param string|null $name
-             * @param null $default
-             * @return mixed
-             */
-            public function getMetadata(string $name = null, $default = null)
-            {
-                return $default;
-            }
         };
 
-        return new SubManager(
+        return new DateTimeManager(
             $container,
-            $serviceManagerConfig,
-            \DateTimeInterface::class
+            $serviceManagerConfig
         );
     }
 }

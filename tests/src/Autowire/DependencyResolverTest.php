@@ -14,26 +14,24 @@ use Ixocreate\Misc\ServiceManager\DateTimeFactory;
 use Ixocreate\Misc\ServiceManager\DefaultParamObject;
 use Ixocreate\Misc\ServiceManager\OwnDateTime;
 use Ixocreate\Misc\ServiceManager\ResolverTestObject;
-use Ixocreate\Misc\ServiceManager\SubManagerFactory;
+use Ixocreate\Misc\ServiceManager\ResolverTestObjectNoConstructor;
+use Ixocreate\Misc\ServiceManager\ServiceManagerConfig;
+use Ixocreate\Misc\ServiceManager\SubManager\DateTimeManagerFactory;
 use Ixocreate\ServiceManager\Autowire\ContainerInjection;
 use Ixocreate\ServiceManager\Autowire\DefaultValueInjection;
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
+use Ixocreate\ServiceManager\Exception\InvalidArgumentException;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use Ixocreate\ServiceManager\SubManager\SubManager;
+use Ixocreate\ServiceManager\SubManager\AbstractSubManager;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use Zend\Di\Definition\RuntimeDefinition;
 use Zend\Di\Resolver\ValueInjection;
 
 class DependencyResolverTest extends TestCase
 {
-    /**
-     * @var DependencyResolver
-     */
-    private $dependencyResolver;
-
     /**
      * @var ServiceManager
      */
@@ -41,8 +39,6 @@ class DependencyResolverTest extends TestCase
 
     public function setUp()
     {
-        $this->dependencyResolver = new DependencyResolver(new RuntimeDefinition());
-
         $factories = [
             \DateTime::class => DateTimeFactory::class,
             'someThing' => DateTimeFactory::class,
@@ -51,88 +47,117 @@ class DependencyResolverTest extends TestCase
             DefaultParamObject::class => AutowireFactory::class,
         ];
         $subManagers = [
-            SubManager::class => SubManagerFactory::class,
+            AbstractSubManager::class => DateTimeManagerFactory::class,
         ];
 
-        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
-        $serviceManagerConfig
-            ->method('getFactories')
-            ->willReturn($factories);
-
-        $serviceManagerConfig
-            ->method('getSubManagers')
-            ->willReturn($subManagers);
-
-        $serviceManagerConfig
-            ->method('getConfig')
-            ->willReturn([
-                'factories' => \array_merge($factories, $subManagers),
-                'delegators' => [],
-                'initializers' => [],
-                'shared_by_default' => true,
-            ]);
-
+        $serviceManagerConfig = new ServiceManagerConfig($factories, [], [], [], [], $subManagers);
 
         $this->serviceManager = new ServiceManager(
             $serviceManagerConfig,
             new ServiceManagerSetup()
         );
-        $this->dependencyResolver->setContainer($this->serviceManager);
     }
 
+    /**
+     * @covers \Ixocreate\ServiceManager\Autowire\DependencyResolver
+     */
     public function testSetContainer()
     {
-        $this->assertSame($this->dependencyResolver, $this->dependencyResolver->setContainer($this->serviceManager));
+        $dependencyResolver = new DependencyResolver(new RuntimeDefinition());
+
+        $this->assertSame($dependencyResolver, $dependencyResolver->setContainer($this->serviceManager));
     }
 
+    /**
+     * @covers \Ixocreate\ServiceManager\Autowire\DependencyResolver
+     */
+    public function testInvalidSetContainer()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $serviceManager = $this->createMock(ContainerInterface::class);
+
+        $dependencyResolver = new DependencyResolver(new RuntimeDefinition());
+        $dependencyResolver->setContainer($serviceManager);
+    }
+
+    /**
+     * @covers \Ixocreate\ServiceManager\Autowire\DependencyResolver
+     */
+    public function testNoResolveParameters()
+    {
+        $dependencyResolver = new DependencyResolver(new RuntimeDefinition());
+        $dependencyResolver->setContainer($this->serviceManager);
+
+        $resolutions = $dependencyResolver->resolveParameters(ResolverTestObjectNoConstructor::class);
+
+        $this->assertEquals([], $resolutions);
+    }
+
+    /**
+     * @covers \Ixocreate\ServiceManager\Autowire\DependencyResolver
+     */
     public function testResolveParameters()
     {
-        $resolutions = $this->dependencyResolver->resolveParameters(ComplexObject::class, ['value1' => 'test']);
+        $dependencyResolver = new DependencyResolver(new RuntimeDefinition());
+        $dependencyResolver->setContainer($this->serviceManager);
 
-        $this->assertArrayHasKey("value1", $resolutions);
-        $this->assertInstanceOf(ValueInjection::class, $resolutions["value1"]);
-        $this->assertSame("test", $resolutions["value1"]->getValue());
-        $this->assertSame("value1", $resolutions["value1"]->getParameterName());
+        $resolutions = $dependencyResolver->resolveParameters(ComplexObject::class, ['value1' => 'test']);
 
-        $this->assertArrayHasKey("resolverTestObject", $resolutions);
-        $this->assertInstanceOf(ContainerInjection::class, $resolutions["resolverTestObject"]);
-        $this->assertSame(ResolverTestObject::class, $resolutions["resolverTestObject"]->getType());
-        $this->assertSame(null, $resolutions["resolverTestObject"]->getContainer());
-        $this->assertSame("resolverTestObject", $resolutions["resolverTestObject"]->getParameterName());
+        $this->assertArrayHasKey('value1', $resolutions);
+        $this->assertInstanceOf(ValueInjection::class, $resolutions['value1']);
+        $this->assertSame('test', $resolutions['value1']->toValue($this->serviceManager));
 
-        $this->assertArrayHasKey("value2", $resolutions);
-        $this->assertInstanceOf(ContainerInjection::class, $resolutions["value2"]);
-        $this->assertSame("value2", $resolutions["value2"]->getType());
-        $this->assertSame(null, $resolutions["value2"]->getContainer());
-        $this->assertSame("value2", $resolutions["value2"]->getParameterName());
+        $this->assertArrayHasKey('resolverTestObject', $resolutions);
+        $this->assertInstanceOf(ContainerInjection::class, $resolutions['resolverTestObject']);
+        $this->assertSame(ResolverTestObject::class, $resolutions['resolverTestObject']->getType());
+        $this->assertSame(null, $resolutions['resolverTestObject']->getContainer());
 
-        $this->assertArrayHasKey("dateTime", $resolutions);
-        $this->assertInstanceOf(ContainerInjection::class, $resolutions["dateTime"]);
-        $this->assertSame(OwnDateTime::class, $resolutions["dateTime"]->getType());
-        $this->assertSame(SubManager::class, $resolutions["dateTime"]->getContainer());
-        $this->assertSame("dateTime", $resolutions["dateTime"]->getParameterName());
+        $this->assertArrayHasKey('value2', $resolutions);
+        $this->assertInstanceOf(ContainerInjection::class, $resolutions['value2']);
+        $this->assertSame('value2', $resolutions['value2']->getType());
+        $this->assertSame(null, $resolutions['value2']->getContainer());
 
-        $this->assertArrayHasKey("value3", $resolutions);
-        $this->assertInstanceOf(ContainerInjection::class, $resolutions["value3"]);
-        $this->assertSame("value3", $resolutions["value3"]->getType());
-        $this->assertSame(SubManager::class, $resolutions["value3"]->getContainer());
-        $this->assertSame("value3", $resolutions["value3"]->getParameterName());
+        $this->assertArrayHasKey('dateTime', $resolutions);
+        $this->assertInstanceOf(ContainerInjection::class, $resolutions['dateTime']);
+        $this->assertSame(OwnDateTime::class, $resolutions['dateTime']->getType());
+        $this->assertSame(AbstractSubManager::class, $resolutions['dateTime']->getContainer());
 
-        $this->assertArrayHasKey("defaultParamObject", $resolutions);
-        $this->assertInstanceOf(ContainerInjection::class, $resolutions["defaultParamObject"]);
-        $this->assertSame(DefaultParamObject::class, $resolutions["defaultParamObject"]->getType());
-        $this->assertSame(null, $resolutions["defaultParamObject"]->getContainer());
-        $this->assertSame("defaultParamObject", $resolutions["defaultParamObject"]->getParameterName());
+        $this->assertArrayHasKey('value3', $resolutions);
+        $this->assertInstanceOf(ContainerInjection::class, $resolutions['value3']);
+        $this->assertSame('value3', $resolutions['value3']->getType());
+        $this->assertSame(AbstractSubManager::class, $resolutions['value3']->getContainer());
 
-        $resolutions = $this->dependencyResolver->resolveParameters(DefaultParamObject::class);
-        $this->assertArrayHasKey("name", $resolutions);
-        $this->assertInstanceOf(DefaultValueInjection::class, $resolutions["name"]);
-        $this->assertSame("name", $resolutions["name"]->getValue());
-        $this->assertSame("name", $resolutions["name"]->getParameterName());
+        $this->assertArrayHasKey('defaultParamObject', $resolutions);
+        $this->assertInstanceOf(ContainerInjection::class, $resolutions['defaultParamObject']);
+        $this->assertSame(DefaultParamObject::class, $resolutions['defaultParamObject']->getType());
+        $this->assertSame(null, $resolutions['defaultParamObject']->getContainer());
+
+        $resolutions = $dependencyResolver->resolveParameters(DefaultParamObject::class);
+        $this->assertArrayHasKey('name', $resolutions);
+        $this->assertInstanceOf(DefaultValueInjection::class, $resolutions['name']);
+        $this->assertSame('name', $resolutions['name']->toValue($this->serviceManager));
     }
 
+    /**
+     * @covers \Ixocreate\ServiceManager\Autowire\DependencyResolver
+     */
+    public function testContainerNotSet()
+    {
+        $this->expectException(\Exception::class);
+
+        $dependencyResolver = new DependencyResolver(new RuntimeDefinition());
+        $dependencyResolver->resolveParameters(ResolverTestObjectNoConstructor::class);
+    }
+
+    /**
+     * @covers \Ixocreate\ServiceManager\Autowire\DependencyResolver
+     */
     public function testResolvePreference()
     {
-        $this->assertNull($this->dependencyResolver->resolvePreference("string"));
+        $dependencyResolver = new DependencyResolver(new RuntimeDefinition());
+        $dependencyResolver->setContainer($this->serviceManager);
+
+        $this->assertNull($dependencyResolver->resolvePreference('string'));
     }
 }

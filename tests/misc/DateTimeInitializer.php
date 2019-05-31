@@ -12,7 +12,7 @@ namespace Ixocreate\Misc\ServiceManager;
 use Ixocreate\ServiceManager\InitializerInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
 
-class Initializer2 implements InitializerInterface
+class DateTimeInitializer implements InitializerInterface
 {
     /**
      * @param ServiceManagerInterface $container
@@ -21,5 +21,9 @@ class Initializer2 implements InitializerInterface
      */
     public function __invoke(ServiceManagerInterface $container, $instance): void
     {
+        if ($instance instanceof \DateTime) {
+            $instance->setDate(2000, 6, 15);
+            $instance->setTime(12, 0, 0);
+        }
     }
 }

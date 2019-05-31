@@ -14,14 +14,23 @@ use Ixocreate\ServiceManager\ServiceManagerInterface;
 
 class DateTimeFactory implements FactoryInterface
 {
+    private static $lastContainer;
+
     /**
      * @param ServiceManagerInterface $container
      * @param $requestedName
      * @param array|null $options
-     * @return mixed
+     * @return \DateTime|mixed
      */
     public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null)
     {
+        self::$lastContainer = $container;
+
         return new \DateTime();
+    }
+
+    public static function lastContainer(): ?ServiceManagerInterface
+    {
+        return self::$lastContainer;
     }
 }

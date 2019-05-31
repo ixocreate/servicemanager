@@ -13,7 +13,7 @@ class LazyLoadingObject implements TestInterface
 {
     public function __construct()
     {
-        throw new \Exception("conctructor called", 500);
+        throw new \Exception('conctructor called', 500);
     }
 
     public function doSomething()

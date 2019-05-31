@@ -11,12 +11,12 @@ namespace Ixocreate\Test\ServiceManager\Factory;
 
 use Ixocreate\Misc\ServiceManager\DateTimeFactory;
 use Ixocreate\Misc\ServiceManager\ResolverTestObject;
-use Ixocreate\Misc\ServiceManager\SubManagerFactory;
+use Ixocreate\Misc\ServiceManager\ServiceManagerConfig;
+use Ixocreate\Misc\ServiceManager\SubManager\DateTimeManager;
+use Ixocreate\Misc\ServiceManager\SubManager\DateTimeManagerFactory;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use Ixocreate\ServiceManager\SubManager\SubManager;
 use PHPUnit\Framework\TestCase;
 
 class AutowireFactoryTest extends TestCase
@@ -34,26 +34,10 @@ class AutowireFactoryTest extends TestCase
             ResolverTestObject::class => AutowireFactory::class,
         ];
         $subManagers = [
-            SubManager::class => SubManagerFactory::class,
+            DateTimeManager::class => DateTimeManagerFactory::class,
         ];
 
-        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
-        $serviceManagerConfig
-            ->method('getFactories')
-            ->willReturn($factories);
-
-        $serviceManagerConfig
-            ->method('getSubManagers')
-            ->willReturn($subManagers);
-
-        $serviceManagerConfig
-            ->method('getConfig')
-            ->willReturn([
-                'factories' => \array_merge($factories, $subManagers),
-                'delegators' => [],
-                'initializers' => [],
-                'shared_by_default' => true,
-            ]);
+        $serviceManagerConfig = new ServiceManagerConfig($factories, [], [], [], [], $subManagers);
 
         $this->serviceManager = new ServiceManager(
             $serviceManagerConfig,

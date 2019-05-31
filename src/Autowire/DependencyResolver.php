@@ -9,9 +9,13 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Autowire;
 
+use Ixocreate\ServiceManager\Exception\InvalidArgumentException;
+use Ixocreate\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\SubManagerAwareInterface;
 use Psr\Container\ContainerInterface;
 use Zend\Di\Definition\DefinitionInterface;
 use Zend\Di\Resolver\DependencyResolverInterface;
+use Zend\Di\Resolver\InjectionInterface;
 use Zend\Di\Resolver\ValueInjection;
 
 final class DependencyResolver implements DependencyResolverInterface
@@ -22,9 +26,9 @@ final class DependencyResolver implements DependencyResolverInterface
     protected $definition;
 
     /**
-     * @var ContainerInterface
+     * @var ServiceManagerInterface|null
      */
-    protected $container = null;
+    protected $container;
 
     /**
      * DependencyResolver constructor.
@@ -42,6 +46,9 @@ final class DependencyResolver implements DependencyResolverInterface
      */
     public function setContainer(ContainerInterface $container)
     {
+        if (!$container instanceof ServiceManagerInterface) {
+            throw new InvalidArgumentException(\sprintf('Container must implement %s', ServiceManagerInterface::class));
+        }
         $this->container = $container;
         return $this;
     }
@@ -49,12 +56,22 @@ final class DependencyResolver implements DependencyResolverInterface
     /**
      * @param string $requestedType
      * @param array $callTimeParameters
+     * @throws \Exception
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
-     * @return array
+     * @return InjectionInterface[]
      */
     public function resolveParameters(string $requestedType, array $callTimeParameters = []): array
     {
+        if ($this->container === null) {
+            throw new \Exception('Container must be set before calling method');
+        }
+
+        $subManagerServiceNames = [];
+        if ($this->container->serviceManagerConfig() instanceof SubManagerAwareInterface) {
+            $subManagerServiceNames = \array_keys($this->container->serviceManagerConfig()->getSubManagers());
+        }
+
         $definition = $this->definition->getClassDefinition($requestedType);
         $params = $definition->getParameters();
         $result = [];
@@ -78,15 +95,16 @@ final class DependencyResolver implements DependencyResolverInterface
                     continue;
                 }
 
-                foreach (\array_keys($this->container->getServiceManagerConfig()->getSubManagers()) as $serviceName) {
-                    if ($this->container->get($serviceName)->has($type)) {
+                foreach ($subManagerServiceNames as $serviceName) {
+                    $subManager = $this->container->get($serviceName);
+
+                    if ($subManager->has($type)) {
                         $result[$name] = new ContainerInjection($type, $serviceName);
                         continue 2;
                     }
-                }
 
-                foreach (\array_keys($this->container->getServiceManagerConfig()->getSubManagers()) as $serviceName) {
-                    if ($this->container->get($serviceName)->has($name) && $type === $this->container->get($serviceName)->getValidation()) {
+                    // find dependency by param name
+                    if ($subManager->has($name) && $type === $subManager->getValidation()) {
                         $result[$name] = new ContainerInjection($name, $serviceName);
                         continue 2;
                     }
@@ -104,10 +122,6 @@ final class DependencyResolver implements DependencyResolverInterface
             }
 
             $result[$name] = new ValueInjection(null);
-        }
-
-        foreach ($result as $name => $injection) {
-            $injection->setParameterName($name);
         }
 
         return $result;

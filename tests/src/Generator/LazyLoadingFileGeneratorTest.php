@@ -10,13 +10,13 @@ declare(strict_types=1);
 namespace Ixocreate\Test\ServiceManager\Generator;
 
 use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
-use Ixocreate\Misc\ServiceManager\SubManagerFactory;
+use Ixocreate\Misc\ServiceManager\ServiceManagerConfig;
+use Ixocreate\Misc\ServiceManager\SubManager\DateTimeManagerFactory;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\Generator\LazyLoadingFileGenerator;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use Ixocreate\ServiceManager\SubManager\SubManager;
+use Ixocreate\ServiceManager\SubManager\AbstractSubManager;
 use Ixocreate\Test\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
@@ -41,37 +41,14 @@ class LazyLoadingFileGeneratorTest extends TestCase
         $delegators = [
             LazyLoadingObject::class => [LazyServiceFactory::class],
         ];
+        $lazyServices = [
+            LazyLoadingObject::class => LazyLoadingObject::class,
+        ];
         $subManagers = [
-            SubManager::class => SubManagerFactory::class,
+            AbstractSubManager::class => DateTimeManagerFactory::class,
         ];
 
-        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
-        $serviceManagerConfig
-            ->method('getFactories')
-            ->willReturn($factories);
-
-        $serviceManagerConfig
-            ->method('getDelegators')
-            ->willReturn($delegators);
-
-        $serviceManagerConfig
-            ->method('getSubManagers')
-            ->willReturn($subManagers);
-
-        $serviceManagerConfig
-            ->method('getLazyServices')
-            ->willReturn([
-                LazyLoadingObject::class => LazyLoadingObject::class,
-            ]);
-
-        $serviceManagerConfig
-            ->method('getConfig')
-            ->willReturn([
-                'factories' => \array_merge($factories, $subManagers),
-                'delegators' => $delegators,
-                'initializers' => [],
-                'shared_by_default' => true,
-            ]);
+        $serviceManagerConfig = new ServiceManagerConfig($factories, $delegators, [], $lazyServices, [], $subManagers);
 
         $this->serviceManager = new ServiceManager(
             $serviceManagerConfig,
@@ -98,7 +75,7 @@ class LazyLoadingFileGeneratorTest extends TestCase
             LazyLoadingObject::class,
             $proxyParameters
         );
-        $filename = $this->serviceManager->getServiceManagerSetup()->getLazyLoadingLocation() . DIRECTORY_SEPARATOR . \str_replace(
+        $filename = $this->serviceManager->serviceManagerSetup()->getLazyLoadingLocation() . DIRECTORY_SEPARATOR . \str_replace(
             '\\',
             '',
             $filename

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files>
+  <file src="src/Autowire/DependencyResolver.php">
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>getSubManagers</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Autowire/FactoryCode.php">
+    <PossiblyNullOperand occurrences="1">
+      <code>$injection-&gt;getContainer()</code>
+    </PossiblyNullOperand>
+  </file>
+  <file src="src/Autowire/FactoryResolver/FileFactoryResolver.php">
+    <LessSpecificReturnStatement occurrences="1">
+      <code>new $factoryName()</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>FactoryInterface</code>
+    </MoreSpecificReturnType>
+  </file>
+  <file src="src/Autowire/FactoryResolver/RuntimeFactoryResolver.php">
+    <LessSpecificReturnStatement occurrences="2">
+      <code>new $factoryName()</code>
+      <code>new $factoryName()</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>FactoryInterface</code>
+    </MoreSpecificReturnType>
+  </file>
+  <file src="src/Generator/AutowireFactoryGenerator.php">
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>getSubManagers</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Generator/LazyLoadingFileGenerator.php">
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>getSubManagers</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/OriginalServiceManager.php">
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$serviceManager</code>
+    </InvalidPropertyAssignmentValue>
+  </file>
+  <file src="src/ServiceManager.php">
+    <PossiblyInvalidArgument occurrences="4">
+      <code>$exception-&gt;getCode()</code>
+      <code>$exception-&gt;getCode()</code>
+      <code>$exception-&gt;getCode()</code>
+      <code>$exception-&gt;getCode()</code>
+    </PossiblyInvalidArgument>
+  </file>
+  <file src="src/SubManager/AbstractSubManager.php">
+    <PossiblyInvalidArgument occurrences="4">
+      <code>$exception-&gt;getCode()</code>
+      <code>$exception-&gt;getCode()</code>
+      <code>$exception-&gt;getCode()</code>
+      <code>$exception-&gt;getCode()</code>
+    </PossiblyInvalidArgument>
+  </file>
+</files>

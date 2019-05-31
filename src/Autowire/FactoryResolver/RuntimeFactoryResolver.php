@@ -11,7 +11,6 @@ namespace Ixocreate\ServiceManager\Autowire\FactoryResolver;
 
 use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
-use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
 use Ixocreate\ServiceManager\FactoryInterface;
 
 final class RuntimeFactoryResolver implements FactoryResolverInterface
@@ -41,11 +40,12 @@ final class RuntimeFactoryResolver implements FactoryResolverInterface
     /**
      * @param string $requestedName
      * @param array|null $options
+     * @throws \Exception
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      * @return FactoryInterface
      */
-    public function getFactory(string $requestedName, array $options = null): FactoryInterface
+    public function getFactory(string $requestedName, array $options = []): FactoryInterface
     {
         $factoryName = $this->factoryCode->generateFactoryFullQualifiedName($requestedName);
 
@@ -53,11 +53,7 @@ final class RuntimeFactoryResolver implements FactoryResolverInterface
             return new $factoryName();
         }
 
-        $fileName = \tempnam(\sys_get_temp_dir(), $factoryName . '.php.tmp.');
-
-        if ($options === null) {
-            $options = [];
-        }
+        $fileName = \tempnam(\sys_get_temp_dir(), $factoryName . 'php.servicemanager.');
 
         \file_put_contents(
             $fileName,

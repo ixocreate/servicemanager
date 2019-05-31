@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Factory;
 
-use Ixocreate\ServiceManager\AutowireFactoryInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
 
 final class AutowireFactory implements AutowireFactoryInterface
@@ -22,6 +21,6 @@ final class AutowireFactory implements AutowireFactoryInterface
      */
     public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null)
     {
-        return $container->getFactoryResolver()->getFactory($requestedName)($container, $requestedName, $options);
+        return $container->factoryResolver()->getFactory($requestedName)($container, $requestedName, $options);
     }
 }

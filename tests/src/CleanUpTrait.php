@@ -13,12 +13,12 @@ trait CleanUpTrait
 {
     public function tearDown()
     {
-        if (!\file_exists("resources")) {
+        if (!\file_exists('resources')) {
             return;
         }
 
         $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator("resources", \RecursiveDirectoryIterator::SKIP_DOTS),
+            new \RecursiveDirectoryIterator('resources', \RecursiveDirectoryIterator::SKIP_DOTS),
             \RecursiveIteratorIterator::CHILD_FIRST
         );
 
@@ -27,6 +27,6 @@ trait CleanUpTrait
             $todo($fileinfo->getRealPath());
         }
 
-        \rmdir("resources");
+        \rmdir('resources');
     }
 }

@@ -13,7 +13,7 @@ interface DelegatorFactoryInterface
 {
     /**
      * @param ServiceManagerInterface $container
-     * @param $name
+     * @param string $name
      * @param callable $callback
      * @param array|null $options
      * @return mixed

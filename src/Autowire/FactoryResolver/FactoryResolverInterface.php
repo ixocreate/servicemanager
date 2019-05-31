@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Ixocreate\ServiceManager\Autowire;
+namespace Ixocreate\ServiceManager\Autowire\FactoryResolver;
 
 use Ixocreate\ServiceManager\FactoryInterface;
 
@@ -18,5 +18,5 @@ interface FactoryResolverInterface
      * @param array|null $options
      * @return FactoryInterface
      */
-    public function getFactory(string $requestedName, array $options = null): FactoryInterface;
+    public function getFactory(string $requestedName, array $options = []): FactoryInterface;
 }

@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Ixocreate\ServiceManager\Autowire\FactoryResolver;
 
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
-use Ixocreate\ServiceManager\Autowire\FactoryResolverInterface;
 use Ixocreate\ServiceManager\FactoryInterface;
 
 final class FileFactoryResolver implements FactoryResolverInterface
@@ -32,10 +31,10 @@ final class FileFactoryResolver implements FactoryResolverInterface
 
     /**
      * @param string $requestedName
-     * @param array|null $options
+     * @param array $options
      * @return FactoryInterface
      */
-    public function getFactory(string $requestedName, array $options = null): FactoryInterface
+    public function getFactory(string $requestedName, array $options = []): FactoryInterface
     {
         $factoryName = $this->factoryCode->generateFactoryFullQualifiedName($requestedName);
 

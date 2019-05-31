@@ -11,14 +11,14 @@ namespace Ixocreate\Test\ServiceManager\Generator;
 
 use Ixocreate\Misc\ServiceManager\DateTimeFactory;
 use Ixocreate\Misc\ServiceManager\ResolverTestObject;
-use Ixocreate\Misc\ServiceManager\SubManagerFactory;
+use Ixocreate\Misc\ServiceManager\ServiceManagerConfig;
+use Ixocreate\Misc\ServiceManager\SubManager\DateTimeManagerFactory;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\Generator\AutowireFactoryGenerator;
 use Ixocreate\ServiceManager\ServiceManager;
-use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use Ixocreate\ServiceManager\SubManager\SubManager;
+use Ixocreate\ServiceManager\SubManager\AbstractSubManager;
 use Ixocreate\Test\ServiceManager\CleanUpTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -39,26 +39,10 @@ class AutowireFactoryGeneratorTest extends TestCase
             ResolverTestObject::class => AutowireFactory::class,
         ];
         $subManagers = [
-            SubManager::class => SubManagerFactory::class,
+            AbstractSubManager::class => DateTimeManagerFactory::class,
         ];
 
-        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
-        $serviceManagerConfig
-            ->method('getFactories')
-            ->willReturn($factories);
-
-        $serviceManagerConfig
-            ->method('getSubManagers')
-            ->willReturn($subManagers);
-
-        $serviceManagerConfig
-            ->method('getConfig')
-            ->willReturn([
-                'factories' => \array_merge($factories, $subManagers),
-                'delegators' => [],
-                'initializers' => [],
-                'shared_by_default' => true,
-            ]);
+        $serviceManagerConfig = new ServiceManagerConfig($factories, [], [], [], [], $subManagers);
 
         $this->serviceManager = new ServiceManager(
             $serviceManagerConfig,
@@ -72,6 +56,6 @@ class AutowireFactoryGeneratorTest extends TestCase
         $generator->generate($this->serviceManager);
 
         $factoryCode = new FactoryCode();
-        $this->assertFileExists($this->serviceManager->getServiceManagerSetup()->getAutowireLocation() . $factoryCode->generateFactoryName(ResolverTestObject::class) . '.php');
+        $this->assertFileExists($this->serviceManager->serviceManagerSetup()->getAutowireLocation() . $factoryCode->generateFactoryName(ResolverTestObject::class) . '.php');
     }
 }

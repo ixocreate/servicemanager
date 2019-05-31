@@ -23,6 +23,6 @@ class CantCreateObjectFactory implements FactoryInterface
      */
     public function __invoke(ServiceManagerInterface $container, $requestedName, array $options = null)
     {
-        throw new \Exception("cant create");
+        throw new \Exception('cant create');
     }
 }

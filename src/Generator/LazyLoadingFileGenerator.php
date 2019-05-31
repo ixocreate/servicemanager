@@ -11,21 +11,24 @@ namespace Ixocreate\ServiceManager\Generator;
 
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
+use Ixocreate\ServiceManager\SubManagerAwareInterface;
 
 class LazyLoadingFileGenerator
 {
     public function generate(ServiceManagerInterface $serviceManager): void
     {
         $this->requestLazyLoadingServices($serviceManager);
-        foreach (\array_keys($serviceManager->getServiceManagerConfig()->getSubManagers()) as $subManager) {
-            $this->requestLazyLoadingServices($serviceManager->get($subManager));
+        if ($serviceManager->serviceManagerConfig() instanceof SubManagerAwareInterface) {
+            foreach (\array_keys($serviceManager->serviceManagerConfig()->getSubManagers()) as $subManager) {
+                $this->requestLazyLoadingServices($serviceManager->get($subManager));
+            }
         }
     }
 
     private function requestLazyLoadingServices(ServiceManagerInterface $serviceManager): void
     {
-        $serviceManagerConfig = $serviceManager->getServiceManagerConfig();
-        $serviceManagerSetup = $serviceManager->getServiceManagerSetup()->withPersistLazyLoading(true);
+        $serviceManagerConfig = $serviceManager->serviceManagerConfig();
+        $serviceManagerSetup = $serviceManager->serviceManagerSetup()->withPersistLazyLoading(true);
 
         $persistServiceManager = new ServiceManager(
             $serviceManagerConfig,

@@ -12,7 +12,7 @@ namespace Ixocreate\Test\ServiceManager;
 use Ixocreate\Misc\ServiceManager\CantCreateObjectFactory;
 use Ixocreate\Misc\ServiceManager\DateTimeFactory;
 use Ixocreate\Misc\ServiceManager\LazyLoadingObject;
-use Ixocreate\Misc\ServiceManager\TestInterface;
+use Ixocreate\Misc\ServiceManager\ServiceManagerConfig;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
@@ -24,6 +24,11 @@ use Ixocreate\ServiceManager\ServiceManagerSetup;
 use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
+/**
+ * Class ServiceManagerTest
+ * @package Ixocreate\Test\ServiceManager
+ * @covers \Ixocreate\ServiceManager\ServiceManager
+ */
 class ServiceManagerTest extends TestCase
 {
     /**
@@ -45,37 +50,20 @@ class ServiceManagerTest extends TestCase
     {
         $factories = [
             LazyLoadingObject::class => AutowireFactory::class,
-            'dateTine' => DateTimeFactory::class,
+            'dateTime' => DateTimeFactory::class,
             'cantCreate' => CantCreateObjectFactory::class,
         ];
         $delegators = [
             LazyLoadingObject::class => [LazyServiceFactory::class],
         ];
+        $lazyServices = [
+            LazyLoadingObject::class => LazyLoadingObject::class,
+        ];
+        $namedServices = [
+            'dateTimeNamed' => 'dateTime'
+        ];
 
-        $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
-        $serviceManagerConfig
-            ->method('getFactories')
-            ->willReturn($factories);
-
-        $serviceManagerConfig
-            ->method('getDelegators')
-            ->willReturn($delegators);
-
-        $serviceManagerConfig
-            ->method('getLazyServices')
-            ->willReturn([
-                LazyLoadingObject::class => LazyLoadingObject::class,
-            ]);
-
-        $serviceManagerConfig
-            ->method('getConfig')
-            ->willReturn([
-                'factories' => $factories,
-                'delegators' => $delegators,
-                'initializers' => [],
-                'shared_by_default' => true,
-            ]);
-
+        $serviceManagerConfig = new ServiceManagerConfig($factories, $delegators, [], $lazyServices, $namedServices);
 
         $this->serviceManagerConfig = $serviceManagerConfig;
         $this->serviceManagerSetup = new ServiceManagerSetup();
@@ -83,61 +71,38 @@ class ServiceManagerTest extends TestCase
         $this->validServiceManager = new ServiceManager($this->serviceManagerConfig, $this->serviceManagerSetup);
     }
 
-    public function testInitialServices()
-    {
-        $services = [
-            \DateTime::class => new \DateTime(),
-        ];
-        $serviceManager = new ServiceManager($this->serviceManagerConfig, $this->serviceManagerSetup, $services);
-
-        $this->assertSame($services[\DateTime::class], $serviceManager->get(\DateTime::class));
-    }
-
     public function testGetServiceManagerConfig()
     {
-        $this->assertEquals($this->serviceManagerConfig, $this->validServiceManager->getServiceManagerConfig());
+        $this->assertEquals($this->serviceManagerConfig, $this->validServiceManager->serviceManagerConfig());
     }
 
     public function testGetServiceManagerSetup()
     {
-        $this->assertEquals($this->serviceManagerSetup, $this->validServiceManager->getServiceManagerSetup());
+        $this->assertEquals($this->serviceManagerSetup, $this->validServiceManager->serviceManagerSetup());
     }
 
     public function testHas()
     {
-        $this->assertTrue($this->validServiceManager->has("dateTine"));
-        $this->assertFalse($this->validServiceManager->has("doesnt_exist"));
-    }
-
-    public function testLazyLoading()
-    {
-        $result = $this->validServiceManager->get(LazyLoadingObject::class);
-
-        $this->assertInstanceOf(LazyLoadingObject::class, $result);
-        $this->assertTrue(\in_array(TestInterface::class, \class_implements($result)));
-        $this->expectException(\Exception::class);
-        $this->expectExceptionCode(500);
-        $result->doSomething();
+        $this->assertTrue($this->validServiceManager->has('dateTime'));
+        $this->assertFalse($this->validServiceManager->has('doesnt_exist'));
     }
 
     public function testServiceNotFoundExceptionGet()
     {
         $this->expectException(ServiceNotFoundException::class);
-        $this->validServiceManager->get("doesnt_exists");
+        $this->validServiceManager->get('doesnt_exists');
     }
 
     public function testServiceNotFoundExceptionBuild()
     {
         $this->expectException(ServiceNotFoundException::class);
-
-        $this->validServiceManager->build("doesnt_exists");
+        $this->validServiceManager->build('doesnt_exists');
     }
 
     public function testServiceNotCreatedExceptionGet()
     {
         $this->expectException(ServiceNotCreatedException::class);
-
-        $this->validServiceManager->get("cantCreate");
+        $this->validServiceManager->get('cantCreate');
     }
 
     public function testServiceNotCreatedExceptionBuild()
@@ -152,18 +117,17 @@ class ServiceManagerTest extends TestCase
             ->method('getFactories')
             ->willReturn($factories);
 
-        $serviceManagerConfig
-            ->method('getConfig')
-            ->willReturn([
-                'factories' => $factories,
-                'delegators' => [],
-                'initializers' => [],
-                'shared_by_default' => true,
-            ]);
-
         $serviceManager = new ServiceManager($serviceManagerConfig, new ServiceManagerSetup());
 
-        $serviceManager->build("test");
+        $serviceManager->build('test');
+    }
+
+    public function testNamedService()
+    {
+        $namedDate = $this->validServiceManager->get('dateTimeNamed');
+        $date = $this->validServiceManager->get('dateTime');
+
+        $this->assertSame($date, $namedDate);
     }
 
     public function testGetFactoryResolverPersist()
@@ -172,7 +136,7 @@ class ServiceManagerTest extends TestCase
             $this->createMock(ServiceManagerConfigInterface::class),
             new ServiceManagerSetup(null, null, true)
         );
-        $this->assertInstanceOf(FileFactoryResolver::class, $serviceManager->getFactoryResolver());
+        $this->assertInstanceOf(FileFactoryResolver::class, $serviceManager->factoryResolver());
     }
 
     public function testGetFactoryResolverRuntime()
@@ -181,6 +145,29 @@ class ServiceManagerTest extends TestCase
             $this->createMock(ServiceManagerConfigInterface::class),
             new ServiceManagerSetup()
         );
-        $this->assertInstanceOf(RuntimeFactoryResolver::class, $serviceManager->getFactoryResolver());
+        $this->assertInstanceOf(RuntimeFactoryResolver::class, $serviceManager->factoryResolver());
+    }
+
+    public function testServices()
+    {
+        $serviceManager = new ServiceManager($this->serviceManagerConfig, $this->serviceManagerSetup);
+
+        $servicerNames = [
+            LazyLoadingObject::class,
+            'dateTime',
+            'cantCreate',
+        ];
+
+        $this->assertEquals($servicerNames, $serviceManager->services());
+    }
+
+    public function testInitialServices()
+    {
+        $services = [
+            \DateTime::class => new \DateTime(),
+        ];
+        $serviceManager = new ServiceManager($this->serviceManagerConfig, $this->serviceManagerSetup, $services);
+
+        $this->assertSame($services, $serviceManager->initialServices());
     }
 }

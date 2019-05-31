@@ -12,16 +12,24 @@ namespace Ixocreate\Test\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Ixocreate\ServiceManager\ServiceManagerSetup
+ */
 class ServiceManagerSetupTest extends TestCase
 {
     public function testDefaults()
     {
         $serviceManagerSetup = new ServiceManagerSetup();
         $this->assertEquals(
+            'resources/generated/servicemanager/lazyLoading/',
+            $serviceManagerSetup->getLazyLoadingLocation()
+        );
+        $this->assertEquals(
             'resources/generated/servicemanager/autowire/',
             $serviceManagerSetup->getAutowireLocation()
         );
         $this->assertFalse($serviceManagerSetup->isPersistLazyLoading());
+        $this->assertFalse($serviceManagerSetup->isPersistAutowire());
     }
 
     public function testValues()
@@ -29,36 +37,27 @@ class ServiceManagerSetupTest extends TestCase
         $setup = [
             'persistRoot' => 'resources/test',
             'persistLazyLoading' => true,
+            'persistAutowire' => true,
         ];
-        $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot'], $setup['persistLazyLoading']);
-        $this->assertEquals($setup['persistRoot'] . '/autowire/', $serviceManagerSetup->getAutowireLocation());
+        $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot'], $setup['persistLazyLoading'], $setup['persistAutowire']);
         $this->assertEquals($setup['persistRoot'] . '/lazyLoading/', $serviceManagerSetup->getLazyLoadingLocation());
-        $this->assertEquals($setup['persistLazyLoading'], $serviceManagerSetup->isPersistLazyLoading());
-    }
-
-    public function testWithAutowireResolver()
-    {
-        $setup = [
-            'persistRoot' => 'resources/test',
-            'persistLazyLoading' => true,
-        ];
-        $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot'], $setup['persistLazyLoading']);
-
         $this->assertEquals($setup['persistRoot'] . '/autowire/', $serviceManagerSetup->getAutowireLocation());
-        $this->assertTrue($serviceManagerSetup->isPersistLazyLoading());
+        $this->assertEquals($setup['persistLazyLoading'], $serviceManagerSetup->isPersistLazyLoading());
+        $this->assertEquals($setup['persistAutowire'], $serviceManagerSetup->isPersistLazyLoading());
     }
 
     public function testWithPersistRoot()
     {
-        $setup = [
-            'persistRoot' => 'resources/test',
-            'persistLazyLoading' => true,
-        ];
-        $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot'], $setup['persistLazyLoading']);
-        $serviceManagerSetup = $serviceManagerSetup->withPersistRoot('resources/test1');
+        $originalSetup = new ServiceManagerSetup('resources/test');
+        $updatedSetup = $originalSetup->withPersistRoot('resources/test1');
 
-        $this->assertEquals('resources/test1/autowire/', $serviceManagerSetup->getAutowireLocation());
-        $this->assertTrue($serviceManagerSetup->isPersistLazyLoading());
+        $this->assertEquals('resources/test/lazyLoading/', $originalSetup->getLazyLoadingLocation());
+        $this->assertEquals('resources/test1/lazyLoading/', $updatedSetup->getLazyLoadingLocation());
+        $this->assertEquals('resources/test1/autowire/', $updatedSetup->getAutowireLocation());
+
+        $updatedSetup = $originalSetup->withPersistRoot('resources/test2/');
+        $this->assertEquals('resources/test2/lazyLoading/', $updatedSetup->getLazyLoadingLocation());
+        $this->assertEquals('resources/test2/autowire/', $updatedSetup->getAutowireLocation());
     }
 
     public function testWithPersistLazyLoading()
@@ -66,11 +65,11 @@ class ServiceManagerSetupTest extends TestCase
         $setup = [
             'persistRoot' => 'resources/test',
         ];
-        $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot']);
-        $serviceManagerSetup = $serviceManagerSetup->withPersistLazyLoading(true);
+        $originalSetup = new ServiceManagerSetup($setup['persistRoot'], false);
+        $updatedSetup = $originalSetup->withPersistLazyLoading(true);
 
-        $this->assertEquals($setup['persistRoot'] . '/autowire/', $serviceManagerSetup->getAutowireLocation());
-        $this->assertTrue($serviceManagerSetup->isPersistLazyLoading());
+        $this->assertFalse($originalSetup->isPersistLazyLoading());
+        $this->assertTrue($updatedSetup->isPersistLazyLoading());
     }
 
     public function testWithPersistAutowire()
@@ -78,10 +77,10 @@ class ServiceManagerSetupTest extends TestCase
         $setup = [
             'persistRoot' => 'resources/test',
         ];
-        $serviceManagerSetup = new ServiceManagerSetup($setup['persistRoot']);
-        $serviceManagerSetup = $serviceManagerSetup->withPersistAutowire(true);
+        $originalSetup = new ServiceManagerSetup($setup['persistRoot'], null, false);
+        $updatedSetup = $originalSetup->withPersistAutowire(true);
 
-        $this->assertEquals($setup['persistRoot'] . '/autowire/', $serviceManagerSetup->getAutowireLocation());
-        $this->assertTrue($serviceManagerSetup->isPersistAutowire());
+        $this->assertFalse($originalSetup->isPersistAutowire());
+        $this->assertTrue($updatedSetup->isPersistAutowire());
     }
 }
