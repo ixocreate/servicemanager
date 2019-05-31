@@ -60,7 +60,7 @@ class ServiceManagerTest extends TestCase
             LazyLoadingObject::class => LazyLoadingObject::class,
         ];
         $namedServices = [
-            'dateTimeNamed' => 'dateTime'
+            'dateTimeNamed' => 'dateTime',
         ];
 
         $serviceManagerConfig = new ServiceManagerConfig($factories, $delegators, [], $lazyServices, $namedServices);

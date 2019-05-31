@@ -53,7 +53,7 @@ class SubManagerTest extends TestCase
             'cantCreate' => CantCreateObjectFactory::class,
         ];
         $namedServices = [
-            'dateTimeNamed' => 'dateTime'
+            'dateTimeNamed' => 'dateTime',
         ];
         $serviceManagerConfig = $this->createMock(ServiceManagerConfigInterface::class);
         $serviceManagerConfig
