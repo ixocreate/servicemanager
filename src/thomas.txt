@@ -1,0 +1,28 @@
+
+
+- MainServiceManagerConfig -> passt die Idee, welcher Name
+
+- SubManager haben das zu validierende Interface jetzt beim ableiten, nicht mehr im cuonstrct
+    Argumente: vorher war nicht sichergestellt das ein SubManager genau das Interface validiert, wenn man die Factory austauscht kann man das verhalten ändern
+    Idee: Validator Interface über static methode zugängliche machen für den Configurator
+
+- brauchen wir noch den Autoloader wenn die arbeit eh composer übernimmt?
+    er funktioiert zwar, aber bringt er was?
+
+
+
+entscheidungen:
+
+- Autoloader entsorgen
+
+- Wofür ein AutowireFactoryInterface?
+  -> für den check ob da was generiert gehört
+
+- FactoryResolver als Service + Factory umsetzten und fix in der SM einbauen
+ -> mal weglassen, is eh was internes
+
+-> SubManagerAware Interface
+
+-> config in originalServiceManger Interface
+
+-> ServiceManager wird wieder final
