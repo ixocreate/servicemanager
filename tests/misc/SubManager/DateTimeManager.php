@@ -13,5 +13,8 @@ use Ixocreate\ServiceManager\SubManager\AbstractSubManager;
 
 class DateTimeManager extends AbstractSubManager
 {
-    protected $instanceOf = \DateTimeInterface::class;
+    public static function getValidation(): ?string
+    {
+        return \DateTimeInterface::class;
+    }
 }

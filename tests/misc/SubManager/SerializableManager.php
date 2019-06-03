@@ -13,5 +13,4 @@ use Ixocreate\ServiceManager\SubManager\AbstractSubManager;
 
 class SerializableManager extends AbstractSubManager
 {
-    protected $instanceOf = \Serializable::class;
 }

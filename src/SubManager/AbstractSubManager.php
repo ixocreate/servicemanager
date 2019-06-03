@@ -157,7 +157,7 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
     /**
      * @return string
      */
-    final public static function getValidation(): ?string
+    public static function getValidation(): ?string
     {
         return null;
     }

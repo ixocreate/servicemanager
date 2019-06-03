@@ -147,7 +147,9 @@ class SubManagerTest extends TestCase
 
         $serviceManager = new SerializableManager(
             $this->serviceManager,
-            $serviceManagerConfig
+            $serviceManagerConfig,
+            [],
+            \Serializable::class
         );
 
         $serviceManager->get('test');
@@ -167,7 +169,9 @@ class SubManagerTest extends TestCase
 
         $serviceManager = new SerializableManager(
             $this->serviceManager,
-            $serviceManagerConfig
+            $serviceManagerConfig,
+            [],
+            \Serializable::class
         );
 
         $serviceManager->build('test');
