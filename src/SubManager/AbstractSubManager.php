@@ -23,7 +23,7 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
     /**
      * @var string
      */
-    protected $instanceOf;
+    private $instanceOf;
 
     /**
      * @var ServiceManagerInterface
@@ -43,21 +43,29 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
     /**
      * @var array
      */
-    protected $initialServices = [];
+    private $initialServices = [];
 
     /**
      * @param ServiceManagerInterface $serviceManager
      * @param ServiceManagerConfigInterface $serviceManagerConfig
      * @param array $services
+     * @param string $validation
      */
     public function __construct(
         ServiceManagerInterface $serviceManager,
         ServiceManagerConfigInterface $serviceManagerConfig,
-        array $services = []
+        array $services = [],
+        string $validation = null
     ) {
         $this->creationContext = $serviceManager;
         $this->serviceManagerConfig = $serviceManagerConfig;
         $this->initialServices = $services;
+
+        if ($validation !== null) {
+            $this->instanceOf = $validation;
+        } else {
+            $this->instanceOf = static::getValidation();
+        }
 
         $this->serviceManager = new OriginalServiceManager($serviceManager, $serviceManagerConfig, $serviceManager->serviceManagerSetup(), $services);
     }
@@ -149,9 +157,9 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
     /**
      * @return string
      */
-    final public function getValidation(): ?string
+    final public static function getValidation(): ?string
     {
-        return $this->instanceOf;
+        return null;
     }
 
     /**
