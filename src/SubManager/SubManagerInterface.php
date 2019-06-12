@@ -16,5 +16,5 @@ interface SubManagerInterface extends ServiceManagerInterface
     /**
      * @return string
      */
-    public static function getValidation(): ?string;
+    public static function validation(): ?string;
 }

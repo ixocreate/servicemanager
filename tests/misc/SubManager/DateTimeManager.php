@@ -13,7 +13,7 @@ use Ixocreate\ServiceManager\SubManager\AbstractSubManager;
 
 class DateTimeManager extends AbstractSubManager
 {
-    public static function getValidation(): ?string
+    public static function validation(): ?string
     {
         return \DateTimeInterface::class;
     }

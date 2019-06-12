@@ -83,9 +83,9 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
         try {
             $instance = $this->serviceManager->get($id);
         } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
-            throw new ServiceNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
+            throw new ServiceNotFoundException($exception->getMessage(), $exception->getCode(), $exception->getPrevious());
         } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exception) {
-            throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception);
+            throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception->getPrevious());
         }
 
         $this->validate($instance);
@@ -120,7 +120,7 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
         } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
             throw new ServiceNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
         } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exception) {
-            throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception);
+            throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception->getPrevious());
         }
 
         $this->validate($instance);
@@ -156,8 +156,17 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
 
     /**
      * @return string
+     * @deprecated
      */
-    public static function getValidation(): ?string
+    public function getValidation(): ?string
+    {
+        return ($this->instanceOf) ?? static::validation();
+    }
+
+    /**
+     * @return string
+     */
+    public static function validation(): ?string
     {
         return null;
     }
@@ -168,6 +177,15 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
     final public function factoryResolver(): FactoryResolverInterface
     {
         return $this->creationContext->factoryResolver();
+    }
+
+    /**
+     * @return ServiceManagerConfigInterface
+     * @deprecated use serviceManagerConfig()
+     */
+    final public function getServiceManagerConfig(): ServiceManagerConfigInterface
+    {
+        return $this->serviceManagerConfig;
     }
 
     /**
@@ -184,6 +202,15 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
     final public function serviceManagerSetup(): ServiceManagerSetupInterface
     {
         return $this->creationContext->serviceManagerSetup();
+    }
+
+    /**
+     * @return array
+     * @deprecated Use services()
+     */
+    final public function getServices(): array
+    {
+        return \array_keys($this->serviceManagerConfig->getFactories());
     }
 
     /**
