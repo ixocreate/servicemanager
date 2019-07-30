@@ -1,7 +1,7 @@
 <?php
 /**
  * @link https://github.com/ixocreate
- * @copyright IXOCREATE GmbH
+ * @copyright IXOLIT GmbH
  * @license MIT License
  */
 
@@ -71,6 +71,8 @@ class SubManager implements SubManagerInterface
             $config['lazy_services']['write_proxy_files'] = true;
         }
 
+        $config['aliases'] = $serviceManagerConfig->getNamedServices();
+
         $this->serviceManager = new PluginManager(
             $serviceManager,
             $config
@@ -90,8 +92,6 @@ class SubManager implements SubManagerInterface
      */
     final public function get($id)
     {
-        $id = $this->resolveService($id);
-
         try {
             $instance = $this->serviceManager->get($id);
         } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
@@ -115,8 +115,6 @@ class SubManager implements SubManagerInterface
      */
     final public function has($id): bool
     {
-        $id = $this->resolveService($id);
-
         return $this->serviceManager->has($id);
     }
 
@@ -129,8 +127,6 @@ class SubManager implements SubManagerInterface
      */
     final public function build(string $id, array $options = null)
     {
-        $id = $this->resolveService($id);
-
         try {
             $instance = $this->serviceManager->build($id, $options);
         } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
@@ -146,15 +142,6 @@ class SubManager implements SubManagerInterface
         }
 
         return $instance;
-    }
-
-    private function resolveService(string $id): string
-    {
-        if (\array_key_exists($id, $this->getServiceManagerConfig()->getNamedServices())) {
-            return $this->getServiceManagerConfig()->getNamedServices()[$id];
-        }
-
-        return $id;
     }
 
     /**

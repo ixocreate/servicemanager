@@ -1,11 +1,14 @@
 {
     "name": "ixocreate/servicemanager",
-    "description": "IXOCREATE Servicemanager",
+    "description": "IXOCREATE Servicemanager Library",
     "license": "MIT",
     "type": "library",
     "authors": [
         {
-            "name": "IXOCREATE"
+            "name": "IXOCREATE",
+            "email": "opensource@ixocreate.com",
+            "homepage": "https://www.ixocreate.com",
+            "role": "Developer"
         }
     ],
     "require": {
@@ -17,8 +20,7 @@
     },
     "require-dev": {
         "ixocreate/coding-standard": "^2.0",
-        "php-coveralls/php-coveralls": "^2.1",
-        "phpunit/phpunit": "^7.0"
+        "ixocreate/test": "dev-develop"
     },
     "autoload": {
         "psr-4": {
