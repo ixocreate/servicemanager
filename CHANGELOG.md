@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/ixocreate/servicemanager/compare/0.1.1...develop)
 
+## [v0.1.2 (2019-07-30)](https://github.com/ixocreate/servicemanager/compare/0.1.0...0.1.1)
+### Changed
+- Switched to zend servicemanager alias system
+
 ## [v0.1.1 (2019-05-06)](https://github.com/ixocreate/servicemanager/compare/0.1.0...0.1.1)
 ### Fixed
 - Travis Build
