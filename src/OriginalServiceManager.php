@@ -51,6 +51,7 @@ final class OriginalServiceManager extends \Zend\ServiceManager\ServiceManager
             'proxies_namespace' => null,
             'write_proxy_files' => false,
         ];
+        $config['aliases'] = $serviceManagerConfig->getNamedServices();
 
         if ($serviceManagerSetup->isPersistLazyLoading()) {
             if (!\file_exists($serviceManagerSetup->getLazyLoadingLocation())) {

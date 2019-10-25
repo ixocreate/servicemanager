@@ -19,7 +19,8 @@
     },
     "require-dev": {
         "ixocreate/coding-standard": "^2.0",
-        "ixocreate/test": "dev-develop"
+        "ixocreate/test": "dev-develop",
+        "vimeo/psalm": "^3.6"
     },
     "autoload": {
         "psr-4": {

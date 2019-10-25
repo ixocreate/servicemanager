@@ -39,7 +39,7 @@ final class RuntimeFactoryResolver implements FactoryResolverInterface
 
     /**
      * @param string $requestedName
-     * @param array|null $options
+     * @param array $options
      * @throws \Exception
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface

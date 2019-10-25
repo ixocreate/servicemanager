@@ -74,8 +74,6 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
      */
     public function get($id)
     {
-        $id = $this->resolveService($id);
-
         try {
             return $this->serviceManager->get($id);
         } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
@@ -91,8 +89,6 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
      */
     public function has($id): bool
     {
-        $id = $this->resolveService($id);
-
         return $this->serviceManager->has($id);
     }
 
@@ -105,8 +101,6 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
      */
     public function build(string $id, array $options = null)
     {
-        $id = $this->resolveService($id);
-
         try {
             return $this->serviceManager->build($id, $options);
         } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
@@ -114,15 +108,6 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
         } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exception) {
             throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception);
         }
-    }
-
-    private function resolveService(string $id): string
-    {
-        if (\array_key_exists($id, $this->serviceManagerConfig->getNamedServices())) {
-            return $this->serviceManagerConfig->getNamedServices()[$id];
-        }
-
-        return $id;
     }
 
     /**

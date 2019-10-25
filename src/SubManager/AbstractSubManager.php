@@ -21,7 +21,7 @@ use Ixocreate\ServiceManager\ServiceManagerSetupInterface;
 abstract class AbstractSubManager implements ServiceManagerInterface, ContainerInterface, SubManagerInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $instanceOf;
 
@@ -64,7 +64,7 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
         if ($validation !== null) {
             $this->instanceOf = $validation;
         } else {
-            $this->instanceOf = static::getValidation();
+            $this->instanceOf = static::validation();
         }
 
         $this->serviceManager = new OriginalServiceManager($serviceManager, $serviceManagerConfig, $serviceManager->serviceManagerSetup(), $services);
@@ -78,8 +78,6 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
      */
     final public function get($id)
     {
-        $id = $this->resolveService($id);
-
         try {
             $instance = $this->serviceManager->get($id);
         } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
@@ -99,8 +97,6 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
      */
     final public function has($id): bool
     {
-        $id = $this->resolveService($id);
-
         return $this->serviceManager->has($id);
     }
 
@@ -113,8 +109,6 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
      */
     final public function build(string $id, array $options = null)
     {
-        $id = $this->resolveService($id);
-
         try {
             $instance = $this->serviceManager->build($id, $options);
         } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
@@ -126,15 +120,6 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
         $this->validate($instance);
 
         return $instance;
-    }
-
-    private function resolveService(string $id): string
-    {
-        if (\array_key_exists($id, $this->serviceManagerConfig->getNamedServices())) {
-            return $this->serviceManagerConfig->getNamedServices()[$id];
-        }
-
-        return $id;
     }
 
     /**
