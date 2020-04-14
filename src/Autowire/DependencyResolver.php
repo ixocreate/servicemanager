@@ -106,9 +106,9 @@ final class DependencyResolver implements DependencyResolverInterface
             $result[$name] = new ValueInjection(null);
         }
 
-        foreach ($result as $name => $injection) {
-            $injection->setParameterName($name);
-        }
+//        foreach ($result as $name => $injection) {
+//            $injection->setParameterName($name);
+//        }
 
         return $result;
     }

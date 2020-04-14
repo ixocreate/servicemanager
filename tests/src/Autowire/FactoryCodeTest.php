@@ -101,9 +101,9 @@ class FactoryCodeTest extends TestCase
             'default2' => new DefaultValueInjection(null),
         ];
         /** @var AbstractInjection $injection */
-        foreach ($resolution as $key => $injection) {
+       /* foreach ($resolution as $key => $injection) {
             $injection->setParameterName($key);
-        }
+        }*/
 
         $requestedName = FactoryGeneratorTestObject::class;
         $factoryName = $this->factoryCode->generateFactoryFullQualifiedName($requestedName);
