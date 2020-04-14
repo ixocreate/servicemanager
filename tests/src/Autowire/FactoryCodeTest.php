@@ -22,8 +22,8 @@ use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\SubManager;
 use PHPUnit\Framework\TestCase;
-use Zend\Di\Resolver\AbstractInjection;
-use Zend\Di\Resolver\ValueInjection;
+use Laminas\Di\Resolver\AbstractInjection;
+use Laminas\Di\Resolver\ValueInjection;
 
 class FactoryCodeTest extends TestCase
 {

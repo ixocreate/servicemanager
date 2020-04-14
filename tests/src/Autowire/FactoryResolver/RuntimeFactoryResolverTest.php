@@ -17,7 +17,7 @@ use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use PHPUnit\Framework\TestCase;
-use Zend\Di\Definition\RuntimeDefinition;
+use Laminas\Di\Definition\RuntimeDefinition;
 
 class RuntimeFactoryResolverTest extends TestCase
 {

@@ -13,7 +13,7 @@ use Ixocreate\ServiceManager\Autowire\DependencyResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\AutowireFactoryInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
-use Zend\Di\Definition\RuntimeDefinition;
+use Laminas\Di\Definition\RuntimeDefinition;
 
 final class AutowireFactoryGenerator
 {

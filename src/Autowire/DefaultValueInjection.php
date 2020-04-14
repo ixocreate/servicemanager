@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Autowire;
 
-use Zend\Di\Resolver\ValueInjection;
+use Laminas\Di\Resolver\ValueInjection;
 
 final class DefaultValueInjection extends ValueInjection
 {

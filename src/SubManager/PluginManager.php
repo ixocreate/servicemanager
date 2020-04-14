@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Ixocreate\ServiceManager\SubManager;
 
 use Ixocreate\ServiceManager\ServiceManagerInterface;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManager;
 
 final class PluginManager extends ServiceManager
 {

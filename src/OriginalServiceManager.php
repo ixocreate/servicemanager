@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager;
 
-final class OriginalServiceManager extends \Zend\ServiceManager\ServiceManager
+final class OriginalServiceManager extends \Laminas\ServiceManager\ServiceManager
 {
     /**
      * OriginalServiceManager constructor.

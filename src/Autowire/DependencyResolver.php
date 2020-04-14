@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace Ixocreate\ServiceManager\Autowire;
 
 use Psr\Container\ContainerInterface;
-use Zend\Di\Definition\DefinitionInterface;
-use Zend\Di\Resolver\DependencyResolverInterface;
-use Zend\Di\Resolver\ValueInjection;
+use Laminas\Di\Definition\DefinitionInterface;
+use Laminas\Di\Resolver\DependencyResolverInterface;
+use Laminas\Di\Resolver\ValueInjection;
 
 final class DependencyResolver implements DependencyResolverInterface
 {

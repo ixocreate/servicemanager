@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Autowire;
 
-use Zend\Di\Resolver\AbstractInjection;
+use Laminas\Di\Resolver\AbstractInjection;
 
 final class ContainerInjection extends AbstractInjection
 {

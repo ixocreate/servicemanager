@@ -94,9 +94,9 @@ class SubManager implements SubManagerInterface
     {
         try {
             $instance = $this->serviceManager->get($id);
-        } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotFoundException $exception) {
             throw new ServiceNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
-        } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotCreatedException $exception) {
             throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
@@ -129,9 +129,9 @@ class SubManager implements SubManagerInterface
     {
         try {
             $instance = $this->serviceManager->build($id, $options);
-        } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotFoundException $exception) {
             throw new ServiceNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
-        } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotCreatedException $exception) {
             throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
