@@ -25,10 +25,10 @@ use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\AbstractSubManager;
+use Laminas\Di\Definition\RuntimeDefinition;
+use Laminas\Di\Resolver\ValueInjection;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use Zend\Di\Definition\RuntimeDefinition;
-use Zend\Di\Resolver\ValueInjection;
 
 class DependencyResolverTest extends TestCase
 {

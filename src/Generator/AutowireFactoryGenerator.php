@@ -14,7 +14,7 @@ use Ixocreate\ServiceManager\Autowire\FactoryCode;
 use Ixocreate\ServiceManager\Factory\AutowireFactoryInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
 use Ixocreate\ServiceManager\SubManagerAwareInterface;
-use Zend\Di\Definition\RuntimeDefinition;
+use Laminas\Di\Definition\RuntimeDefinition;
 
 final class AutowireFactoryGenerator
 {

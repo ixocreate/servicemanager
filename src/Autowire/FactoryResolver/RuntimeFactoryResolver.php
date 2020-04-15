@@ -53,7 +53,7 @@ final class RuntimeFactoryResolver implements FactoryResolverInterface
             return new $factoryName();
         }
 
-        $fileName = \tempnam(\sys_get_temp_dir(), $factoryName . 'php.servicemanager.');
+        $fileName = \tempnam(\sys_get_temp_dir(), $factoryName . '.php.tmp.');
 
         \file_put_contents(
             $fileName,

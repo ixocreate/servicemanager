@@ -6,7 +6,7 @@
 [![PHP Version](https://img.shields.io/packagist/php-v/ixocreate/servicemanager.svg)](https://packagist.org/packages/ixocreate/servicemanager)
 [![License](https://img.shields.io/github/license/ixocreate/servicemanager.svg)](LICENSE)
 
-IXOCREATE Servicemanager is a PSR 11 container library utilizing [zendframework/zend-servicemanager](https://github.com/zendframework/zend-servicemanager).
+IXOCREATE Servicemanager is a PSR 11 container library utilizing [laminas/laminas-servicemanager](https://github.com/laminas/laminas-servicemanager).
 
 ## Installation
 

@@ -17,7 +17,7 @@ use Ixocreate\ServiceManager\Autowire\FactoryResolver\FileFactoryResolver;
 use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
 use Ixocreate\ServiceManager\Exception\ServiceNotCreatedException;
 use Ixocreate\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\Di\Definition\RuntimeDefinition;
+use Laminas\Di\Definition\RuntimeDefinition;
 
 final class ServiceManager implements ServiceManagerInterface, ContainerInterface
 {
@@ -76,9 +76,9 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     {
         try {
             return $this->serviceManager->get($id);
-        } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotFoundException $exception) {
             throw new ServiceNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
-        } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotCreatedException $exception) {
             throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
@@ -103,9 +103,9 @@ final class ServiceManager implements ServiceManagerInterface, ContainerInterfac
     {
         try {
             return $this->serviceManager->build($id, $options);
-        } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotFoundException $exception) {
             throw new ServiceNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
-        } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotCreatedException $exception) {
             throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }

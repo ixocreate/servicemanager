@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Ixocreate\ServiceManager\Autowire;
 
 use Psr\Container\ContainerInterface;
-use Zend\Di\Resolver\InjectionInterface;
+use Laminas\Di\Resolver\InjectionInterface;
 
 final class ContainerInjection implements InjectionInterface
 {
@@ -77,13 +77,5 @@ final class ContainerInjection implements InjectionInterface
     public function isExportable(): bool
     {
         return false;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->type;
     }
 }

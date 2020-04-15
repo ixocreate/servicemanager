@@ -21,8 +21,8 @@ use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\AbstractSubManager;
+use Laminas\Di\Resolver\ValueInjection;
 use PHPUnit\Framework\TestCase;
-use Zend\Di\Resolver\ValueInjection;
 
 /**
  * Class FactoryCodeTest

@@ -22,8 +22,8 @@ use Ixocreate\ServiceManager\OriginalServiceManager;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
+use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 use PHPUnit\Framework\TestCase;
-use Zend\ServiceManager\Proxy\LazyServiceFactory;
 
 /**
  * Class OriginalServiceManagerTest

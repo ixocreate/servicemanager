@@ -14,7 +14,7 @@ namespace Ixocreate\ServiceManager;
  * @package Ixocreate\ServiceManager
  * @internal
  */
-final class OriginalServiceManager extends \Zend\ServiceManager\ServiceManager
+final class OriginalServiceManager extends \Laminas\ServiceManager\ServiceManager
 {
     /**
      * OriginalServiceManager constructor.

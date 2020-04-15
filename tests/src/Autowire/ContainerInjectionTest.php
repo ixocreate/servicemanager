@@ -22,7 +22,6 @@ class ContainerInjectionTest extends TestCase
         $container = $this->createMock(ContainerInterface::class);
 
         $this->assertSame('type', $injection->getType());
-        $this->assertSame('type', $injection->__toString());
         $this->assertSame('container', $injection->getContainer());
         $this->assertSame('type', $injection->toValue($container));
         $this->assertFalse($injection->isExportable());

@@ -12,11 +12,11 @@ namespace Ixocreate\ServiceManager\Autowire;
 use Ixocreate\ServiceManager\Exception\InvalidArgumentException;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
 use Ixocreate\ServiceManager\SubManagerAwareInterface;
+use Laminas\Di\Definition\DefinitionInterface;
+use Laminas\Di\Resolver\DependencyResolverInterface;
+use Laminas\Di\Resolver\InjectionInterface;
+use Laminas\Di\Resolver\ValueInjection;
 use Psr\Container\ContainerInterface;
-use Zend\Di\Definition\DefinitionInterface;
-use Zend\Di\Resolver\DependencyResolverInterface;
-use Zend\Di\Resolver\InjectionInterface;
-use Zend\Di\Resolver\ValueInjection;
 
 final class DependencyResolver implements DependencyResolverInterface
 {
