@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Factory;
 
-use Ixocreate\ServiceManager\AutowireFactoryInterface;
 use Ixocreate\ServiceManager\ServiceManagerInterface;
 
 final class AutowireFactory implements AutowireFactoryInterface

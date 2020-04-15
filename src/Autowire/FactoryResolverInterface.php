@@ -15,8 +15,8 @@ interface FactoryResolverInterface
 {
     /**
      * @param string $requestedName
-     * @param array|null $options
+     * @param array $options
      * @return FactoryInterface
      */
-    public function getFactory(string $requestedName, array $options = null): FactoryInterface;
+    public function getFactory(string $requestedName, array $options = []): FactoryInterface;
 }

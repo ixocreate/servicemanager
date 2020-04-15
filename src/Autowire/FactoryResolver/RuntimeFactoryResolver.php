@@ -40,12 +40,13 @@ final class RuntimeFactoryResolver implements FactoryResolverInterface
 
     /**
      * @param string $requestedName
-     * @param array|null $options
+     * @param array $options
+     * @throws \Exception
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
      * @return FactoryInterface
      */
-    public function getFactory(string $requestedName, array $options = null): FactoryInterface
+    public function getFactory(string $requestedName, array $options = []): FactoryInterface
     {
         $factoryName = $this->factoryCode->generateFactoryFullQualifiedName($requestedName);
 
@@ -54,10 +55,6 @@ final class RuntimeFactoryResolver implements FactoryResolverInterface
         }
 
         $fileName = \tempnam(\sys_get_temp_dir(), $factoryName . '.php.tmp.');
-
-        if ($options === null) {
-            $options = [];
-        }
 
         \file_put_contents(
             $fileName,
