@@ -21,8 +21,8 @@ use Ixocreate\ServiceManager\Factory\AutowireFactory;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use PHPUnit\Framework\TestCase;
 use Laminas\ServiceManager\Proxy\LazyServiceFactory;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ServiceManagerTest

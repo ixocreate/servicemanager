@@ -16,8 +16,8 @@ use Ixocreate\ServiceManager\Autowire\FactoryResolver\RuntimeFactoryResolver;
 use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerConfigInterface;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
-use PHPUnit\Framework\TestCase;
 use Laminas\Di\Definition\RuntimeDefinition;
+use PHPUnit\Framework\TestCase;
 
 class RuntimeFactoryResolverTest extends TestCase
 {

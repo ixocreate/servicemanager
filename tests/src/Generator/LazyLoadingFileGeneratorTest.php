@@ -18,11 +18,11 @@ use Ixocreate\ServiceManager\ServiceManager;
 use Ixocreate\ServiceManager\ServiceManagerSetup;
 use Ixocreate\ServiceManager\SubManager\AbstractSubManager;
 use Ixocreate\Test\ServiceManager\CleanUpTrait;
+use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Version;
-use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 
 class LazyLoadingFileGeneratorTest extends TestCase
 {

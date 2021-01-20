@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Ixocreate\ServiceManager\Autowire;
 
-use Psr\Container\ContainerInterface;
 use Laminas\Di\Resolver\InjectionInterface;
+use Psr\Container\ContainerInterface;
 
 final class ContainerInjection implements InjectionInterface
 {
