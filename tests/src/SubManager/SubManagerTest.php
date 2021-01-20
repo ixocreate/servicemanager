@@ -41,7 +41,7 @@ class SubManagerTest extends TestCase
      */
     private $subManagerConfig;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->serviceManager = new ServiceManager(
             $this->createMock(ServiceManagerConfigInterface::class),

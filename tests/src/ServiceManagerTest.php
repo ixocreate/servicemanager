@@ -46,7 +46,7 @@ class ServiceManagerTest extends TestCase
      */
     private $serviceManagerSetup;
 
-    public function setUp()
+    public function setUp(): void
     {
         $factories = [
             LazyLoadingObject::class => AutowireFactory::class,

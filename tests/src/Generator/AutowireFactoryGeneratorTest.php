@@ -31,7 +31,7 @@ class AutowireFactoryGeneratorTest extends TestCase
      */
     private $serviceManager;
 
-    public function setUp()
+    public function setUp(): void
     {
         $factories = [
             \DateTime::class => DateTimeFactory::class,

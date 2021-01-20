@@ -33,7 +33,7 @@ class LazyLoadingFileGeneratorTest extends TestCase
      */
     private $serviceManager;
 
-    public function setUp()
+    public function setUp(): void
     {
         $factories = [
             LazyLoadingObject::class => AutowireFactory::class,
@@ -68,6 +68,7 @@ class LazyLoadingFileGeneratorTest extends TestCase
             'className' => LazyLoadingObject::class,
             'factory' => LazyLoadingValueHolderFactory::class,
             'proxyManagerVersion' => Version::getVersion(),
+            'proxyOptions' => [],
         ];
 
         $proxyConfiguration = new Configuration();
@@ -75,7 +76,7 @@ class LazyLoadingFileGeneratorTest extends TestCase
             LazyLoadingObject::class,
             $proxyParameters
         );
-        $filename = $this->serviceManager->serviceManagerSetup()->getLazyLoadingLocation() . DIRECTORY_SEPARATOR . \str_replace(
+        $filename = $this->serviceManager->serviceManagerSetup()->getLazyLoadingLocation() . \str_replace(
             '\\',
             '',
             $filename

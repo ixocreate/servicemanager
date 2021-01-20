@@ -41,7 +41,7 @@ class FactoryCodeTest extends TestCase
      */
     private $serviceManager;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->factoryCode = new FactoryCode();
 

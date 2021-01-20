@@ -54,11 +54,12 @@ final class OriginalServiceManager extends \Laminas\ServiceManager\ServiceManage
         $config['aliases'] = $serviceManagerConfig->getNamedServices();
 
         if ($serviceManagerSetup->isPersistLazyLoading()) {
-            if (!\file_exists($serviceManagerSetup->getLazyLoadingLocation())) {
-                @\mkdir($serviceManagerSetup->getLazyLoadingLocation(), 0777, true);
+            $lazyLoadingLocation = $serviceManagerSetup->getLazyLoadingLocation();
+            if (!\file_exists($lazyLoadingLocation)) {
+                \mkdir($lazyLoadingLocation, 0777, true);
             }
 
-            $config['lazy_services']['proxies_target_dir'] = $serviceManagerSetup->getLazyLoadingLocation();
+            $config['lazy_services']['proxies_target_dir'] = $lazyLoadingLocation;
             $config['lazy_services']['write_proxy_files'] = true;
         }
 

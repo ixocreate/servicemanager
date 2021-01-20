@@ -11,7 +11,7 @@ namespace Ixocreate\Test\ServiceManager;
 
 trait CleanUpTrait
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         if (!\file_exists('resources')) {
             return;
