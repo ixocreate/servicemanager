@@ -80,9 +80,9 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
     {
         try {
             $instance = $this->serviceManager->get($id);
-        } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotFoundException $exception) {
             throw new ServiceNotFoundException($exception->getMessage(), $exception->getCode(), $exception->getPrevious());
-        } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotCreatedException $exception) {
             throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception->getPrevious());
         }
 
@@ -111,9 +111,9 @@ abstract class AbstractSubManager implements ServiceManagerInterface, ContainerI
     {
         try {
             $instance = $this->serviceManager->build($id, $options);
-        } catch (\Zend\ServiceManager\Exception\ServiceNotFoundException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotFoundException $exception) {
             throw new ServiceNotFoundException($exception->getMessage(), $exception->getCode(), $exception);
-        } catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $exception) {
+        } catch (\Laminas\ServiceManager\Exception\ServiceNotCreatedException $exception) {
             throw new ServiceNotCreatedException($exception->getMessage(), $exception->getCode(), $exception->getPrevious());
         }
 
