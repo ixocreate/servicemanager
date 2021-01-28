@@ -131,7 +131,6 @@ class SubManagerTest extends TestCase
     public function testGetServiceManagerConfig()
     {
         $this->assertEquals($this->subManagerConfig, $this->subManager->serviceManagerConfig());
-        $this->assertEquals($this->subManagerConfig, $this->subManager->getServiceManagerConfig());
     }
 
     public function testInvalidateGet()

@@ -30,7 +30,7 @@ $configurator = new ServiceManagerConfigurator();
 $configurator->addFactory(SomeObject::class);
 $configurator->addFactory(AnotherObject::class, AnotherObjectFactory::class);
 $configurator->addLazyService(SomeObject::class);
-$serviceManager = new ServiceManager($configurator->getServiceManagerConfig(), new ServiceManagerSetup());
+$serviceManager = new ServiceManager($configurator->serviceManagerConfig(), new ServiceManagerSetup());
 
 $serviceManager->get(SomeObject::class);
 $serviceManager->build(AnotherObject::class);
@@ -51,7 +51,7 @@ class SomeObjectFactory implements FactoryInterface
 
 $configurator = new ServiceManagerConfigurator();
 $configurator->addFactory(SomeObject::class, SomeObjectFactory::class);
-$serviceManager = new ServiceManager($configurator->getServiceManagerConfig(), new ServiceManagerSetup());
+$serviceManager = new ServiceManager($configurator->serviceManagerConfig(), new ServiceManagerSetup());
 
 $serviceManager->get(SomeObject::class);
 ```
