@@ -1,12 +1,12 @@
 # Release Notes
 
-## [Unreleased](https://github.com/ixocreate/servicemanager/compare/0.2...develop)
+## [Unreleased](https://github.com/ixocreate/servicemanager/compare/1.0.0...develop)
 
-## [v0.2.0 (2019-10-25)](https://github.com/ixocreate/servicemanager/compare/0.1.2...0.2.0)
+## [v1.0.0 (2021-04-08)](https://github.com/ixocreate/servicemanager/compare/0.1.2...1.0.0)
 ### Changed
 - SubManager is abstract
 - remove autoloader
-- move 
+- move from Zend to Laminas
 - move validation of SubManger from constructor to method
 - cleanup code
 - extend unit tests
